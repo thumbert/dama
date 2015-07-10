@@ -1,13 +1,12 @@
-library linear.matrix;
+library matrix.dart;
 
 import 'dart:math';
 import 'dart:typed_data';
-//import 'package:dama/linear/diagonal_matrix.dart';
 
 part 'diagonal_matrix.dart';
 part 'column_matrix.dart';
 
-class Matrix {
+abstract class Matrix {
   final int nrow;
   final int ncol;
   List data; // stored by row: [[1,2,3]\n[4,5,6]]
@@ -357,81 +356,6 @@ class DoubleMatrix extends Matrix {
 
 
 
-class IntMatrix extends Matrix {
-  List<Int32List> data;
-
-  /**
-   * A matrix will all int elements backed by a List<Int23List>.
-   * Not sure how useful this is in the long run ...
-   */
-  IntMatrix(List x, int nrow, int ncol, {bool byRow: false}) : super._empty(nrow, ncol) {
-    data = new List.generate(nrow, (i) => new Int32List(ncol));
-    _populateMatrix(x, data, byRow: byRow);
-  }
-
-  IntMatrix.filled(int value, int nrow, int ncol) : super._empty(nrow, ncol) {
-    data = new List.generate(nrow, (i) => new Int32List(ncol));
-    _populateMatrix(new List.filled(nrow*ncol, value), data);
-  }
-
-  DoubleMatrix toDoubleMatrix() {
-    DoubleMatrix d = new DoubleMatrix.zero(nrow, ncol);
-    for (int i=0; i<nrow; i++)
-      for (int j=0; j<ncol; j++)
-        d.data[i][j] = data[i][j].toDouble();
-
-    return d;
-  }
-
-  IntMatrix column(int j) {
-    List<int> x = new List.generate(nrow, (i) => data[i][j]);
-    return new IntMatrix(x, nrow, 1);
-  }
-
-  IntMatrix row(int i) => new IntMatrix(data[i], 1, ncol);
-
-  /**
-   * Row bind this matrix with [that] matrix.
-   */
-  IntMatrix rbind(IntMatrix that) {
-    if (ncol != that.ncol) throw 'Dimensions mismatch';
-
-    IntMatrix res = new IntMatrix.filled(0, nrow + that.nrow, ncol);
-    res.data = new List.from(data)..addAll(that.data);
-    return res;
-  }
-
-  /**
-   * Column bind this matrix with [that] matrix.
-   */
-  IntMatrix cbind(IntMatrix that) {
-    if (nrow != that.nrow) throw 'Dimensions mismatch';
-
-    IntMatrix res = new IntMatrix.filled(0, nrow, ncol + that.ncol);
-    for (int i = 0; i < nrow; i++) {
-      var row = new List.from(data[i])..addAll(that.data[i]);
-      res.data[i] = new Int32List.fromList(row);
-    }
-    return res;
-  }
-
-
-  toString() {
-    List<String> out = [' ']..addAll(new List.generate(nrow, (i) => '[$i,]'));
-    var width = out.last.length;
-    out = out.map((String e) => e.padLeft(width)).toList();
-
-    for (int j = 0; j < ncol; j++) {
-      List col = column(j).toList();
-      List<String> aux = ['[,$j]']..addAll(col.map((e) => e.toString()));
-
-      var width = aux.fold(0, (prev, String e) => max(prev, e.length));
-      aux = aux.map((String e) => e.padLeft(width)).toList(growable: false);
-      for (int i = 0; i <= nrow; i++) out[i] = '${out[i]} ${aux[i]}';
-    }
-    return out.join("\n");
-  }
-}
 
 
 

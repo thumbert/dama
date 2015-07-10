@@ -1,5 +1,4 @@
-part of linear.matrix;
-
+part of matrix.dart;
 
 class DiagonalMatrix extends Matrix {
 
@@ -68,3 +67,5 @@ class DiagonalMatrix extends Matrix {
 
 
 }
+
+

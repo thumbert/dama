@@ -3,7 +3,7 @@ library linear.matrix_test;
 
 import 'package:test/test.dart';
 import 'package:dama/linear/matrix.dart';
-import 'package:dama/linear/diagonal_matrix.dart';
+//import 'package:dama/linear/diagonal_matrix.dart';
 
 basic_ops() {
 //  test('unit matrix', (){

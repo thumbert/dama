@@ -1,5 +1,4 @@
-part of linear.matrix;
-
+part of matrix.dart;
 
 class ColumnMatrix extends Matrix {
 
