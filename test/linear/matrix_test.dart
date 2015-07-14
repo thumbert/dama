@@ -124,13 +124,11 @@ diagMatrix() {
 }
 
 printMatrix() {
-  print("Int matrix:");
-  Matrix m1 = new Matrix([0,1,2,3,4,5,6,7,8,9,10,11], 4, 3);
-  print(m1.toString());
-
-  print("Double matrix:");
-  Matrix m2 = new Matrix([0,1.123,2,3,4,5,6,7,8,9,10.1,11], 4, 3);
-  print(m2.toString());
+  test('print matrix', (){
+    Matrix m = new Matrix([0,1,2,3,4,5], 3, 2);
+    expect(m.toString(),
+    '      [,0]  [,1]\n[0,] 0.000 3.000\n[1,] 1.000 4.000\n[2,] 2.000 5.000');
+  });
 
 //  print("\nTranspose it:");
 //  print(m1.transpose().toString());
@@ -185,23 +183,9 @@ main() {
 
   diagMatrix();
 
-
-//  IntMatrix m = new Matrix([0,1,20005,3], 2, 2);
-//  Matrix d = m.toDoubleMatrix();
-//  //print(m is IntMatrix);
-//  //print(m.data.first is Int32List);
-//  print(d);
+  printMatrix();
 
 
 
   //speed_test();
-
-  //speed_test_extract();
-
-//  Matrix2 m = new Matrix2([1,2,3,4], 2, 2);
-//  print(m.data);
-
-
-
-
 }

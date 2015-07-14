@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 part 'diagonal_matrix.dart';
 part 'column_matrix.dart';
+part 'block_matrix.dart';
 
 abstract class Matrix {
   final int nrow;
@@ -222,17 +223,18 @@ abstract class Matrix {
   }
 
   /**
-   * Extract the data from List<List> back into a List.
+   * Extract the data from List<Float64List> back into a Float64List.
    */
-  List toList({bool byRow: false }) {
-    List res = [];
+  Float64List toList({bool byRow: false }) {
+    Float64List res = new Float64List(nrow*ncol);
     if (byRow) {
       for (int i=0; i<nrow; i++)
-        res.addAll(data[i]);
+        for (int j=0; i<ncol; j++)
+          res[i*ncol + j] = data[i][j];
     } else {
       for (int j=0; j<ncol; j++)
         for (int i=0; i<nrow; i++)
-          res.add(data[i][j]);
+          res[j*nrow + i] = data[i][j];
     }
 
     return res;

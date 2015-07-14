@@ -1,6 +1,7 @@
 library math.qr_decomposition;
 
 import 'dart:math';
+import'dart:typed_data';
 import 'package:dama/linear/matrix.dart';
 import 'package:dama/linear/decomposition_solver.dart';
 
@@ -27,9 +28,9 @@ class QRDecomposition {
   }
 
   void householderReflection(int minor) {
-    List<num> qrtMinor = _qrt.row(minor).data;
+    Float64List qrtMinor = _qrt.data[minor];
 
-    num xNormSqr = qrtMinor.skip(minor).fold(0, (prev, e) => prev + e*e);
+    num xNormSqr = qrtMinor.skip(minor).fold(0.0, (prev, e) => prev + e*e);
 
     final a = qrtMinor[minor] > 0 ? -sqrt(xNormSqr) :  sqrt(xNormSqr);
     _rDiag[minor] = a;
@@ -38,7 +39,7 @@ class QRDecomposition {
       qrtMinor[minor] -= a;
       _qrt[[minor,minor]] = qrtMinor[minor];
       for (int col = minor+1; col < _qrt.nrow; col++) {
-        List qrtCol = _qrt.row(col).data;
+        List qrtCol = _qrt.data[col];
         double alpha = 0.0;
         for (int row = minor; row < qrtCol.length; row++) {
           alpha -= qrtCol[row] * qrtMinor[row];
@@ -88,7 +89,7 @@ class QRDecomposition {
         _cachedQT[[minor,minor]] = 1.0;
 
       for (int minor=min(m,n)-1; minor>=0; minor--){
-        List qrtMinor=_qrt.row(minor).data;
+        List qrtMinor=_qrt.data[minor];
         _cachedQT[[minor,minor]] = 1.0;
         if (qrtMinor[minor] != 0.0) {
           for (int col=minor; col<m; col++) {
@@ -118,16 +119,16 @@ class QRDecomposition {
 //    return _cachedH;
 //  }
 
-  DecompositionSolver getSolver() => new _Solver(_qrt, _rDiag, threshold);
+  DecompositionSolver getSolver() => new _QRSolver(_qrt, _rDiag, threshold);
 
 }
 
-class _Solver implements DecompositionSolver {
+class _QRSolver implements DecompositionSolver {
   Matrix _qrt;
   List _rDiag;
   num threshold;
 
-  _Solver(Matrix this._qrt, List this._rDiag, num this.threshold);
+  _QRSolver(Matrix this._qrt, List this._rDiag, num this.threshold);
 
   bool isNonSingular() {
     for (num diag in _rDiag) {
@@ -137,18 +138,18 @@ class _Solver implements DecompositionSolver {
     return true;
   }
 
-  ColumnMatrix solve(ColumnMatrix b) {
+  ColumnMatrix solveVector(ColumnMatrix b) {
     final int n = _qrt.nrow;
     final int m = _qrt.ncol;
     if (b.nrow != m)
       throw 'Dimensions mismatch';
 
-    List<num> x = new List.filled(n, 0.0);
-    List<num> y = new List.from(b.data, growable: false);
+    Float64List x = new Float64List(n);
+    Float64List y = new Float64List.fromList(b.data);
 
     // apply Householder transforms to solve Q.y = b
     for (int minor=0; minor<min(n,m); minor++) {
-      List qrtMinor = _qrt.row(minor).data;
+      List qrtMinor = _qrt.data[minor];
       num dotProduct = 0.0;
       for (int row = minor; row < m; row++)
         dotProduct += y[row] * qrtMinor[row];
@@ -161,8 +162,8 @@ class _Solver implements DecompositionSolver {
     // solve triangular system R.x = y
     for (int row = _rDiag.length - 1; row >= 0; --row) {
       y[row] /= _rDiag[row];
-      final num yRow = y[row];
-      final List qrtRow = _qrt.row(row).data;
+      final double yRow = y[row];
+      final Float64List qrtRow = _qrt.data[row];
       x[row] = yRow;
       for (int i = 0; i < row; i++) {
         y[i] -= yRow * qrtRow[i];
@@ -171,6 +172,22 @@ class _Solver implements DecompositionSolver {
 
     return new ColumnMatrix(x);
   }
+
+  Matrix solveMatrix(Matrix b) {
+    final int n = _qrt.nrow;
+    final int m = _qrt.ncol;
+    if (b.nrow != m)
+      throw 'Dimensions mismatch';
+
+    if (!isNonSingular())
+      throw 'Matrix is singular';
+
+    return b;   // TODO:  Fix me here!
+  }
+
+
+
+
 
   Matrix inverse() {
     return new Matrix([1], 1, 1);  // TODO:

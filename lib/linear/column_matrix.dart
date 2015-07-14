@@ -6,7 +6,10 @@ class ColumnMatrix extends Matrix {
    * A DoubleMatrix of column 1
    */
   ColumnMatrix(List x) : super._empty(x.length, 1) {
-    data = new Float64List.fromList(x);
+    if (x is Float64List)
+      data = x;
+    else
+      data = new Float64List.fromList(x.map((num e) => e.toDouble()).toList());
   }
 
   /**
@@ -25,7 +28,5 @@ class ColumnMatrix extends Matrix {
 
 
   ColumnMatrix rbind(ColumnMatrix that) => new ColumnMatrix(data..addAll(that.data));
-
-
 
 }

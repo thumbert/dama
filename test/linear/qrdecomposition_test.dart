@@ -7,7 +7,6 @@ import 'package:dama/linear/decomposition_solver.dart';
 import 'package:dama/src/utils/matchers.dart';
 
 qrDecomposition() {
-
   group('QR decomposition: ', (){
     test('3x3 non singular', (){
       Matrix m = new Matrix([12,6,-4,-51,167,24,4,-68,-41], 3, 3);
@@ -19,7 +18,7 @@ qrDecomposition() {
       expect(qr.getQ().norm(), equalsWithPrecision(qExp.norm()));
 
       DecompositionSolver solver = qr.getSolver();
-      List x = solver.solve(new ColumnMatrix([1,1,1])).data;
+      List x = solver.solveVector(new ColumnMatrix([1,1,1])).data;
       List xExp = [0.0514285714285714, -0.0102857142857143, -0.0354285714285714];
       [0,1,2].forEach((i) => expect(x[i], equalsWithPrecision(xExp[i], precision: 1E-14)));
     });
@@ -33,7 +32,7 @@ qrDecomposition() {
       expect(qr.getQ().norm(), equalsWithPrecision(qExp.norm()));
 
       DecompositionSolver solver = qr.getSolver();
-      List x = solver.solve(new ColumnMatrix([1,1,1])).data;
+      List x = solver.solveVector(new ColumnMatrix([1,1,1])).data;
       expect(true, x.every((double e) => e.isNaN));  // singular
     });
     test('3x4 matrix', (){
@@ -59,7 +58,7 @@ qrDecomposition() {
     test('solve 3x3 non-singular', (){
       Matrix m = new Matrix([12,6,-4,-51,167,24,4,-68,-41], 3, 3);
       DecompositionSolver solver = new QRDecomposition(m).getSolver();
-      List x = solver.solve(new ColumnMatrix([1,1,1])).data;
+      List x = solver.solveVector(new ColumnMatrix([1,1,1])).data;
       List xExp = [0.0514285714285714, -0.0102857142857143, -0.0354285714285714];
       [0,1,2].forEach((i) => expect(x[i], equalsWithPrecision(xExp[i], precision: 1E-14)));
     });
