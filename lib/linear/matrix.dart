@@ -37,7 +37,7 @@ abstract class Matrix {
   /**
    * Get the element [i,j] of the matrix.
    */
-  element(int i, int j) => data[i][j];
+  double element(int i, int j) => data[i][j];
 
   /**
    * Set the matrix element [i,j] to [value].
@@ -69,7 +69,7 @@ abstract class Matrix {
    * Get the column with index [j] from the matrix.
    */
   Matrix column(int j) {
-    List x = new List.generate(nrow, (i) => data[i][j], growable: false);
+    List x = new List.generate(nrow, (i) => element(i,j), growable: false);
     return new Matrix(x, nrow, 1);
   }
 
@@ -337,7 +337,7 @@ class DoubleMatrix extends Matrix {
     return res;
   }
 
-  toString() {
+  String toString() {
     List<String> out = [' ']..addAll(new List.generate(nrow, (i) => '[$i,]'));
     var width = out.last.length;
     out = out.map((String e) => e.padLeft(width)).toList();

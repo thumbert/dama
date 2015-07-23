@@ -3,7 +3,7 @@ part of matrix.dart;
 class BlockMatrix extends Matrix {
 
   static int BLOCK_SIZE = 52;
-  List<Float64List> _blocks;
+  List<Float64List> _blocks = [];
   int _nrowBlocks;
   int _ncolBlocks;
 
@@ -15,17 +15,60 @@ class BlockMatrix extends Matrix {
     _nrowBlocks = (nrow + BLOCK_SIZE -1)~/BLOCK_SIZE;
     _ncolBlocks = (ncol + BLOCK_SIZE -1)~/BLOCK_SIZE;
 
-    if (byRow)
-      _blocks = _toBlocksLayoutByRow(x);
+    // TODO: something about byRow here
+    List<Float64List> rawData =  new List.generate(nrow, (i) => new Float64List(ncol));
+    for (int j=0; j<ncol; j++)
+      for (int i=0; i<nrow; i++)
+        rawData[i][j] = x[i + j*nrow].toDouble();
+
+     _toBlocksLayoutByRow(rawData);
   }
 
-  _toBlocksLayoutByRow(List<num> x) {
-
+  void _toBlocksLayoutByRow(List<Float64List> rawData) {
+    _blocks = new List.filled(_nrowBlocks*_ncolBlocks, []);
     int blockIndex = 0;
     for (int iBlock=0; iBlock<_nrowBlocks; iBlock++) {
-      int pStart = iBlock;
+      int pStart = iBlock*BLOCK_SIZE;
+      int pEnd = min(pStart+BLOCK_SIZE, nrow);
+      int iHeight = pEnd - pStart;
+      for (int jBlock=0; jBlock<_ncolBlocks; jBlock++) {
+        int qStart = jBlock*BLOCK_SIZE;
+        int qEnd = min(qStart+BLOCK_SIZE, ncol);
+        int jWidth = qEnd - qStart;
+
+        _blocks[blockIndex] = new Float64List(iHeight*jWidth);
+        // populate the block
+        int index = 0;
+        for (int p=pStart; p<pEnd; p++) {
+          _blocks[blockIndex].setRange(index, index+jWidth, rawData[p].skip(qStart));
+          index += jWidth;
+        }
+        ++blockIndex;
+      }
     }
   }
+
+  double element(int i, int j) {
+    int iBlock = i ~/ BLOCK_SIZE;
+    int jBlock = j ~/ BLOCK_SIZE;
+    int k = (i - iBlock*BLOCK_SIZE)*_blockWidth(jBlock) + (j - jBlock*BLOCK_SIZE);
+    return _blocks[iBlock*_ncolBlocks + jBlock][k];
+  }
+
+  /**
+   * Get the height of a block.
+   */
+  int _blockHeight(int blockRow) =>
+    (blockRow == _nrowBlocks-1) ? nrow - blockRow*BLOCK_SIZE : BLOCK_SIZE;
+
+  /**
+   * Get the width of the block.
+   */
+  int _blockWidth(int blockColumn) =>
+    (blockColumn == _ncolBlocks-1) ? ncol - blockColumn*BLOCK_SIZE : BLOCK_SIZE;
+
+
+
 
   /**
    * Column bind this matrix with [that] matrix.
@@ -43,6 +86,21 @@ class BlockMatrix extends Matrix {
 
 
   ColumnMatrix rbind(ColumnMatrix that) => new ColumnMatrix(data..addAll(that.data));
+
+
+  DoubleMatrix toDoubleMatrix() {
+    Float64List data = new Float64List(nrow*ncol);
+    for (int j = 0; j < ncol; j++) {
+      for (int i = 0; i < nrow; i++) {
+        data[i+j*nrow] = element(i,j);
+      }
+    }
+    return new DoubleMatrix(data, nrow, ncol);
+  }
+
+
+  String toString() => toDoubleMatrix().toString();
+
 
 }
 
