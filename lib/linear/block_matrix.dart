@@ -55,6 +55,11 @@ class BlockMatrix extends Matrix {
     return _blocks[iBlock*_ncolBlocks + jBlock][k];
   }
 
+
+  Matrix column(int j) {
+
+  }
+
   /**
    * Get the height of a block.
    */

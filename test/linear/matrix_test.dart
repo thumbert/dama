@@ -147,35 +147,6 @@ printMatrix() {
 }
 
 
-/**
- * Compare with other implementations
- * https://github.com/kostya/benchmarks/tree/master/matmul
- * pretty decent results.
- */
-speed_test() {
-  Matrix _makeTestMatrix(int N) {
-    List m = [];
-    var aux = 1.0/N/N;
-    for (int i=0; i<N; i++)
-      for (int j=0; j<N; j++)
-        m.add(aux*(i-j)*(i+j));
-
-    return new Matrix(m, N, N);
-  }
-
-  int N = 1500;
-  print('Speed test Matrix');
-  Stopwatch sw = new Stopwatch()..start();
-  Matrix a = _makeTestMatrix(N);
-  Matrix b = _makeTestMatrix(N);
-  sw.stop();
-  print('created in ${sw.elapsed}');
-  sw.start();
-  Matrix c = a.multiply(b);
-  print(c.element(N~/2, N~/2)); // -143.50016666665678
-  print('multiplied in ${sw.elapsed}');
-}
-
 
 
 main() {
@@ -185,7 +156,4 @@ main() {
 
   printMatrix();
 
-
-
-  //speed_test();
 }

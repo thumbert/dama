@@ -6,11 +6,12 @@ import 'dart:typed_data';
 part 'diagonal_matrix.dart';
 part 'column_matrix.dart';
 part 'block_matrix.dart';
+part 'double_matrix.dart';
 
 abstract class Matrix {
   final int nrow;
   final int ncol;
-  List data; // stored by row: [[1,2,3]\n[4,5,6]]
+  //List data; // stored by row: [[1,2,3],[4,5,6]]
 
   static String MULTIPLICATION_METHOD = 'NAIVE';
 
@@ -37,32 +38,34 @@ abstract class Matrix {
   /**
    * Get the element [i,j] of the matrix.
    */
-  double element(int i, int j) => data[i][j];
+  double element(int i, int j);
 
   /**
    * Set the matrix element [i,j] to [value].
    */
-  void setElement(int i, int j, num value) {
-    data[i][j] = value.toDouble();
-  }
+  void setElement(int i, int j, num value);
 
   /**
-   * Return a copy of this matrix.
+   * Return a copy of this matrix.  TODO: get rid of data!
    */
-  Matrix copy() => new Matrix(new List.from(data), nrow, ncol);
+  //Matrix copy() => new Matrix(new List.from(data), nrow, ncol);
 
   /**
    * Get the row with index [i] from the matrix.
    */
   Matrix row(int i) {
-    return new Matrix(data[i], 1, ncol);
+    List<num> res = new List.filled(0, ncol);
+    for (int j=0; j<ncol; j++)
+      res[j] = element(i,j);
+
+    return new Matrix(res, 1, ncol);
   }
 
   /**
    * Overwrite the row [i] of the matrix with [values].
    */
   void setRow(int i, List<num> values) {
-    for (int j = 0; j < ncol; j++) data[i][j] = values[j].toDouble();
+    for (int j = 0; j < ncol; j++) setElement(i,j, values[j].toDouble());
   }
 
   /**
@@ -77,7 +80,7 @@ abstract class Matrix {
    * Overwrite the column [j] of the matrix with [values].
    */
   void setColumn(int j, List<num> values) {
-    for (int i = 0; i < nrow; i++) data[i][j] = values[i].toDouble();
+    for (int i = 0; i < nrow; i++) setElement(i, j, values[i].toDouble());
   }
 
   /**
@@ -108,12 +111,12 @@ abstract class Matrix {
       // TODO: fill me in here ...
 
     } else {
-      List c = that.transpose().data;
+      Matrix c = that.transpose();
       for (int j = 0; j < that.ncol; j++) {
         for (int i = 0; i < nrow; i++) {
           var s = 0.0;
-          for (int k = 0; k < ncol; k++) s += data[i][k] * c[j][k];
-          res.data[i][j] = s;
+          for (int k = 0; k < ncol; k++) s += element(i,k) * c.element(j,k);
+          res.setElement(i, j, s);
         }
       }
     }
@@ -122,18 +125,23 @@ abstract class Matrix {
   }
 
   /**
-   * Reshape a matrix.
+   * Reshape a matrix.  Arrange the given elements to a different matrix dimensions.
+   * New dimensions should allow reshaping.
    */
-  Matrix reshape(int nrow, int ncol) => new Matrix(data, nrow, ncol);
+  Matrix reshape(int nrow, int ncol) {
+    if (this.nrow*this.ncol != nrow * ncol)
+      throw 'Dimensions mismatch!';
+    return new Matrix(this.toList(), nrow, ncol);
+  }
 
   /**
    * Return the main diagonal of the matrix.
    */
   List get diag {
     int s = min(nrow, ncol);
-    List res = new List.filled(s, data[0][0]);
+    List res = new List.filled(s, element(0,0));
     if (s > 1) {
-      for (int i = 1; i < s; i++) res[i] = data[i][i];
+      for (int i = 1; i < s; i++) res[i] = element(i,i);
     }
     return res;
   }
@@ -143,20 +151,13 @@ abstract class Matrix {
    */
   set diag(List<num> values) {
     int s = min(nrow, ncol);
-    for (int i = 0; i < s; i++) data[i][i] = values[i].toDouble();
+    for (int i = 0; i < s; i++) setElement(i, i, values[i].toDouble());
   }
 
   /**
    * Transpose this matrix
    */
-  Matrix transpose() {
-    Matrix res = new DoubleMatrix.filled(0.0, ncol, nrow);
-
-    for (int i = 0; i < ncol; i++)
-      for (int j = 0; j < nrow; j++)
-        res.data[i][j] = data[j][i];
-    return res;
-  }
+  Matrix transpose();
 
   /**
    * Apply function f to each column of the matrix.  Return a row matrix.
@@ -200,28 +201,6 @@ abstract class Matrix {
     return res;
   }
 
-  Matrix transpose_minor_diagonal() {
-    List dataNew = [];
-    for (int i = 0; i < nrow; i++) {
-      for (int j = 0; j < ncol; j++) {
-        dataNew.add(data[nrow * ncol - j * nrow - i - 1]);
-      }
-    }
-
-    return new Matrix(dataNew, ncol, nrow);
-  }
-
-  Matrix reflect_diagonal() {
-    List dataNew = [];
-    for (int j = 0; j < ncol; j++) {
-      for (int i = 0; i < nrow; i++) {
-        dataNew.add(data[nrow * ncol - j * nrow - i - 1]);
-      }
-    }
-
-    return new Matrix(dataNew, nrow, ncol);
-  }
-
   /**
    * Extract the data from List<Float64List> back into a Float64List.
    */
@@ -230,11 +209,11 @@ abstract class Matrix {
     if (byRow) {
       for (int i=0; i<nrow; i++)
         for (int j=0; i<ncol; j++)
-          res[i*ncol + j] = data[i][j];
+          res[i*ncol + j] = element(i,j);
     } else {
       for (int j=0; j<ncol; j++)
         for (int i=0; i<nrow; i++)
-          res[j*nrow + i] = data[i][j];
+          res[j*nrow + i] = element(i,j);
     }
 
     return res;
@@ -243,13 +222,13 @@ abstract class Matrix {
   operator [](List<int> ind) {
     if (ind.length != 2) throw ('Need exacly 2 integers to subset.');
     if (ind[0] >= nrow || ind[1] >= ncol) throw ('Index out of range');
-    return data[ind[0]][ind[1]];
+    return element(ind[0], ind[1]);
   }
 
   operator []=(List<int> ind, num value) {
     if (ind.length != 2) throw ('Need exacly 2 integers to subset.');
     if (ind[0] >= nrow || ind[1] >= ncol) throw ('Indices out of range');
-    data[ind[0]][ind[1]] = value.toDouble();
+    setElement(ind[0], ind[1], value.toDouble());
   }
 
   bool operator ==(Matrix that) {
@@ -257,13 +236,14 @@ abstract class Matrix {
 
     for (int i = 0; i < nrow; i++)
       for (int j = 0; j < ncol; j++)
-        if (data[i][j] != that.data[i][j]) return false;
+        if (element(i,j) != that.element(i,j)) return false;
 
     return true;
   }
 
   bool isSquare() => nrow == ncol ? true : false;
 
+  /// what am I using this for???
   _populateMatrix(List<num> x, List<List> data, {bool byRow: false}) {
     if (byRow) {
       for (int i = 0; i < nrow; i++)
@@ -280,80 +260,6 @@ abstract class Matrix {
 
 
 
-
-class DoubleMatrix extends Matrix {
-  List<Float64List> data;
-
-  static int DECIMAL_DIGITS = 3;
-
-  //DoubleMatrix._empty()
-
-  /**
-   * A matrix will all double elements backed by a List<Float64List>.
-   */
-  DoubleMatrix(List<num> x, int nrow, int ncol, {bool byRow: false}) : super._empty(nrow, ncol) {
-    data = new List.generate(nrow, (i) => new Float64List(ncol));
-    _populateMatrix(x, data, byRow: byRow);
-  }
-
-  DoubleMatrix.filled(double value, int nrow, int ncol) : super._empty(nrow, ncol) {
-    data = new List.generate(nrow, (i) => new Float64List(ncol));
-    _populateMatrix(new List.filled(nrow*ncol, value), data);
-  }
-
-  DoubleMatrix.zero(int nrow, int ncol) : super._empty(nrow, ncol) {
-    data = new List.generate(nrow, (i) => new Float64List(ncol));
-  }
-
-  DoubleMatrix column(int j) {
-    List<double> x = new List.generate(nrow, (i) => data[i][j]);
-    return new DoubleMatrix(x, nrow, 1);
-  }
-
-  DoubleMatrix row(int i) => new DoubleMatrix(data[i], 1, ncol);
-
-  /**
-   * Row bind this matrix with [that] matrix.
-   */
-  DoubleMatrix rbind(DoubleMatrix that) {
-    if (ncol != that.ncol) throw 'Dimensions mismatch';
-
-    DoubleMatrix res = new Matrix.filled(0.0, nrow + that.nrow, ncol);
-    res.data = new List.from(data)..addAll(that.data);
-    return res;
-  }
-
-  /**
-   * Column bind this matrix with [that] matrix.
-   */
-  DoubleMatrix cbind(DoubleMatrix that) {
-    if (nrow != that.nrow) throw 'Dimensions mismatch';
-
-    DoubleMatrix res = new Matrix.filled(0.0, nrow, ncol + that.ncol);
-    for (int i = 0; i < nrow; i++) {
-      var row = new List.from(data[i])..addAll(that.data[i]);
-      res.data[i] = new Float64List.fromList(row);
-    }
-    return res;
-  }
-
-  String toString() {
-    List<String> out = [' ']..addAll(new List.generate(nrow, (i) => '[$i,]'));
-    var width = out.last.length;
-    out = out.map((String e) => e.padLeft(width)).toList();
-
-    for (int j = 0; j < ncol; j++) {
-      List col = column(j).toList();
-      List<String> aux = ['[,$j]']..addAll(col.map((double e) => e.toStringAsFixed(DECIMAL_DIGITS)));
-
-      var width = aux.fold(0, (prev, String e) => max(prev, e.length));
-      aux = aux.map((String e) => e.padLeft(width)).toList(growable: false);
-      for (int i = 0; i <= nrow; i++) out[i] = '${out[i]} ${aux[i]}';
-    }
-    return out.join("\n");
-  }
-
-}
 
 
 

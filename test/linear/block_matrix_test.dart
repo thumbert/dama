@@ -11,6 +11,14 @@ block_matrix_basic() {
     expect(m.element(1,0), 1.0);
     expect(m.element(1,1), 4.0);
     expect(m.element(2,1), 5.0);
+  });
+  test('create 2x2 block matrix', (){
+    BlockMatrix m = new BlockMatrix(new List.generate(6000, (i) => i), 100, 60);
+
+//    expect(m.element(0,0), 0.0);
+//    expect(m.element(1,0), 1.0);
+//    expect(m.element(1,1), 4.0);
+//    expect(m.element(2,1), 5.0);
     print(m);
   });
 
