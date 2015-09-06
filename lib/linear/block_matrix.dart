@@ -55,9 +55,30 @@ class BlockMatrix extends Matrix {
     return _blocks[iBlock*_ncolBlocks + jBlock][k];
   }
 
+  void setElement(int i, int j, double value) {
+    int iBlock = i ~/ BLOCK_SIZE;
+    int jBlock = j ~/ BLOCK_SIZE;
+    int k = (i - iBlock*BLOCK_SIZE)*_blockWidth(jBlock) + (j - jBlock*BLOCK_SIZE);
+    _blocks[iBlock*_ncolBlocks + jBlock][k] = value;
+  }
 
-  Matrix column(int j) {
 
+  ColumnMatrix column(int j) {
+    var out = new Float64List(nrow);
+    int jBlock = j ~/ BLOCK_SIZE;
+    int jColumn  = j - jBlock * BLOCK_SIZE;
+    int jWidth = _blockWidth(jBlock);
+
+    int outIdx = 0;
+    for (int iBlock=0; iBlock < _nrowBlocks; ++iBlock) {
+      int iHeight = _blockHeight(iBlock);
+      var block = _blocks[iBlock * _ncolBlocks + jBlock];
+      for (int i = 0; i<iHeight; i++) {
+        out[outIdx++] = block[i*jWidth + jColumn];
+      }
+    }
+
+    return new ColumnMatrix(out);
   }
 
   /**
@@ -101,6 +122,12 @@ class BlockMatrix extends Matrix {
       }
     }
     return new DoubleMatrix(data, nrow, ncol);
+  }
+
+  BlockMatrix transpose() {
+    BlockMatrix res;
+    // TODO:  continue
+    return res;
   }
 
 

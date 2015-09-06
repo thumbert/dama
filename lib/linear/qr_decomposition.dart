@@ -124,7 +124,7 @@ class QRDecomposition {
 }
 
 class _QRSolver implements DecompositionSolver {
-  Matrix _qrt;
+  DoubleMatrix _qrt;
   List _rDiag;
   num threshold;
 
