@@ -23,13 +23,13 @@ class LinearModel {
    * Solve the ordinary least-square regression problem
    * X b = y + \epsilon
    */
-  LinearModel(DoubleMatrix this.X, ColumnMatrix this.y, {double this.threshold}) {
+  LinearModel(DoubleMatrix this.X, ColumnMatrix this.y, {double this.threshold: 1E-10}) {
     _qr = new QRDecomposition(X, threshold: threshold);
   }
 
 
-  List<double> get coefficients {
-    _qr.getSolver().solveVector(y);
+  List get coefficients {
+    return _qr.getSolver().solveVector(y).toList();
   }
 
 }

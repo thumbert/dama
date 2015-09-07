@@ -208,7 +208,7 @@ abstract class Matrix {
     Float64List res = new Float64List(nrow*ncol);
     if (byRow) {
       for (int i=0; i<nrow; i++)
-        for (int j=0; i<ncol; j++)
+        for (int j=0; j<ncol; j++)
           res[i*ncol + j] = element(i,j);
     } else {
       for (int j=0; j<ncol; j++)

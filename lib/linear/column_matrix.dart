@@ -13,15 +13,19 @@ class ColumnMatrix extends Matrix {
       data = new Float64List.fromList(x.map((num e) => e.toDouble()).toList());
   }
 
+  ColumnMatrix.filled(int length, num value): super._empty(length, 1) {
+    data = new Float64List.fromList(new List.filled(length, value.toDouble()));
+  }
+
   /**
    * Column bind this matrix with [that] matrix.
    */
-  DoubleMatrix cbind(DoubleMatrix that) {
+  DoubleMatrix cbind(Matrix that) {
     if (nrow != that.nrow) throw 'Dimensions mismatch';
 
     DoubleMatrix res = new DoubleMatrix.filled(0.0, nrow, 1 + that.ncol);
     for (int i = 0; i < nrow; i++) {
-      var row = [data[i]]..addAll(that.data[i]);
+      var row = [data[i]]..addAll(that.row(i).toList());
       res.data[i] = new Float64List.fromList(row);
     }
     return res;
@@ -36,4 +40,7 @@ class ColumnMatrix extends Matrix {
 
   ColumnMatrix rbind(ColumnMatrix that) => new ColumnMatrix(data..addAll(that.data));
 
+  DoubleMatrix toDoubleMatrix() => new DoubleMatrix(data, data.length, 1);
+
+  toString() => toDoubleMatrix().toString();
 }

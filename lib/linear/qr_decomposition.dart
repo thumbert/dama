@@ -9,7 +9,7 @@ class QRDecomposition {
   Matrix Q, R;
   /// threshold for the singularity test of the matrix
   num threshold;
-  Matrix _qrt, _cachedQ, _cachedQT, _cachedR, _cachedH;
+  DoubleMatrix _qrt, _cachedQ, _cachedQT, _cachedR, _cachedH;
 
   // the diagonal elements of R
   List<num> _rDiag;

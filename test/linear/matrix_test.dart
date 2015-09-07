@@ -80,7 +80,7 @@ basic_ops() {
   test('set matrix diagonal', () {
     Matrix m = new Matrix([0,0,0,0,0,0], 2, 3);
     m.diag = [1,1];
-    expect(m.data, [[1,0,0],[0,1,0]]);
+    expect(m.toList(byRow: true), [1.0,0.0,0.0,  0.0,1.0,0.0]);
   });
   test('row apply', (){
     Matrix m1 = new Matrix([0,1,2,3,4,5], 2, 3);
