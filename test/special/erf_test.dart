@@ -27,5 +27,7 @@ erf_test(){
 
 
 main() {
-  erf_test();
+  group('Special functions:', (){
+    erf_test();
+  });
 }

@@ -8,4 +8,5 @@ out
 docs
 build/
 packages
+.packages
 pubspec.lock
