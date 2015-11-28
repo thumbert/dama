@@ -1,6 +1,7 @@
 library all_tests;
 
 import 'analysis/integration/quadrature1D_test.dart' as quadrature1D_test;
+import 'analysis/solver/bisection_solver_test.dart' as bisection_test;
 import 'distribution/discrete_distribution_test.dart' as discretedist_test;
 import 'linear/matrix_test.dart' as matrix_test;
 import 'linear/qrdecomposition_test.dart' as qrdecomposition_test;
@@ -12,6 +13,8 @@ main(){
 
   quadrature1D_test.main();
 
+  bisection_test.main();
+  
   discretedist_test.main();
 
   quantile_test.main();
