@@ -6,7 +6,7 @@
 /// This is an awesome library. More dartdocs go here.
 library dama;
 
-// TODO: Export any libraries intended for clients of this package.
-
-export 'linear';
-export 'linear';
+export 'analysis/integration/univariate_integrator.dart';
+export 'linear/matrix.dart';
+export 'stat/descriptive/quantile.dart';
+export 'stat/regression/linear_model.dart';
