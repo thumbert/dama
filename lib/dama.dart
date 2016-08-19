@@ -7,6 +7,7 @@
 library dama;
 
 export 'analysis/integration/univariate_integrator.dart';
+export 'analysis/interpolation/spline_interpolator.dart';
 export 'linear/matrix.dart';
 export 'stat/descriptive/quantile.dart';
 export 'stat/regression/linear_model.dart';
