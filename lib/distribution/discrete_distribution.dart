@@ -41,7 +41,10 @@ class DiscreteDistribution<E> {
   List<num> _cumulativeProbabilities;
 
   /**
-   * Values need to be unique.  Probabilities needs to add up to 1.0.
+   * Construct a discrete distribution from a list of values.  The values need
+   * to be unique.  The list of
+   * probabilities needs to add up to 1.0.
+   * Use [seed] for the Random variable sampling so you get repeatable results.
    */
   DiscreteDistribution(this.values, this.probabilities, [int seed]) {
     _N = probabilities.length;
@@ -65,7 +68,8 @@ class DiscreteDistribution<E> {
     if ((_cumulativeProbabilities[_N - 1] - 1.0).abs() >
         1E-14) throw 'Proabilities don\'t add up to 1!';
 
-    rand = new Random(seed);
+
+    rand = seed == null ? new Random() : new Random(seed);
   }
 
   List<num> get cumulativeProbabilities => _cumulativeProbabilities;
