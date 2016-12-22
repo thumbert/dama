@@ -14,7 +14,7 @@ main(){
   quadrature1D_test.main();
 
   bisection_test.main();
-  
+
   discretedist_test.main();
 
   quantile_test.main();
