@@ -40,15 +40,22 @@ testQuantile() {
       expect(res, [0, 1.75, 3.5, 5.25, 7]);
     });
 
-    test('that caching works well', () {
-      // List x = [12, 19, 8, 3, 5, 11];
-      List x = new List.generate(20, (i) => i)..shuffle(new Random(0));
+    test('R7 quantile calculation, unsorted array', () {
+      List x = new List.generate(8, (i) => i);
+      //x.shuffle();
+      Quantile q = new Quantile(x,
+          shuffle: true, quantileEstimationType: QuantileEstimationType.R7);
+      List probs = [0, 0.25, 0.5, 0.75, 1];
+      var res = probs.map((p) => q.value(p)).toList();
+    });
+
+    test('default quantiles, unsorted array', () {
+      List x = new List.generate(10, (i) => i+1);
+      x.shuffle(new Random(0));
       Quantile q = new Quantile(x, shuffle: false);
-      q.minK(10);
-      expect(q.x.sublist(0, 10).every((e) => e < 10), true);
-      q.minK(15);
-      expect(q.x.sublist(10, 15).every((e) => e < 15), true);
-      //print(q.x);
+      List probs = [0, 0.25, 0.5, 0.75, 1];
+      var res = probs.map((p) => q.value(p)).toList();
+      expect(res, [1, 3.25, 5.5, 7.75, 10]);
     });
   });
 }

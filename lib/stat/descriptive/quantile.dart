@@ -17,7 +17,7 @@ class OutOfRangeException implements Exception {
  * Caching the pivot, speeds up the search even more (inspired from Apache commons math).
  */
 class Quantile {
-  List<num> x;
+  List<num> _x;
   QuantileEstimationType quantileEstimationType;
 
   /// keep cached the index of elements that are in the right position.
@@ -34,12 +34,11 @@ class Quantile {
    *
    * See http://en.wikipedia.org/wiki/Quantile for different quantile estimation methods.
    */
-  Quantile(List<num> this.x,
+  Quantile(List<num> x,
       {QuantileEstimationType this.quantileEstimationType: QuantileEstimationType.R7,
       bool shuffle: true}) {
-    if (shuffle) x
-        .shuffle(); // in case of degeneracy (if the input is sorted decreasingly)
-
+    _x = new List.from(x, growable: false);
+    if (shuffle) _x.shuffle();
     _cachedK = new SplayTreeSet();
   }
 
@@ -50,30 +49,35 @@ class Quantile {
     //print('computing probability $probability');
     if (probability < 0 || probability > 1) throw new OutOfRangeException(
         'probability has to be between [0,1]');
-    if (x.length == 0) return double.NAN;
-    if (x.length == 1) return x[0];
-    if (probability == 1) return minK(x.length-1);
+    if (_x.length == 0) return double.NAN;
+    if (_x.length == 1) return _x[0];
+    if (probability == 1) return minK(_x.length-1);
 
     num result;
     switch (quantileEstimationType) {
       case QuantileEstimationType.R1:
-        num h = _indexR1(probability, x.length);
+        num h = _indexR1(probability, _x.length);
         int hf = (h-0.5).ceil();
-        result = x[hf];
+        minK(hf);
+        result = _x[hf];
         break;
 
       case QuantileEstimationType.R4:
       /// linear interpolation of the empirical cdf
-        num h = _indexR4(probability, x.length);
+        num h = _indexR4(probability, _x.length);
         int hf = h.floor();
-        result = x[hf] + (h-hf)*(x[hf+1]-x[hf]);
+        minK(hf);
+        minK(hf+1);
+        result = _x[hf] + (h-hf)*(_x[hf+1]-_x[hf]);
         break;
 
       case QuantileEstimationType.R7:
       /// R's default computation
-        num h = _indexR7(probability, x.length);
+        num h = _indexR7(probability, _x.length);
         int hf = h.floor();
-        result = x[hf] + (h-hf)*(x[hf+1]-x[hf]);
+        minK(hf);
+        minK(hf+1);
+        result = _x[hf] + (h-hf)*(_x[hf+1]-_x[hf]);
         break;
 
       default:
@@ -91,35 +95,36 @@ class Quantile {
 
   /**
    * Return the k-th smallest element of the array.  The input argument [k] is
-   * between 0 and [x.length]-1.  So if k=0, you return the array minimum.
-   * Use the cache to get the lowest k value.
+   * between 0 and [_x.length]-1.  So if k=0, you return the array minimum.
+   * Uses a cache to get the lowest k value if it has already been calculated.
    */
   minK(int k) {
     if (_cachedK.contains(k))
-      return x[k];
+      return _x[k];
     else {
       _cachedK.add(k);
       return _getLowestK(k);
     }
   }
 
+  //List getX() => _x;
 
   /**
    *  To speed up the search, you don't need to scan the entire list.
    *  Only between two k's that are not in the cache.
    */
   _getLowestK(int k) {
-    assert(k <= x.length - 1);
+    assert(k <= _x.length - 1);
     int lo = _cachedK.lastWhere((e) => e < k, orElse: () => 0);
-    int hi = _cachedK.firstWhere((e) => e > k, orElse: () => x.length-1);
+    int hi = _cachedK.firstWhere((e) => e > k, orElse: () => _x.length-1);
     while (hi > lo) {
       int j = _partition(lo, hi, lo);
-      if (j == k) return x[k]; // done
+      if (j == k) return _x[k]; // done
       else if (j > k) hi = j - 1;
       else if (j < k) lo = j + 1;
     }
 
-    return x[k];
+    return _x[k];
   }
 
 
@@ -132,10 +137,10 @@ class Quantile {
   int _partition(int lo, int hi, int pivot) {
     int i = lo,
         j = hi + 1;
-    var v = x[pivot];
+    var v = _x[pivot];
     while (true) {
-      while (x[++i].compareTo(v) < 0) if (i == hi) break;
-      while (v.compareTo(x[--j]) < 0) if (j == lo) break;
+      while (_x[++i].compareTo(v) < 0) if (i == hi) break;
+      while (v.compareTo(_x[--j]) < 0) if (j == lo) break;
       if (i >= j) break;
       _swap(i, j);
     }
@@ -144,9 +149,9 @@ class Quantile {
   }
 
   void _swap(int i, int j) {
-    var t = x[i];
-    x[i] = x[j];
-    x[j] = t;
+    var t = _x[i];
+    _x[i] = _x[j];
+    _x[j] = t;
   }
 }
 
