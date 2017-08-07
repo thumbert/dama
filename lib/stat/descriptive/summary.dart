@@ -33,6 +33,18 @@ num mean(Iterable<num> x, {Function isValid}) {
   return res/i;
 }
 
+/// Calculate the range of the data.  Requires only one pass.
+/// Return a two element list [min,max].
+List<num> range(Iterable<num> x) {
+  num min = x.first;
+  num max = x.first;
+  x.skip(1).forEach((e) {
+    if (e < min) min = e;
+    if (e > max) max = e;
+  });
+  return [min, max];
+}
+
 /// Calculate a simple summary of an iterable x.  Similar to R's summary.
 /// Return a map with the minimum, first quantile, median, mean, third quantile,
 /// maximum value of this iterable.
