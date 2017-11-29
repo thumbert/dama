@@ -3,7 +3,8 @@ library stat.descriptive.summary;
 import 'package:dama/stat/descriptive/quantile.dart';
 
 /// Calculate the maximum value of an iterable.  The function [isValid] can be
-/// used to filter values that should be ignored.  [isValid]: num => bool.
+/// used to filter values that should be ignored.  By default it takes out the
+/// NAN values. [isValid]: num => bool.
 num max(Iterable<num> x, {Function isValid}) {
   isValid ??= (num x) => x.isNaN ? false : true;
   return x.where(isValid).reduce((a,b) => a >= b ? a : b);
