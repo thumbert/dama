@@ -6,6 +6,8 @@ library dama;
 export 'analysis/integration/univariate_integrator.dart';
 export 'analysis/interpolation/spline_interpolator.dart';
 
+export 'basic/cumsum.dart';
+
 export 'distribution/discrete_distribution.dart';
 export 'distribution/markov_chain.dart';
 
