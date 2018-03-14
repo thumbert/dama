@@ -34,6 +34,21 @@ num mean(Iterable<num> x, {Function isValid}) {
   return res/i;
 }
 
+
+/// Calculate the weighted mean of an iterable.
+num weightedMean(Iterable<num> x, Iterable<num> weights) {
+  num res = 0;
+  num weightSum = 0;
+  Iterator ix = x.iterator;
+  Iterator iw = weights.iterator;
+  while(ix.moveNext() && iw.moveNext()) {
+    res += ix.current * iw.current;
+    weightSum += iw.current;
+  }
+  return res/weightSum;
+}
+
+
 /// Calculate the range of the data.  Requires only one pass.
 /// Return a two element list [min,max].
 List<num> range(Iterable<num> x) {
