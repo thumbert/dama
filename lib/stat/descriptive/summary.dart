@@ -2,6 +2,10 @@ library stat.descriptive.summary;
 
 import 'package:dama/stat/descriptive/quantile.dart';
 
+/// Calculate the sum of an iterable.
+num sum(Iterable<num> x) => x.reduce((a,b)=>a+b);
+
+
 /// Calculate the maximum value of an iterable.  The function [isValid] can be
 /// used to filter values that should be ignored.  By default it takes out the
 /// NAN values. [isValid]: num => bool.
