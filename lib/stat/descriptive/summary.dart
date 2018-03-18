@@ -2,39 +2,30 @@ library stat.descriptive.summary;
 
 import 'package:dama/stat/descriptive/quantile.dart';
 
+/// Round a number to any accuracy.
+num round(num x, num accuracy) {
+  int aux = (x/accuracy).round();
+  return aux*accuracy;
+}
+
+
 /// Calculate the sum of an iterable.
 num sum(Iterable<num> x) => x.reduce((a,b)=>a+b);
 
+/// Calculate the maximum value of an iterable.
+num max(Iterable<num> x) => x.reduce((a,b) => a >= b ? a : b);
 
-/// Calculate the maximum value of an iterable.  The function [isValid] can be
-/// used to filter values that should be ignored.  By default it takes out the
-/// NAN values. [isValid]: num => bool.
-num max(Iterable<num> x, {Function isValid}) {
-  isValid ??= (num x) => x.isNaN ? false : true;
-  return x.where(isValid).reduce((a,b) => a >= b ? a : b);
-}
+/// Calculate the minimum value of an iterable.
+num min(Iterable<num> x) => x.reduce((a,b) => a <= b ? a : b);
 
-/// Calculate the minimum value of an iterable.  The function [isValid] can be
-/// used to filter values that should be ignored.  By default it takes out the
-/// NAN values.  [isValid]: num => bool.
-num min(Iterable<num> x, {Function isValid}) {
-  isValid ??= (num x) => x.isNaN ? false : true;
-  return x.where(isValid).reduce((a,b) => a <= b ? a : b);
-}
-
-/// Calculate the mean of an iterable.  The function [isValid] can be
-/// used to filter values that should be ignored.  By default it takes out the
-/// NAN values.  [isValid]: num => bool.
-///
-num mean(Iterable<num> x, {Function isValid}) {
-  isValid ??= (num x) => x.isNaN ? false : true;
+/// Calculate the mean of an iterable.
+num mean(Iterable<num> x) {
   int i = 0;
   num res = 0;
-  x.where(isValid).forEach((e) {
+  x.forEach((e) {
     res += e;
     i++;
   });
-
   return res/i;
 }
 
@@ -75,8 +66,7 @@ Map<String, num> summary(Iterable<num> x, {Function isValid}) {
   Quantile q = new Quantile(x.where(isValid).toList(growable: false));
   List probs = [0, 0.25, 0.5, 0.75, 1];
   var res = probs.map((p) => q.value(p)).toList();
-  num mu = mean(x, isValid: isValid);
-  res.insert(3, mu);
+  res.insert(3, mean(x));
   List names = ['Min.', '1st Qu.', 'Median', 'Mean', '3rd Qu.', 'Max.'];
   return new Map.fromIterables(names, res);
 }

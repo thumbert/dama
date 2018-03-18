@@ -9,17 +9,17 @@ import 'linear/matrix_test.dart' as matrix_test;
 import 'linear/qrdecomposition_test.dart' as qrdecomposition_test;
 import 'stat/descriptive/ecdf_test.dart' as ecdf_test;
 import 'stat/descriptive/quantile_test.dart' as quantile_test;
+import 'stat/descriptive/summary_test.dart' as summary_test;
 import 'stat/regression/linear_model_test.dart' as lm_test;
 import 'special/erf_test.dart' as erf_test;
 
 main(){
 
+  // analysis
   quadrature1D_test.main();
   splineinterpolation_test.main();
   bisection_test.main();
   discretedist_test.main();
-  ecdf_test.main();
-  quantile_test.main();
 
   // linear algebra
   matrix_test.main();
@@ -31,5 +31,8 @@ main(){
   // special functions
   erf_test.main();
 
-
+  // statistics
+  ecdf_test.main();
+  quantile_test.main();
+  summary_test.main();
 }
