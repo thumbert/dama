@@ -3,6 +3,10 @@ library stat.descriptive.summary;
 import 'package:dama/stat/descriptive/quantile.dart';
 
 /// Round a number to any accuracy.
+/// round(135, 10) == 140;
+/// round(135, 100) == 100;
+/// round(135, 25) == 125;
+/// round(135.123, 0.1) == 135.1;
 num round(num x, num accuracy) {
   int aux = (x/accuracy).round();
   return aux*accuracy;
