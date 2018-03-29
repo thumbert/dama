@@ -10,14 +10,10 @@ class SplineInterpolator {
   /// the cubic spline coefficients --  b is linear, c quadratic, d is cubic (original y's are constants)
   List<num> _b, _c, _d;
 
-  /**
-   * Spline interpolator corresponds to method of
-   * Forsythe, Malcolm and Moler (an exact cubic is fitted through the four
-   * points at each end of the data, and this is used to determine
-   * the end conditions).  See the R implementation in package stats.
-   *
-   *
-   */
+  /// Spline interpolator corresponds to method of
+  /// Forsythe, Malcolm and Moler (an exact cubic is fitted through the four
+  /// points at each end of the data, and this is used to determine
+  /// the end conditions).  See the R implementation in package stats.
   SplineInterpolator(this.xData, this.yData) {
     if (xData.length != yData.length)
       throw 'Dimensions of xData and yData don\'t match.';
