@@ -7,6 +7,7 @@ import 'package:dama/stat/descriptive/quantile.dart';
 /// round(135, 100) == 100;
 /// round(135, 25) == 125;
 /// round(135.123, 0.1) == 135.1;
+/// <p> Can fail: round(1230.802, 0.001) == 1230.80200000001 !
 num round(num x, num accuracy) {
   int aux = (x/accuracy).round();
   return aux*accuracy;
