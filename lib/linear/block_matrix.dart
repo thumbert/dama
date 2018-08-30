@@ -25,7 +25,7 @@ class BlockMatrix extends Matrix {
   }
 
   void _toBlocksLayoutByRow(List<Float64List> rawData) {
-    _blocks = new List.filled(_nrowBlocks*_ncolBlocks, []);
+    _blocks = new List.filled(_nrowBlocks*_ncolBlocks, new Float64List(0));
     int blockIndex = 0;
     for (int iBlock=0; iBlock<_nrowBlocks; iBlock++) {
       int pStart = iBlock*BLOCK_SIZE;
@@ -55,11 +55,11 @@ class BlockMatrix extends Matrix {
     return _blocks[iBlock*_ncolBlocks + jBlock][k];
   }
 
-  void setElement(int i, int j, double value) {
+  void setElement(int i, int j, num value) {
     int iBlock = i ~/ BLOCK_SIZE;
     int jBlock = j ~/ BLOCK_SIZE;
     int k = (i - iBlock*BLOCK_SIZE)*_blockWidth(jBlock) + (j - jBlock*BLOCK_SIZE);
-    _blocks[iBlock*_ncolBlocks + jBlock][k] = value;
+    _blocks[iBlock*_ncolBlocks + jBlock][k] = value.toDouble();
   }
 
 
@@ -103,15 +103,15 @@ class BlockMatrix extends Matrix {
     if (nrow != that.nrow) throw 'Dimensions mismatch';
 
     DoubleMatrix res = new DoubleMatrix.filled(0.0, nrow, 1 + that.ncol);
-    for (int i = 0; i < nrow; i++) {
-      var row = new List.from(data[i])..addAll(that.data[i]);
-      res.data[i] = new Float64List.fromList(row);
-    }
+//    for (int i = 0; i < nrow; i++) {
+//      var row = new List.from(data[i])..addAll(that.data[i]);
+//      res.data[i] = new Float64List.fromList(row);
+//    }
     return res;
   }
 
 
-  ColumnMatrix rbind(ColumnMatrix that) => new ColumnMatrix(data..addAll(that.data));
+  //ColumnMatrix rbind(ColumnMatrix that) => new ColumnMatrix(data..addAll(that.data));
 
 
   DoubleMatrix toDoubleMatrix() {

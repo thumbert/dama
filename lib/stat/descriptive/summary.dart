@@ -58,6 +58,6 @@ Map<String, num> summary(Iterable<num> x, {Function isValid}) {
   var res = probs.map((p) => q.value(p)).toList();
   num mu = mean(x, isValid: isValid);
   res.insert(3, mu);
-  List names = ['Min.', '1st Qu.', 'Median', 'Mean', '3rd Qu.', 'Max.'];
+  var names = ['Min.', '1st Qu.', 'Median', 'Mean', '3rd Qu.', 'Max.'];
   return new Map.fromIterables(names, res);
 }

@@ -1,13 +1,9 @@
 name: dama
 description: DArt MAth package.
-version: 0.0.1
-author: <Tony Humbert> <humbert.tony@yahoo.com>
-#homepage: https://www.example.com
+version: 1.0.0
+author: <Tony Humbert> <tony.humberts@gmail.com>
 environment:
-  sdk: '>=1.0.0 <2.0.0'
+  sdk: '>=2.0.0 <3.0.0'
 dependencies:
-  func: ^1.0.0
-  logging: '^0.11.2'
-  logging_handlers: '^0.8.0'
 dev_dependencies:
-  test: '>=0.12.9 <0.13.0'
+  test: '>=1.0.0 <2.0.0'

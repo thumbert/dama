@@ -1,5 +1,5 @@
 # Changelog
 
-## 0.0.1
+## 1.0.0 (released on 2018-09-01)
 
-- Initial version, created by Stagehand
+- Make the package Dart 2 compatible

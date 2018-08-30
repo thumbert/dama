@@ -10,15 +10,15 @@ main() {
   });
   test('min', () {
     expect(min([1, 3, -3, 5]), -3);
-    expect(min([1, 3, double.NAN, -3, 5]), -3);
-    expect(min([1, 3, double.NEGATIVE_INFINITY, 5]), double.NEGATIVE_INFINITY);
+    expect(min([1, 3, double.nan, -3, 5]), -3);
+    expect(min([1, 3, double.negativeInfinity, 5]), double.negativeInfinity);
   });
   test('range test', (){
     List r = range([4,2,1,5]);
     expect(r, [1,5]);
   });
   test('range([4,2,NAN,5]) is [2,5]', (){
-    List r = range([4,2,double.NAN,5]);
+    List r = range([4,2,double.nan,5]);
     expect(r, [2,5]);
   });
   test('summary of an iterable', () {

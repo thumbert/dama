@@ -1,6 +1,5 @@
 library basic.interval;
 
-import 'package:func/func.dart';
 
 enum IntervalType {
   closedOpen,
@@ -9,7 +8,7 @@ enum IntervalType {
   closedClosed
 }
 
-class Interval<K extends Comparable<K>> {
+class Interval<K extends Comparable> {
   K start;
   K end;
   IntervalType intervalType;
@@ -55,8 +54,8 @@ class Interval<K extends Comparable<K>> {
   /// to the function f.
   /// <p>For example to split the interval [0,10) into 10 intervals of length 1
   /// each, use the function f = (x) => new Interval(x, x+1)
-  List<Interval> splitLeft(Func1<K,Interval> f) {
-    List res = [];
+  List<Interval> splitLeft(Interval Function(K) f) {
+    var res = <Interval>[];
     Interval current = f(start);
     while (current.end.compareTo(end) < 1) {
       res.add(current);

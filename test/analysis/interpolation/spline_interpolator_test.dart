@@ -18,12 +18,12 @@ testSplineInterpolator() {
   });
 
   test('spline, general', () {
-    List xData = new List.generate(9, (i) => i+1);
-    List yData = xData.map((x) => (x-6)*(x-6)).toList();
+    var xData = new List.generate(9, (i) => i+1);
+    var yData = xData.map((x) => (x-6)*(x-6)).toList();
     var iPolator = new SplineInterpolator(xData, yData);
 
-    List x = [1.04, 2.44, 3.52];
-    List yAct = ['24.62311983505155', '12.64779150515464', '6.156678597938145'];
+    var x = [1.04, 2.44, 3.52];
+    var yAct = ['24.62311983505155', '12.64779150515464', '6.156678597938145'];
     expect(x.map((e) => iPolator.valueAt(e).toStringAsPrecision(16)).toList(), yAct);
   });
 

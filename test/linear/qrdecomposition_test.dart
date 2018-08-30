@@ -33,7 +33,7 @@ qrDecomposition() {
 
       DecompositionSolver solver = qr.getSolver();
       List x = solver.solveVector(new ColumnMatrix([1,1,1])).data;
-      expect(true, x.every((double e) => e.isNaN));  // singular
+      expect(true, x.every((e) => e.isNaN));  // singular
     });
     test('3x4 matrix', (){
       Matrix m = new Matrix([12,-51,4,1, 6,167,-68,2, -4,24,-41,3], 3, 4, byRow: true);

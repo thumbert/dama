@@ -2,15 +2,14 @@ library distribution.markov_chain;
 
 import 'package:dama/distribution/discrete_distribution.dart';
 
-class MarkovChain<E> {
-
+class MarkovChain {
   List<List<num>> transitionMatrix;
-  List<E> states;
+  List states;
 
-  E _state;
-  List<DiscreteDistribution<E>> _dist;
+  var _state;
+  List<DiscreteDistribution> _dist;
   int _N;
-  Map<E,int> _toIndex = {};
+  Map<dynamic, int> _toIndex = {};
 
   /**
    * Define a Markov chain with a given transition matrix.
@@ -18,7 +17,7 @@ class MarkovChain<E> {
    * to transition from state j to state i.
    */
   MarkovChain(this.transitionMatrix, {this.states, int seed}) {
-    // test that the matrix is OK, prob add to 1 by column, etc.
+    // TODO: test that the matrix is OK, prob add to 1 by column, etc.
 
     if (states.length != transitionMatrix.length)
       throw 'States dimensions don\'t match the dimensions of the transitionMatrix';
@@ -28,13 +27,13 @@ class MarkovChain<E> {
 
     _dist = new List(_N);
 
-    // construct the List of discrete distributions (needed for dynamics)
-    for (int i=0; i<_N; i++) {
+    /// construct the List of discrete distributions (needed for dynamics)
+    for (int i = 0; i < _N; i++) {
       List probs = transitionMatrix.map((e) => e[i]).toList(growable: false);
       if (seed == null)
         _dist[i] = new DiscreteDistribution(states, probs);
       else
-        _dist[i] = new DiscreteDistribution(states, probs, seed+i);
+        _dist[i] = new DiscreteDistribution(states, probs, seed + i);
       _toIndex[states[i]] = i;
     }
   }
@@ -45,11 +44,10 @@ class MarkovChain<E> {
     return _state;
   }
 
-  E get state => _state;
-  set state(E value) {
+  dynamic get state => _state;
+  set state(dynamic value) {
     if (!states.contains(value))
-      throw 'State $value is not allowed';
+      throw ArgumentError('State $value is not allowed');
     _state = value;
   }
-
 }

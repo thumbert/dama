@@ -2,17 +2,10 @@ library special.erf;
 
 import 'dart:math';
 
-/**
- * Based on Marsaglia's 'Evaluating the Normal Distribution Function', 2004.
- * http://www.jstatsoft.org/v11/a05/paper
- *
- */
-
-/**
- * Calculate \Phi(x) = \int_{-\infty}^x dt e^{-t^2/2}/\sqrt{2*\pi}.
- * `\Phi(\infty)=1`
- *
- */
+/// Calculate \Phi(x) = \int_{-\infty}^x dt e^{-t^2/2}/\sqrt{2*\pi}.
+/// \Phi(\infty)=1
+/// Based on Marsaglia's 'Evaluating the Normal Distribution Function', 2004.
+/// http://www.jstatsoft.org/v11/a05/paper
 double Phi(num x) {
   if (x < -8.0) return 0.0;
   if (x > 8.0)  return 1.0;
@@ -24,19 +17,12 @@ double Phi(num x) {
   return 0.5 + sum*exp(-0.5*x*x -0.91893853320467274178);
 }
 
-/**
- * Calculate the error function: 2/\sqrt{\pi} \int_0^x dt e^{-t^2}.
- * ```
- * erf(0) = 0
- * erf(\infty) = 1
- * ```
- */
+/// Calculate the error function: 2/\sqrt{\pi} \int_0^x dt e^{-t^2}.
+/// <p>erf(0) = 0;  erf(\infty) = 1
 double erf(num x) => 2*Phi(x*sqrt(2)) - 1;
 
-/**
- * Calculate 1 - \Phi(x) = \int_{x}^\infty dt e^{-t^2/2}/\sqrt{2*\pi}.
- * This is needed to achieve relative accuracy for large argument values [x].
- */
+/// Calculate 1 - \Phi(x) = \int_{x}^\infty dt e^{-t^2/2}/\sqrt{2*\pi}.
+/// This is needed to achieve relative accuracy for large argument values [x].
 double cPhi(num x) {
   int i = (0.5*(x.abs()+1)).truncate();
   int j = i;

@@ -7,14 +7,14 @@ import 'package:dama/stat/descriptive/quantile.dart';
 testQuantile() {
   group('Quantile test:', () {
     test('minK', () {
-      List x = [3, 1, 5, 9, 4, 2, 7];
+      var x = [3, 1, 5, 9, 4, 2, 7];
       Quantile q = new Quantile(x);
       var res = new List.generate(7, (i) => i).map((e) => q.minK(e));
       expect(res, [1, 2, 3, 4, 5, 7, 9]);
     });
 
     test('R1 quantile calculation, sorted array', () {
-      List x = new List.generate(8, (i) => i);
+      var x = new List.generate(8, (i) => i);
       Quantile q = new Quantile(x,
           shuffle: false, quantileEstimationType: QuantileEstimationType.R1);
       List probs = [0, 0.25, 0.5, 0.75, 1];
@@ -23,7 +23,7 @@ testQuantile() {
     });
 
     test('R4 quantile calculation, sorted array', () {
-      List x = new List.generate(3, (i) => i);
+      var x = new List.generate(3, (i) => i);
       Quantile q = new Quantile(x,
           shuffle: false, quantileEstimationType: QuantileEstimationType.R4);
       List probs = [0, 0.25, 0.5, 0.75, 1];
@@ -32,7 +32,7 @@ testQuantile() {
     });
 
     test('R7 quantile calculation, sorted array', () {
-      List x = new List.generate(8, (i) => i);
+      var x = new List.generate(8, (i) => i);
       Quantile q = new Quantile(x,
           shuffle: false, quantileEstimationType: QuantileEstimationType.R7);
       List probs = [0, 0.25, 0.5, 0.75, 1];
@@ -41,7 +41,7 @@ testQuantile() {
     });
 
     test('R7 quantile calculation, unsorted array', () {
-      List x = new List.generate(8, (i) => i);
+      var x = new List.generate(8, (i) => i);
       //x.shuffle();
       Quantile q = new Quantile(x,
           shuffle: true, quantileEstimationType: QuantileEstimationType.R7);
@@ -50,7 +50,7 @@ testQuantile() {
     });
 
     test('default quantiles, unsorted array', () {
-      List x = new List.generate(10, (i) => i+1);
+      var x = new List.generate(10, (i) => i+1);
       x.shuffle(new Random(0));
       Quantile q = new Quantile(x, shuffle: false);
       List probs = [0, 0.25, 0.5, 0.75, 1];

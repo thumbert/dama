@@ -3,13 +3,11 @@ library linear.speed_test;
 
 import 'package:dama/linear/matrix.dart';
 
-/**
- * Compare with other implementations
- * https://github.com/kostya/benchmarks/tree/master/matmul
- * pretty decent results.
- *
- * I've got a 30% speedup on JavaScript V8 on 7/1/2015.
- */
+/// Compare with other implementations
+/// https://github.com/kostya/benchmarks/tree/master/matmul
+/// pretty decent results.
+///
+/// I've got a 30% speedup on JavaScript V8 on 7/1/2015.
 speed_test_doubleMatrix() {
   Matrix _makeTestMatrix(int N) {
     List m = [];
@@ -24,7 +22,7 @@ speed_test_doubleMatrix() {
   int N = 1500;
   print('Speed test Double Matrix');
   Stopwatch sw = new Stopwatch()..start();
-  Matrix a = _makeTestMatrix(N);
+  DoubleMatrix a = _makeTestMatrix(N);
   Matrix b = _makeTestMatrix(N);
   sw.stop();
   print('created in ${sw.elapsed}');
@@ -36,6 +34,5 @@ speed_test_doubleMatrix() {
 
 
 main() {
-
   speed_test_doubleMatrix();
 }

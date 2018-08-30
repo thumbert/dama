@@ -3,10 +3,8 @@ part of matrix.dart;
 class ColumnMatrix extends Matrix {
   Float64List data;
 
-  /**
-   * A DoubleMatrix of column 1
-   */
-  ColumnMatrix(List x) : super._empty(x.length, 1) {
+  /// A DoubleMatrix of column 1
+  ColumnMatrix(List<num> x) : super._empty(x.length, 1) {
     if (x is Float64List)
       data = x;
     else
@@ -17,9 +15,7 @@ class ColumnMatrix extends Matrix {
     data = new Float64List.fromList(new List.filled(length, value.toDouble()));
   }
 
-  /**
-   * Column bind this matrix with [that] matrix.
-   */
+  /// Column bind this matrix with [that] matrix.
   DoubleMatrix cbind(Matrix that) {
     if (nrow != that.nrow) throw 'Dimensions mismatch';
 
@@ -34,8 +30,8 @@ class ColumnMatrix extends Matrix {
   DoubleMatrix transpose() => new DoubleMatrix(data, 1, nrow);
 
   double element(int i, int j) => data[i];
-  void setElement(int i, int j, double value) {
-    data[i] = value;
+  void setElement(int i, int j, num value) {
+    data[i] = value.toDouble();
   }
 
   ColumnMatrix rbind(ColumnMatrix that) => new ColumnMatrix(data..addAll(that.data));

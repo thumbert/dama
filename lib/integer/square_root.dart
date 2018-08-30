@@ -2,13 +2,13 @@ library integer.square_root;
 
 /// Calculate the integer square root of a number using only integers.
 /// See https://en.wikipedia.org/wiki/Integer_square_root
-int isqrt(int n) {
-  int _newX(int n, int x) {
-    return ((x + (n~/x).truncate())~/2).truncate();
+BigInt isqrt(BigInt n) {
+  BigInt _newX(BigInt n, BigInt x) {
+    return ((x + (n~/x))~/BigInt.from(2));
   }
-  int x = 1;
-  int newX = _newX(n, x);
-  while (x != newX && (x != newX + 1)) {
+  BigInt x = BigInt.from(1);
+  BigInt newX = _newX(n, x);
+  while (x != newX && (x != newX + BigInt.from(1))) {
     x = newX;
     newX = _newX(n, x);
   }

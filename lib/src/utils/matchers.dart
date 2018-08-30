@@ -11,7 +11,7 @@ class _EqualsWithPrecision extends Matcher {
   bool relative;
   _EqualsWithPrecision(this.value, this.precision, this.relative);
 
-  bool matches(num item, Map matchState) {
+  bool matches(dynamic item, Map matchState) {
     bool res;
     if (item.isNaN){
 

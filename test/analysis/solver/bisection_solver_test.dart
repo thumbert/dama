@@ -10,7 +10,7 @@ test_bisection_solver() {
   group('Bisection solver:', () {
     test('sin', () {
       num value = bisectionSolver((x) => sin(x), 3, 4);
-      expect(PI, equalsWithPrecision(value, precision: 1E-6));
+      expect(pi, equalsWithPrecision(value, precision: 1E-6));
     });
     test('quartic', () {
       num value = bisectionSolver((x) => x*(x*x-1)+0.5, -2, 2);

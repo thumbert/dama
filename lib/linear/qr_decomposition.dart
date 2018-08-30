@@ -128,7 +128,7 @@ class _QRSolver implements DecompositionSolver {
   List _rDiag;
   num threshold;
 
-  _QRSolver(Matrix this._qrt, List this._rDiag, num this.threshold);
+  _QRSolver(this._qrt, this._rDiag, this.threshold);
 
   bool isNonSingular() {
     for (num diag in _rDiag) {
@@ -182,12 +182,8 @@ class _QRSolver implements DecompositionSolver {
     if (!isNonSingular())
       throw 'Matrix is singular';
 
-    return b;   // TODO:  Fix me here!
+    return new Matrix([1], 1, 1);   // TODO:  Fix me here!
   }
-
-
-
-
 
   Matrix inverse() {
     return new Matrix([1], 1, 1);  // TODO:

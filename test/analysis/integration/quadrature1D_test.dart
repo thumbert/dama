@@ -2,8 +2,6 @@ library test_quadrature1D;
 
 import 'dart:math';
 import 'package:test/test.dart';
-import 'package:logging/logging.dart';
-import 'package:logging_handlers/logging_handlers_shared.dart' as loghandlers;
 
 
 import 'package:dama/analysis/integration/trapezoid_integrator.dart';
@@ -64,7 +62,7 @@ getHarness() {
     3: {
       'problem': r"\int_0^{\pi/2} \exp(x)\cos(x) dx = (e^{\pi/2} - 1)/2",
       'function': (x) => exp(x) * cos(x),
-      'limits': [0, PI/2],
+      'limits': [0, pi/2],
       'result': 1.905238690482675827736517833351916563195085437332267470010407
     },
     4: {
@@ -101,13 +99,13 @@ getHarness() {
     9: {
       'problem': r"\int_0^{\pi/2} \log(\cos x) dx = -\pi\log(2)/2",
       'function': (x) => log(cos(x)),
-      'limits': [0, PI/2],
+      'limits': [0, pi/2],
       'result': -1.08879304515180106525034444911880697366929185018464314716289
     },
     10: {
       'problem': r"\int_0^{\pi/2} \sqrt(\tan x) dx = \pi\sqrt(2)/2",
       'function': (x) => sqrt(tan(x)),
-      'limits': [0, PI/2],
+      'limits': [0, pi/2],
       'result': 2.221441469079183123507940495030346849307310844687845111542
     },
     11: {
@@ -140,12 +138,10 @@ getHarness() {
     },
     15: {
       'problem': r"\int_0^1 x^6 \sin(10\pi x) dx = 0.0059568281477...",
-      'function': (x) => pow(x,6)*cos(10*PI*x),
+      'function': (x) => pow(x,6)*cos(10*pi*x),
       'limits': [0, 1],
       'result': 0.005956828147744827278016119076475372232470412836389028335703
     }
-
-
   };
   return harness;
 }
@@ -166,11 +162,6 @@ testQuadrature1D(UnivariateIntegrator quad, Map precision) {
 }
 
 main() {
-//  Logger.root.onRecord.listen(new loghandlers.LogPrintHandler());
-//  Logger.root.level = Level.FINEST; // FINE, FINER, FINEST, CONFIG
-  //Logger.root.level = Level.INFO;
-  //Logger.root.level = Level.WARNING;
-
   group("TanhSinh integrator", () {
     Map precision = {7: 1E-6, 10: 1E-8, 12: 1E-6};
     testQuadrature1D( new TanhSinhIntegrator(), precision);
@@ -178,21 +169,18 @@ main() {
 
   group("GaussLegendre integrator", () {
     Map precision = {5: 1E-7, 6: 1E-7, 7: 1E-4, 8: 1E-5, 9: 1E-5,
-      10: double.NAN, 11: double.NAN, 12: double.NAN, 13: double.NAN,
-      14: double.NAN, 15: double.NAN
+      10: double.nan, 11: double.nan, 12: double.nan, 13: double.nan,
+      14: double.nan, 15: double.nan
     };
     testQuadrature1D( new GaussLegendreIntegrator(1024), precision);
   });
 
   group("Filon integrator", () {
-    FilonIntegrator quad = new FilonIntegrator(10 * PI);
+    FilonIntegrator quad = new FilonIntegrator(10 * pi);
     test(r"\int_0^1 x^6 \cos(10\pi x) dx = 0.0059568281477...", () {
       num r = quad.integrate(100000, (x) => pow(x, 6), 0.0, 1.0);
       num i = 0.005956828147744827278016119076475372232470412836389028335703;
       expect(round(r, 6), round(i,6));
     });
   });
-
-
-
 }

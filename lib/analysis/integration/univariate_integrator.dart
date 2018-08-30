@@ -120,29 +120,17 @@ abstract class BaseAbstractUnivariateIntegrator implements UnivariateIntegrator 
     _evaluations = new Incrementor();
   }
   
-  double getRelativeAccuracy() {
-    return _relativeAccuracy;
-  }
+  double getRelativeAccuracy() => _relativeAccuracy;
 
-  double getAbsoluteAccuracy() {
-    return _absoluteAccuracy;
-  }
+  double getAbsoluteAccuracy() => _absoluteAccuracy;
   
-  int getMinimalIterationCount() {
-    return _minimalIterationCount;
-  }
+  int getMinimalIterationCount() =>_minimalIterationCount;
   
-  int getMaximalIterationCount() {
-    return iterations.maximalCount;
-  }
+  int getMaximalIterationCount() => iterations.maximalCount;
   
-  int getEvaluations() {
-    return _evaluations.count;
-  }
+  int getEvaluations() => _evaluations.count;
   
-  int getIterations() {
-    return iterations.count;
-  }
+  int getIterations() => iterations.count;
   
   double get min => _min;
   
@@ -150,13 +138,11 @@ abstract class BaseAbstractUnivariateIntegrator implements UnivariateIntegrator 
   
   double computeObjectiveValue(double point) {
      _evaluations.incrementCount(1);
-    
     return _function(point);
   }
   
   setup(int maxEval, Function f, num lower, num upper) {
     assert(lower < upper);
-    
     _min = lower.toDouble();
     _max = upper.toDouble();
     _function = f; 
@@ -167,7 +153,7 @@ abstract class BaseAbstractUnivariateIntegrator implements UnivariateIntegrator 
   double integrate(int maxEval, Function f, num lower, num upper) {
     setup(maxEval, f, lower, upper);
     
-    double res = double.NAN; 
+    double res = double.nan;
     try {
       res = doIntegrate();
       _log.info("SUCCESS.  Function evaluations: " + getEvaluations().toString());

@@ -7,10 +7,7 @@ import 'package:dama/analysis/integration/univariate_integrator.dart';
 
 final Logger _log = new Logger("GaussLegendre");
 
-/**
- * Implements Gauss-Legendre quadrature. Finite interval integration. 
- */
-
+/// Implements Gauss-Legendre quadrature. Finite interval integration.
 class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
   
   /** Abscissas for the 4 points method. */
@@ -27,10 +24,7 @@ class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
     (90.0 + 5.0 * sqrt(30.0)) / 180.0,
     (90.0 - 5.0 * sqrt(30.0)) / 180.0
   ];
-  
-   
-  
-  // NEED TO REFLECT THEM
+
   /** Abscissas for the 64 points method. */
   static final List<double> _ABSCISSAS_64 = [0.0243502926634244325089558,0.0729931217877990394495429,0.1214628192961205544703765,0.1696444204239928180373136,0.2174236437400070841496487,0.2646871622087674163739642,0.3113228719902109561575127,0.3572201583376681159504426,0.4022701579639916036957668,0.4463660172534640879849477,0.4894031457070529574785263,0.5312794640198945456580139,0.5718956462026340342838781,0.6111553551723932502488530,0.6489654712546573398577612,0.6852363130542332425635584,0.7198818501716108268489402,0.7528199072605318966118638,0.7839723589433414076102205,0.8132653151227975597419233,0.8406292962525803627516915,0.8659993981540928197607834,0.8893154459951141058534040,0.9105221370785028057563807,0.9295691721319395758214902,0.9464113748584028160624815,0.9610087996520537189186141,0.9733268277899109637418535,0.9833362538846259569312993,0.9910133714767443207393824,0.9963401167719552793469245,0.9993050417357721394569056];
   /** Weights for the 64 points method. */
@@ -121,7 +115,7 @@ class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
       }
 
       // prepare next iteration
-      double ratio = min(4, pow(delta / limit, 0.5 / _abscissas.length));
+      double ratio = min(4.0, pow(delta / limit, 0.5 / _abscissas.length));
       n = max((ratio * n).truncate(), n + 1);
       oldt = t;
       iterations.incrementCount();
