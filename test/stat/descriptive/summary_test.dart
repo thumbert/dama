@@ -6,7 +6,6 @@ import 'package:dama/stat/descriptive/summary.dart';
 main() {
   test('max', () {
     expect(max([1, 2, 3, 4, 5]), 5);
-    expect(max([1, 2, 3, 4, 5], isValid: (x) => x <= 4), 4);
   });
   test('min', () {
     expect(min([1, 3, -3, 5]), -3);

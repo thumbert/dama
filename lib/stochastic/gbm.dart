@@ -14,12 +14,10 @@ class GeometricBrownianMotion {
   GaussianDistribution rand;
 
   num _current;
-  num _sigma2;
 
   GeometricBrownianMotion(this.x0, this.mu, this.sigma, [int seed]) {
     _current = x0;
-    _sigma2 = 0.5*sigma*sigma;
-    rand = new GaussianDistribution(mu: 0, sigma:1, seed:seed);
+    rand = new GaussianDistribution(mu: mu, sigma:sigma, seed:seed);
   }
 
   num next() {

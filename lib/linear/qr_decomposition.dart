@@ -9,7 +9,7 @@ class QRDecomposition {
   Matrix Q, R;
   /// threshold for the singularity test of the matrix
   num threshold;
-  DoubleMatrix _qrt, _cachedQ, _cachedQT, _cachedR, _cachedH;
+  DoubleMatrix _qrt, _cachedQ, _cachedQT; //, _cachedR, _cachedH;
 
   // the diagonal elements of R
   List<num> _rDiag;
@@ -174,7 +174,7 @@ class _QRSolver implements DecompositionSolver {
   }
 
   Matrix solveMatrix(Matrix b) {
-    final int n = _qrt.nrow;
+    //final int n = _qrt.nrow;
     final int m = _qrt.ncol;
     if (b.nrow != m)
       throw 'Dimensions mismatch';

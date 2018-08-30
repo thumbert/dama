@@ -47,6 +47,7 @@ testQuantile() {
           shuffle: true, quantileEstimationType: QuantileEstimationType.R7);
       List probs = [0, 0.25, 0.5, 0.75, 1];
       var res = probs.map((p) => q.value(p)).toList();
+      expect(res, [0, 1.75, 3.5, 5.25, 7]);
     });
 
     test('default quantiles, unsorted array', () {
@@ -66,12 +67,12 @@ speedTest() {
     int N = 20000000;
     List x = new List.generate(N, (i) => i);
     x.shuffle(new Random(0));
-    //print(x.take(5));
     Quantile q = new Quantile(x, shuffle: false);
     var w = new Stopwatch()..start();
     var res = new List.generate(1000000, (i) => i * 200).map((e) => q.minK(e));
     print('evaluation microseconds: ${w.elapsedMicroseconds}');
     w.stop();
+    print(res);
   });
 }
 

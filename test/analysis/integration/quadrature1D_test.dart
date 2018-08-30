@@ -2,10 +2,6 @@ library test_quadrature1D;
 
 import 'dart:math';
 import 'package:test/test.dart';
-
-
-import 'package:dama/analysis/integration/trapezoid_integrator.dart';
-import 'package:dama/analysis/integration/simpson_integrator.dart';
 import 'package:dama/analysis/integration//tanhsinh_integrator.dart';
 import 'package:dama/analysis/integration/gausslegendre_integrator.dart';
 import 'package:dama/analysis/integration/filon_integrator.dart';
