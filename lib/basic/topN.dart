@@ -1,3 +1,6 @@
+
+import 'dart:collection';
+
 /// Get the indices of the top n elements from the input List [x].
 /// Function [extractor] is the extractor of the values to compare, the default is
 /// the accessor function (i) => x[i].
