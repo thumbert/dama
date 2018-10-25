@@ -1,10 +1,10 @@
 library univariate_integrator;
 
-import 'package:logging/logging.dart';
+//import 'package:logging/logging.dart';
 import 'package:dama/src/utils/incrementor.dart';
 
 
-final Logger _log = new Logger("UnivariateIntegrator");
+//final Logger _log = new Logger("UnivariateIntegrator");
 
 
 abstract class UnivariateIntegrator {
