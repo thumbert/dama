@@ -9,19 +9,18 @@ import 'package:dama/stat/descriptive/quantile.dart';
 /// round(135.123, 0.1) == 135.1;
 /// <p> Can fail: round(1230.802, 0.001) == 1230.80200000001 !
 num round(num x, num accuracy) {
-  int aux = (x/accuracy).round();
-  return aux*accuracy;
+  int aux = (x / accuracy).round();
+  return aux * accuracy;
 }
 
-
 /// Calculate the sum of an iterable.
-num sum(Iterable<num> x) => x.reduce((a,b)=>a+b);
+num sum(Iterable<num> x) => x.reduce((a, b) => a + b);
 
 /// Calculate the maximum value of an iterable.
-num max(Iterable<num> x) => x.reduce((a,b) => a >= b ? a : b);
+num max(Iterable<num> x) => x.reduce((a, b) => a >= b ? a : b);
 
 /// Calculate the minimum value of an iterable.
-num min(Iterable<num> x) => x.reduce((a,b) => a <= b ? a : b);
+num min(Iterable<num> x) => x.reduce((a, b) => a <= b ? a : b);
 
 /// Calculate the mean of an iterable.
 num mean(Iterable<num> x) {
@@ -31,9 +30,8 @@ num mean(Iterable<num> x) {
     res += e;
     i++;
   });
-  return res/i;
+  return res / i;
 }
-
 
 /// Calculate the weighted mean of an iterable.
 num weightedMean(Iterable<num> x, Iterable<num> weights) {
@@ -41,13 +39,26 @@ num weightedMean(Iterable<num> x, Iterable<num> weights) {
   num weightSum = 0;
   Iterator ix = x.iterator;
   Iterator iw = weights.iterator;
-  while(ix.moveNext() && iw.moveNext()) {
+  while (ix.moveNext() && iw.moveNext()) {
     res += ix.current * iw.current;
     weightSum += iw.current;
   }
-  return res/weightSum;
+  return res / weightSum;
 }
 
+/// Calculate the open, high, low, close of this iterable.
+Map<String, num> ohlc(Iterable<num> xs) {
+  num first = xs.first;
+  num high = xs.first;
+  num low = xs.first;
+  num close;
+  xs.forEach((x) {
+    if (x > high) high = x;
+    if (x < low) low = x;
+    close = x;
+  });
+  return <String, num>{'open': first, 'high': high, 'low': low, 'close': close};
+}
 
 /// Calculate the range of the data.  Requires only one pass.
 /// Return a two element list [min,max].
