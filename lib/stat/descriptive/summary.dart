@@ -46,6 +46,24 @@ num weightedMean(Iterable<num> x, Iterable<num> weights) {
   return res / weightSum;
 }
 
+/// Calculate the variance of an iterable.  Return [nan] if the iterable has
+/// less than 2 elements.
+num variance(Iterable<num> xs) {
+  int count = 0;
+  num mean = 0;
+  num sum = 0;
+  num delta;
+  for (var x in xs) {
+    delta = x - mean;
+    mean += delta / ++count;
+    sum += delta * (x - mean);
+  }
+  if (count > 1) return sum / (count - 1);
+  return double.nan;
+}
+
+
+
 /// Calculate the open, high, low, close of this iterable.
 Map<String, num> ohlc(Iterable<num> xs) {
   num first = xs.first;
