@@ -1,11 +1,9 @@
 library analysis.solver.bisection_solver;
 
 
-/**
- * One dimensional root (zero) finding.
- */
-double bisectionSolver(Function f, num lower, num upper, {
-  double tolerance: 1E-10, int maxIterations: 1000}) {
+/// One dimensional root (zero) finding using bisection.
+num bisectionSolver(num Function(num) f, num lower, num upper, {
+  num tolerance: 1E-10, int maxIterations: 1000}) {
 
   if (lower >= upper)
     throw 'Lower limit needs to be lower than the upper limit.';
