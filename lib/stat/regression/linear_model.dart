@@ -32,5 +32,11 @@ class LinearModel {
     return _qr.getSolver().solveVector(y).toList();
   }
 
+ List predict({DoubleMatrix pX}) {
+    pX ??= X;
+    return pX.multiply(DoubleMatrix(coefficients, X.ncol, 1)).toList();
+  }
+
+  
 }
 
