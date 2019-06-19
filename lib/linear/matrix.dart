@@ -19,14 +19,14 @@ abstract class Matrix {
   /// Create a matrix from a list of values.  Elements are filled in column major order, e.g.
   /// for element [i,j] the index i varies faster.  You can fill elements in row major order by
   /// specifying  the flag [byRow: true].
-  factory Matrix(List<num> x, int nrow, int ncol, {bool byRow: false}) {
+  factory Matrix(Iterable<num> x, int nrow, int ncol, {bool byRow: false}) {
     if (x.length != nrow * ncol) throw 'Dimensions mismatch';
-    return new DoubleMatrix(x, nrow, ncol, byRow: byRow);
+    return DoubleMatrix(x, nrow, ncol, byRow: byRow);
   }
 
   /// Create a Matrix with all entries set to given value.
   factory Matrix.filled(num value, int nrow, int ncol) {
-    return new DoubleMatrix.filled(value.toDouble(), nrow, ncol);
+    return DoubleMatrix.filled(value.toDouble(), nrow, ncol);
   }
 
   /// Get the element [i,j] of the matrix.
@@ -40,7 +40,7 @@ abstract class Matrix {
     List<num> res = new List.filled(0, ncol);
     for (int j=0; j<ncol; j++)
       res[j] = element(i,j);
-    return new Matrix(res, 1, ncol);
+    return Matrix(res, 1, ncol);
   }
 
   /// Overwrite the row [i] of the matrix with [values].
@@ -50,22 +50,14 @@ abstract class Matrix {
 
   /// Get the column with index [j] from the matrix.
   Matrix column(int j) {
-    List x = new List.generate(nrow, (i) => element(i,j), growable: false);
-    return new Matrix(x, nrow, 1);
+    var x = List.generate(nrow, (i) => element(i,j), growable: false);
+    return Matrix(x, nrow, 1);
   }
 
   /// Overwrite the column [j] of the matrix with [values].
   void setColumn(int j, List<num> values) {
     for (int i = 0; i < nrow; i++) setElement(i, j, values[i].toDouble());
   }
-
-  /// Row bind this matrix with [that] matrix.
-//  Matrix rbind(Matrix that) {
-//    if (ncol != that.ncol) throw 'Dimensions mismatch';
-//    DoubleMatrix res = new Matrix.filled(0.0, nrow + that.nrow, ncol);
-//    res.data = new List.from(this.data)..addAll(that.data);
-//    return res;
-//  }
 
 
   /// Reshape a matrix.  Arrange the given elements to a different matrix
@@ -173,8 +165,10 @@ abstract class Matrix {
   /// Check if this matrix is a square matrix or not
   bool isSquare() => nrow == ncol ? true : false;
 
+
+
   /// used in double_matrix.dart
-  _populateMatrix(List<num> x, List<List> data, {bool byRow: false}) {
+  _populateMatrix(List<num> x, List<List<double>> data, {bool byRow: false}) {
     if (byRow) {
       for (int i = 0; i < nrow; i++)
         for (int j = 0; j < ncol; j++)

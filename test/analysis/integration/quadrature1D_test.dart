@@ -143,7 +143,7 @@ getHarness() {
 }
 
 testQuadrature1D(UnivariateIntegrator quad, Map precision) {
-  Map harness = getHarness();
+  var harness = getHarness();
   harness.keys.forEach((i) {
     Map info = harness[i];
     num r = quad.integrate(1000000, info['function'], info['limits'][0], info['limits'][1]);
@@ -159,20 +159,20 @@ testQuadrature1D(UnivariateIntegrator quad, Map precision) {
 
 main() {
   group("TanhSinh integrator", () {
-    Map precision = {7: 1E-6, 10: 1E-8, 12: 1E-6};
-    testQuadrature1D( new TanhSinhIntegrator(), precision);
+    var precision = {7: 1E-6, 10: 1E-8, 12: 1E-6};
+    testQuadrature1D(TanhSinhIntegrator(), precision);
   });
 
   group("GaussLegendre integrator", () {
-    Map precision = {5: 1E-7, 6: 1E-7, 7: 1E-4, 8: 1E-5, 9: 1E-5,
+    var precision = {5: 1E-7, 6: 1E-7, 7: 1E-4, 8: 1E-5, 9: 1E-5,
       10: double.nan, 11: double.nan, 12: double.nan, 13: double.nan,
       14: double.nan, 15: double.nan
     };
-    testQuadrature1D( new GaussLegendreIntegrator(1024), precision);
+    testQuadrature1D(GaussLegendreIntegrator(1024), precision);
   });
 
   group("Filon integrator", () {
-    FilonIntegrator quad = new FilonIntegrator(10 * pi);
+    var quad = FilonIntegrator(10 * pi);
     test(r"\int_0^1 x^6 \cos(10\pi x) dx = 0.0059568281477...", () {
       num r = quad.integrate(100000, (x) => pow(x, 6), 0.0, 1.0);
       num i = 0.005956828147744827278016119076475372232470412836389028335703;

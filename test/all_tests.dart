@@ -37,7 +37,7 @@ main(){
   qrdecompositionTest.main();
 
   // linear regression
-  lmTest.main();
+  lmTest.tests();
 
   // special functions
   erfTest.main();

@@ -156,10 +156,10 @@ abstract class BaseAbstractUnivariateIntegrator implements UnivariateIntegrator 
     double res = double.nan;
     try {
       res = doIntegrate();
-      print("SUCCESS.  Function evaluations: " + getEvaluations().toString());
+      //print("SUCCESS.  Function evaluations: " + getEvaluations().toString());
     } catch (e) {
-      print("FAILED.  Too many evaluations or convergence problems. " + 
-            "Function evaluations: " + getEvaluations().toString());
+//      print("FAILED.  Too many evaluations or convergence problems. " +
+//            "Function evaluations: " + getEvaluations().toString());
     }
     
     return res;

@@ -39,7 +39,7 @@ class QRDecomposition {
       qrtMinor[minor] -= a;
       _qrt[[minor,minor]] = qrtMinor[minor];
       for (int col = minor+1; col < _qrt.nrow; col++) {
-        List qrtCol = _qrt.data[col];
+        var qrtCol = _qrt.data[col];
         double alpha = 0.0;
         for (int row = minor; row < qrtCol.length; row++) {
           alpha -= qrtCol[row] * qrtMinor[row];
@@ -55,10 +55,10 @@ class QRDecomposition {
     }
   }
 
-  Matrix getR() {
+  DoubleMatrix getR() {
     int m = _qrt.ncol;
     int n = _qrt.nrow;
-    Matrix ra = new Matrix.filled(0.0, m, n);
+    var ra = DoubleMatrix.filled(0.0, m, n);
     for (int row=min(m,n)-1; row >=0; row--) {
       ra[[row,row]] = _rDiag[row];
       for (int col=row+1; col<n; col++)
@@ -72,18 +72,18 @@ class QRDecomposition {
    * Return the Q matrix of the QR decomposition.
    * Matrix Q is orthogonal and has size [m x m]
    */
-  Matrix getQ() {
+  DoubleMatrix getQ() {
     if (_cachedQ == null)
       _cachedQ = _getQT().transpose();
 
     return _cachedQ;
   }
 
-  Matrix _getQT() {
+  DoubleMatrix _getQT() {
     if (_cachedQT == null) {
       int m = _qrt.ncol;
       int n = _qrt.nrow;
-      _cachedQT = new Matrix.filled(0.0, m, m);
+      _cachedQT = DoubleMatrix.filled(0.0, m, m);
 
       for (int minor=m-1; minor>=min(m,n); minor--)
         _cachedQT[[minor,minor]] = 1.0;
@@ -119,7 +119,7 @@ class QRDecomposition {
 //    return _cachedH;
 //  }
 
-  DecompositionSolver getSolver() => new _QRSolver(_qrt, _rDiag, threshold);
+  DecompositionSolver getSolver() => _QRSolver(_qrt, _rDiag, threshold);
 
 }
 
@@ -144,12 +144,12 @@ class _QRSolver implements DecompositionSolver {
     if (b.nrow != m)
       throw 'Dimensions mismatch';
 
-    Float64List x = new Float64List(n);
-    Float64List y = new Float64List.fromList(b.data);
+    var x = Float64List(n);
+    var y = Float64List.fromList(b.data);
 
     // apply Householder transforms to solve Q.y = b
     for (int minor=0; minor<min(n,m); minor++) {
-      List qrtMinor = _qrt.data[minor];
+      var qrtMinor = _qrt.data[minor];
       num dotProduct = 0.0;
       for (int row = minor; row < m; row++)
         dotProduct += y[row] * qrtMinor[row];
@@ -170,23 +170,38 @@ class _QRSolver implements DecompositionSolver {
       }
     }
 
-    return new ColumnMatrix(x);
+    return ColumnMatrix(x);
   }
 
   Matrix solveMatrix(Matrix b) {
-    //final int n = _qrt.nrow;
+    final int n = _qrt.nrow;
     final int m = _qrt.ncol;
-    if (b.nrow != m)
-      throw 'Dimensions mismatch';
+    if (b.nrow != m) throw 'Dimensions mismatch';
 
-    if (!isNonSingular())
-      throw 'Matrix is singular';
+    if (!isNonSingular()) throw 'Matrix is singular';
+
+    throw 'NOT YET IMPLEMENTED ...';
+
+    final int columns = b.ncol;
+//    final int blockSize      = BlockRealMatrix.BLOCK_SIZE;
+//    final int cBlocks        = (columns + blockSize - 1) / blockSize;
+//    final double[][] xBlocks = BlockRealMatrix.createBlocksLayout(n, columns);
+//    final double[][] y       = new double[b.getRowDimension()][blockSize];
+//    final double[]   alpha   = new double[blockSize];
+
+
+
 
     return new Matrix([1], 1, 1);   // TODO:  Fix me here!
   }
 
   Matrix inverse() {
-    return new Matrix([1], 1, 1);  // TODO:
+    var n = _qrt.ncol;
+    var b = DoubleMatrix.filled(0.0, n, n);
+    for (int i = 0; i < n; i++) {
+      b.setElement(i, i, 1.0);
+    }
+    return solveMatrix(b);
   }
 
 }

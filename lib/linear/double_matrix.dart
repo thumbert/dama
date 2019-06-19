@@ -8,27 +8,27 @@ class DoubleMatrix extends Matrix {
   /// A matrix will all double elements backed by a List<Float64List>.
   DoubleMatrix(List<num> x, int nrow, int ncol, {bool byRow: false})
       : super._empty(nrow, ncol) {
-    data = new List.generate(nrow, (i) => new Float64List(ncol));
+    data = List.generate(nrow, (i) => Float64List(ncol));
     _populateMatrix(x, data, byRow: byRow);
   }
 
   DoubleMatrix.filled(double value, int nrow, int ncol)
       : super._empty(nrow, ncol) {
-    data = new List.generate(nrow, (i) => new Float64List(ncol));
-    _populateMatrix(new List.filled(nrow * ncol, value), data);
+    data = List.generate(nrow, (i) => Float64List(ncol));
+    _populateMatrix(List.filled(nrow * ncol, value), data);
   }
 
   DoubleMatrix.zero(int nrow, int ncol) : super._empty(nrow, ncol) {
-    data = new List.generate(nrow, (i) => new Float64List(ncol));
+    data = List.generate(nrow, (i) => Float64List(ncol));
   }
 
   DoubleMatrix column(int j) {
-    List<double> x = new List.generate(nrow, (i) => data[i][j]);
-    return new DoubleMatrix(x, nrow, 1);
+    List<double> x = List.generate(nrow, (i) => data[i][j]);
+    return DoubleMatrix(x, nrow, 1);
   }
 
-  /// Get the row with index [i] from the matrix.
-  DoubleMatrix row(int i) => new DoubleMatrix(data[i], 1, ncol);
+  /// Get the row with index [i] from the matrix as a DoubleMatrix.
+  DoubleMatrix row(int i) => DoubleMatrix(data[i], 1, ncol);
 
   /// Get the element [i,j] of the matrix.
   double element(int i, int j) => data[i][j];
@@ -41,18 +41,18 @@ class DoubleMatrix extends Matrix {
   /// Row bind this matrix with [that] matrix.
   DoubleMatrix rbind(DoubleMatrix that) {
     if (ncol != that.ncol) throw 'Dimensions mismatch';
-    DoubleMatrix res = new Matrix.filled(0.0, nrow + that.nrow, ncol);
-    res.data = new List.from(data)..addAll(that.data);
+    var res = DoubleMatrix.filled(0.0, nrow + that.nrow, ncol);
+    res.data = List.from(data)..addAll(that.data);
     return res;
   }
 
   /// Column bind this matrix with [that] matrix.
   DoubleMatrix cbind(DoubleMatrix that) {
     if (nrow != that.nrow) throw 'Dimensions mismatch';
-    DoubleMatrix res = new Matrix.filled(0.0, nrow, ncol + that.ncol);
+    var res = DoubleMatrix.filled(0.0, nrow, ncol + that.ncol);
     for (int i = 0; i < nrow; i++) {
-      List<double> row = new List.from(data[i])..addAll(that.data[i]);
-      res.data[i] = new Float64List.fromList(row);
+      var row = List<double>.from(data[i])..addAll(that.data[i]);
+      res.data[i] = Float64List.fromList(row);
     }
     return res;
   }
@@ -65,7 +65,7 @@ class DoubleMatrix extends Matrix {
   }
 
   DoubleMatrix _multiplyNaive(DoubleMatrix that) {
-    Matrix res = new Matrix.filled(0.0, nrow, that.ncol);
+    var res = DoubleMatrix.filled(0.0, nrow, that.ncol);
 
 //    if (that is DiagonalMatrix) {
 //      // TODO: fill me in here ...
@@ -75,7 +75,7 @@ class DoubleMatrix extends Matrix {
     for (int j = 0; j < that.ncol; j++) {
       for (int i = 0; i < nrow; i++) {
         var s = 0.0;
-        for (int k = 0; k < ncol; k++) s += element(i,k) * c.element(j,k);
+        for (int k = 0; k < ncol; k++) s += element(i, k) * c.element(j, k);
         res.setElement(i, j, s);
       }
     }
@@ -83,34 +83,31 @@ class DoubleMatrix extends Matrix {
     return res;
   }
 
-
   /// Transpose this matrix
   DoubleMatrix transpose() {
-    DoubleMatrix res = new DoubleMatrix.filled(0.0, ncol, nrow);
+    var res = DoubleMatrix.filled(0.0, ncol, nrow);
     for (int i = 0; i < ncol; i++)
       for (int j = 0; j < nrow; j++) res.data[i][j] = data[j][i];
     return res;
   }
 
-//  DoubleMatrix _multiplyNaive(DoubleMatrix that) {
-//    DoubleMatrix res = new Matrix.filled(0.0, nrow, that.ncol);
-//
-//    if (that is DiagonalMatrix) {
-//      // TODO: fill me in here ...
-//
-//    } else {
-//      List c = that.transpose().data;
-//      for (int j = 0; j < that.ncol; j++) {
-//        for (int i = 0; i < nrow; i++) {
-//          var s = 0.0;
-//          for (int k = 0; k < ncol; k++) s += data[i][k] * c[j][k];
-//          res.data[i][j] = s;
-//        }
-//      }
-//    }
-//
-//    return res;
-//  }
+  /// Get a submatrix of this matrix.
+  /// where endRow, endColumn are inclusive!
+  DoubleMatrix getSubmatrix(
+      int startRow, int endRow, int startColumn, int endColumn) {
+    if (endRow > nrow) throw ArgumentError('Input endRow can\'t be > $nrow');
+    if (endColumn > ncol)
+      throw ArgumentError('Input endColumn can\'t be > $ncol');
+    if (startRow < 0) throw ArgumentError('Input startRow can\'t be < 0');
+    if (startColumn < 0) throw ArgumentError('Input startColumn can\'t be < 0');
+    var _data = <double>[];
+    for (int i = startRow; i <= endRow; i++) {
+      _data.addAll(data[i].sublist(startColumn, endColumn + 1));
+    }
+    return DoubleMatrix(
+        _data, endRow - startRow + 1, endColumn - startColumn + 1,
+        byRow: true);
+  }
 
   String toString() {
     List<String> out = [' ']..addAll(new List.generate(nrow, (i) => '[$i,]'));
