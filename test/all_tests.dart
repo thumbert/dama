@@ -7,6 +7,7 @@ import 'analysis/interpolation/quadratic_interpolator_test.dart' as quadraticInt
 import 'analysis/solver/bisection_solver_test.dart' as bisectionTest;
 
 import 'basic/basic_test.dart' as basicTest;
+import 'basic/linear_filter_test.dart' as linearFilterTest;
 
 import 'distribution/discrete_distribution_test.dart' as discretedistTest;
 import 'linear/matrix_test.dart' as matrixTest;
@@ -16,6 +17,7 @@ import 'stat/descriptive/quantile_test.dart' as quantileTest;
 import 'stat/descriptive/summary_test.dart' as summaryTest;
 import 'stat/regression/linear_model_test.dart' as lmTest;
 import 'special/erf_test.dart' as erfTest;
+
 
 main(){
 
@@ -27,7 +29,7 @@ main(){
 
   // basic
   basicTest.tests();
-
+  linearFilterTest.tests();
 
   bisectionTest.main();
   discretedistTest.main();
