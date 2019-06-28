@@ -10,8 +10,11 @@ import 'basic/basic_test.dart' as basicTest;
 import 'basic/linear_filter_test.dart' as linearFilterTest;
 
 import 'distribution/discrete_distribution_test.dart' as discretedistTest;
+import 'distribution/normal_distribution_test.dart' as normaldistTest;
+
 import 'linear/matrix_test.dart' as matrixTest;
 import 'linear/qrdecomposition_test.dart' as qrdecompositionTest;
+import 'stat/descriptive/autocorrelation_test.dart' as autocorrelationTest;
 import 'stat/descriptive/ecdf_test.dart' as ecdfTest;
 import 'stat/descriptive/quantile_test.dart' as quantileTest;
 import 'stat/descriptive/summary_test.dart' as summaryTest;
@@ -33,6 +36,7 @@ main(){
 
   bisectionTest.main();
   discretedistTest.main();
+  normaldistTest.tests();
 
   // linear algebra
   matrixTest.main();
@@ -45,6 +49,7 @@ main(){
   erfTest.main();
 
   // statistics
+  autocorrelationTest.tests();
   ecdfTest.main();
   quantileTest.main();
   summaryTest.main();

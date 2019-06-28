@@ -1,7 +1,10 @@
 library test.stat.descriptive.summary;
 
+import 'package:dama/src/utils/matchers.dart';
 import 'package:test/test.dart';
 import 'package:dama/stat/descriptive/summary.dart';
+import '../../_data/cars.dart';
+
 
 main() {
   group('Stat descriptive summary:', () {
@@ -12,6 +15,18 @@ main() {
       expect(min([1, 3, -3, 5]), -3);
       expect(min([1, 3, double.nan, -3, 5]), -3);
       expect(min([1, 3, double.negativeInfinity, 5]), double.negativeInfinity);
+    });
+    test('covariance', () {
+      var x = List.generate(10, (i) => i + 1);
+      var y = List.generate(10, (i) => i + 1);
+      expect(covariance(x, y), equalsWithPrecision(9.166667, precision: 1E-6));
+    });
+    test('correlation', () {
+      var _cars = cars();
+      var speed = _cars['speed'];
+      var distance = _cars['dist'];
+      expect(correlation(speed, distance),
+          equalsWithPrecision(0.8068949, precision: 1E-6));
     });
     test('range test', (){
       List r = range([4,2,1,5]);

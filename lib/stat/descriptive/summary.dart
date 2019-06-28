@@ -1,5 +1,6 @@
 library stat.descriptive.summary;
 
+import 'dart:math' show sqrt;
 import 'package:dama/stat/descriptive/quantile.dart';
 
 /// Round a number to any accuracy.
@@ -61,6 +62,47 @@ num variance(Iterable<num> xs) {
   if (count > 1) return sum / (count - 1);
   return double.nan;
 }
+
+
+/// Calculate the unbiased covariance estimator of two numeric vectors.
+/// cov(X, Y) = sum [(xi - E(X))(yi - E(Y))] / (n - 1)
+/// The length of the two vectors must be equal.///
+num covariance(List<num> x, List<num> y) {
+  if (x.length != y.length)
+    throw ArgumentError('Input arguments don\'t have the same lengths');
+  int n = x.length;
+  if (n < 2)
+    throw ArgumentError('Input lists must have length > 1');
+
+  // calculation require two traversals.  If clever, only one traversal should
+  // be needed, see the [variance] implementation.
+  num meanX = 0.0;
+  num meanY = 0.0;
+  for (int i = 0; i < n; i++) {
+    meanX += x[i];
+    meanY += y[i];
+  }
+  meanX /= n;
+  meanY /= n;
+  num result = 0.0;
+  for (int i = 0; i < n; i++) {
+    final xDev = x[i] - meanX;
+    final yDev = y[i] - meanY;
+    result += (xDev * yDev - result) / (i + 1);
+  }
+
+  return result * (n / (n - 1));
+}
+
+/// Calculate Pearson't correlation as defined by formula:
+/// cor(X, Y) = sum[(xi - E(X))(yi - E(Y))] / [(n - 1)s(X)s(Y)]
+num correlation(List<num> x, List<num> y) {
+  num cov = covariance(x, y);
+  num sx = sqrt(variance(x));
+  num sy = sqrt(variance(y));
+  return cov/(sx * sy);
+}
+
 
 
 

@@ -1,14 +1,51 @@
 library distibution.gaussian;
 
-import 'dart:math' show Random,sqrt,log;
+import 'dart:math' show Random, sqrt, log, exp, pi;
+
+import 'package:dama/analysis/solver/bisection_solver.dart';
+import 'package:dama/special/erf.dart';
 
 class GaussianDistribution {
   num mu, sigma;
   num _y, _aux;
   Random rand;
+  static final _invSqrt2Pi = 1/sqrt(2*pi);
+  num _sigma2;
+
 
   GaussianDistribution({this.mu: 0, this.sigma:1, int seed}) {
-    rand = new Random(seed);
+    if (sigma < 0)
+      throw ArgumentError('Argument sigma needs to be > 0');
+    rand = Random(seed);
+    _sigma2 = 2 * sigma * sigma;
+  }
+
+  /// calculate the value of the quantile function (inverse of the distribution
+  /// function) at point [probability].
+  num quantile(num probability) {
+    if (probability < 0 || probability > 1)
+      throw ArgumentError('Probability needs to be between 0 and 1');
+
+    if (probability == 1) return double.infinity;
+    if (probability == 0) return double.negativeInfinity;
+    // TODO: there should be algorithms to calculate this directly
+    // not by using bisection.
+
+    var f = (num x) => this.probability(x) - probability;
+    var res = bisectionSolver(f, -1000, 1000);
+    return res;
+  }
+
+  /// calculate the value of the probability density function at point [x]
+  num density(num x) {
+    var z = (x - mu) * (x - mu) / _sigma2;
+    return _invSqrt2Pi * exp(-z) / sigma;
+  }
+
+  /// calculate the value of the distribution function at point [x]
+  num probability(num x) {
+    var z = (x - mu)/sigma;
+    return Phi(z);
   }
 
   /// Generate a value from a standard Gaussian distribution N(0,1)
