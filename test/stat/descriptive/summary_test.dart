@@ -3,11 +3,22 @@ library test.stat.descriptive.summary;
 import 'package:dama/src/utils/matchers.dart';
 import 'package:test/test.dart';
 import 'package:dama/stat/descriptive/summary.dart';
+import 'package:dama/stat/descriptive/summary_ext.dart';
 import '../../_data/cars.dart';
 
 
 main() {
   group('Stat descriptive summary:', () {
+    test('sum of an Iterable<num>', () {
+      expect(sum([1, 2, 3]), 6);
+    });
+    test('sum of an empty Iterable<num> is zero', () {
+      // Same as R, python, Fortran, etc.
+      expect(sum([]), 0);
+    });
+    test('extension of sum', () {
+      expect(<num>[1,2,3].sum(), 6);
+    });
     test('max', () {
       expect(max([1, 2, 3, 4, 5]), 5);
     });
