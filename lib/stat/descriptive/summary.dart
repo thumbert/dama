@@ -157,7 +157,7 @@ num manhattanDistance(List<num> x, List<num> y) {
   if (x.length != y.length) {
     throw ArgumentError('The two vectors must have the same length');
   }
-  var res = 0;
+  var res = 0.0;
   for (var i=0; i<x.length; i++) {
     res += (y[i] - x[i]).abs();
   }
