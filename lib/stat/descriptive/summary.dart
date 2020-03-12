@@ -151,3 +151,15 @@ Map<String, num> summary(Iterable<num> x, {Function isValid}) {
   var names = ['Min.', '1st Qu.', 'Median', 'Mean', '3rd Qu.', 'Max.'];
   return Map.fromIterables(names, res);
 }
+
+/// Calculate the Manhattan distance between two numerical vectors.
+num manhattanDistance(List<num> x, List<num> y) {
+  if (x.length != y.length) {
+    throw ArgumentError('The two vectors must have the same length');
+  }
+  var res = 0;
+  for (var i=0; i<x.length; i++) {
+    res += (y[i] - x[i]).abs();
+  }
+  return res;
+}

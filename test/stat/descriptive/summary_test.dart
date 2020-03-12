@@ -12,7 +12,7 @@ main() {
     test('sum of an Iterable<num>', () {
       expect(sum([1, 2, 3]), 6);
     });
-    test('sum of an empty Iterable<num> is zero', () {
+    test('sum of an empty Iterable<num> is zero!', () {
       // Same as R, python, Fortran, etc.
       expect(sum([]), 0);
     });
@@ -38,6 +38,11 @@ main() {
       var distance = _cars['dist'];
       expect(correlation(speed, distance),
           equalsWithPrecision(0.8068949, precision: 1E-6));
+    });
+    test('Manhattan distance', () {
+      var x = [1, 2, 4];
+      var y = [2, 1, 5];
+      expect(manhattanDistance(x, y), 3.0);
     });
     test('range test', (){
       List r = range([4,2,1,5]);
