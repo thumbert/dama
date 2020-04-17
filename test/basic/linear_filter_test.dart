@@ -4,7 +4,7 @@ import 'package:dama/basic/linear_filter.dart';
 import 'package:test/test.dart';
 
 
-tests() {
+void tests() {
   group('Linear filter tests:', () {
     test('Binomial filter, order 2', () {
       var x = <num>[12, 17, 10, 22, 15, 11, 18, 27, 14];
@@ -39,9 +39,8 @@ tests() {
     });
 
   });
-
 }
 
-main() {
+void main() {
   tests();
 }

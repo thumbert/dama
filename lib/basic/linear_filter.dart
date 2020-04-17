@@ -10,7 +10,7 @@ enum Align { past, center, future }
 /// <p>Argument [weights] a numeric list of length n.
 /// <p>Align past uses the last n available observations.
 List<num> movingAverageFilter(
-    List<num> x, List<num> weights, {Align align: Align.past}) {
+    List<num> x, List<num> weights, {Align align = Align.past}) {
 
   int offset;
   if (align == Align.past) {
@@ -22,9 +22,9 @@ List<num> movingAverageFilter(
   var out = List<num>(x.length);
   num value;
   // the bulk
-  for (int i = offset; i < x.length; i++) {
+  for (var i = offset; i < x.length; i++) {
     value = 0.0;
-    for (int j = 0; j < weights.length; j++) {
+    for (var j = 0; j < weights.length; j++) {
       value += weights[j] * x[i + j - offset];
     }
     out[i] = value;
@@ -40,23 +40,24 @@ List<num> movingAverageFilter(
 /// around the ends of the series, so no nulls are returned.  This is useful
 /// if the data is truly periodic.
 ///
-List<num> binomialFilter(List<num> x, int order, {bool circular: false}) {
+List<num> binomialFilter(List<num> x, int order, {bool circular = false}) {
   if (order <= 1) throw ArgumentError('Order should be > 1');
   if (order % 2 != 0) throw ArgumentError('The order needs to be even');
-  if (2 * order + 1 > x.length)
+  if (2 * order + 1 > x.length) {
     throw ArgumentError('Input list has too few elements');
+  }
 
   var weights = _getBinomialWeights(order);
-  int offset = order ~/ 2;
+  var offset = order ~/ 2;
 
   var out = List<num>(x.length);
   num value;
   if (circular) {
     // the beginning
-    for (int i = 0; i < offset; i++) {
+    for (var i = 0; i < offset; i++) {
       value = 0.0;
-      for (int j = 0; j < weights.length; j++) {
-        int k = i + j - offset;
+      for (var j = 0; j < weights.length; j++) {
+        var k = i + j - offset;
         if (k < 0) k += x.length;
         value += weights[j] * x[k];
       }
@@ -65,9 +66,9 @@ List<num> binomialFilter(List<num> x, int order, {bool circular: false}) {
   }
 
   // the bulk
-  for (int i = offset; i < x.length - offset; i++) {
+  for (var i = offset; i < x.length - offset; i++) {
     value = 0.0;
-    for (int j = 0; j < weights.length; j++) {
+    for (var j = 0; j < weights.length; j++) {
       value += weights[j] * x[i + j - offset];
     }
     out[i] = value;
@@ -75,17 +76,16 @@ List<num> binomialFilter(List<num> x, int order, {bool circular: false}) {
 
   if (circular) {
     // the end
-    for (int i = x.length - offset; i < x.length; i++) {
+    for (var i = x.length - offset; i < x.length; i++) {
       value = 0.0;
-      for (int j = 0; j < weights.length; j++) {
-        int k = i + j - offset;
+      for (var j = 0; j < weights.length; j++) {
+        var k = i + j - offset;
         if (k >= x.length) k -= x.length;
         value += weights[j] * x[k];
       }
       out[i] = value;
     }
   }
-
 
   return out;
 }
@@ -94,7 +94,7 @@ List<num> binomialFilter(List<num> x, int order, {bool circular: false}) {
 List<double> _getBinomialWeights(int n) {
   var denominator = pow(2, n);
   var out = List<double>(n + 1);
-  for (int k = 0; k < n; k++) {
+  for (var k = 0; k < n; k++) {
     out[k] = binomial(n, k) / denominator;
     out[n - k] = out[k];
   }
