@@ -1,12 +1,12 @@
 library test.stat.regression;
 
-
 import 'package:test/test.dart';
 import 'package:dama/linear/matrix.dart';
 import 'package:dama/stat/regression/linear_model.dart';
 import 'package:dama/src/utils/matchers.dart';
+import '../../_data/cars.dart';
 
-testLongley() {
+void testLongley() {
   /**
    * Test Longley dataset against certified values provided by NIST.
    * Data Source: J. Longley (1967) "An Appraisal of Least Squares
@@ -78,144 +78,41 @@ testLongley() {
     341.9315139607727,
     -206.7578251937366
   ];
-  for (int i = 0; i < residualsExp.length; i++) {
-    expect(residualsExp[i],
-        equalsWithPrecision(residualsAct[i], precision: 1E-8));
+  for (var i = 0; i < residualsExp.length; i++) {
+    expect(
+        residualsExp[i], equalsWithPrecision(residualsAct[i], precision: 1E-8));
   }
 
-  expect(lm.errorVariance(), equalsWithPrecision(92936.006167, precision: 1E-6));
+  expect(
+      lm.errorVariance(), equalsWithPrecision(92936.006167, precision: 1E-6));
   expect(lm.totalSumOfSquares(),
       equalsWithPrecision(1.850088260000004E8, precision: 1E-2));
   expect(lm.regressionStandardError(),
       equalsWithPrecision(304.8540735619638, precision: 1E-10));
 
-
   var errors = lm.regressionParametersStandardErrors();
-  var errorsExp = <num>[890420.383607373,
+  var errorsExp = <num>[
+    890420.383607373,
     84.9149257747669,
     0.334910077722432E-01,
     0.488399681651699,
     0.214274163161675,
     0.226073200069370,
-    455.478499142212];
-  for (int i = 0; i < errors.length; i++) {
+    455.478499142212
+  ];
+  for (var i = 0; i < errors.length; i++) {
     expect(errorsExp[i], equalsWithPrecision(errors[i], precision: 1E-6));
   }
-  
+
   var rSquared = lm.rSquared();
   expect(rSquared, equalsWithPrecision(0.995479004577296, precision: 1E-12));
-
 }
 
-testCars() {
-  var data = <num>[
-    4,
-    2,
-    4,
-    10,
-    7,
-    4,
-    7,
-    22,
-    8,
-    16,
-    9,
-    10,
-    10,
-    18,
-    10,
-    26,
-    10,
-    34,
-    11,
-    17,
-    11,
-    28,
-    12,
-    14,
-    12,
-    20,
-    12,
-    24,
-    12,
-    28,
-    13,
-    26,
-    13,
-    34,
-    13,
-    34,
-    13,
-    46,
-    14,
-    26,
-    14,
-    36,
-    14,
-    60,
-    14,
-    80,
-    15,
-    20,
-    15,
-    26,
-    15,
-    54,
-    16,
-    32,
-    16,
-    40,
-    17,
-    32,
-    17,
-    40,
-    17,
-    50,
-    18,
-    42,
-    18,
-    56,
-    18,
-    76,
-    18,
-    84,
-    19,
-    36,
-    19,
-    46,
-    19,
-    68,
-    20,
-    32,
-    20,
-    48,
-    20,
-    52,
-    20,
-    56,
-    20,
-    64,
-    22,
-    66,
-    23,
-    54,
-    24,
-    70,
-    24,
-    92,
-    24,
-    93,
-    24,
-    120,
-    25,
-    85,
-  ];
-  var speed = ColumnMatrix(List.generate(50, (i) => data[i * 2]));
-  var dist = ColumnMatrix(List.generate(50, (i) => data[i * 2 + 1]));
+void testCars() {
+  var data = cars();
   var X =
-      ColumnMatrix.filled(50, 1.0).cbind(DoubleMatrix(speed.toList(), 50, 1));
-
-  var reg = LinearModel(X, dist);
+      ColumnMatrix.filled(50, 1.0).cbind(DoubleMatrix(data['speed'], 50, 1));
+  var reg = LinearModel(X, ColumnMatrix(data['dist']));
   expect(reg.coefficients.map((e) => e.toStringAsFixed(4)).toList(),
       ['-17.5791', '3.9324']);
 
@@ -223,7 +120,8 @@ testCars() {
   expect(rSquared, equalsWithPrecision(0.6510794, precision: 1E-7));
 
   var regStdError = reg.regressionStandardError();
-  expect(regStdError.toStringAsFixed(5), '15.37959'); // fails on 3th digit 15/3796
+  expect(
+      regStdError.toStringAsFixed(5), '15.37959'); // fails on 3th digit 15/3796
 
   var residuals = reg.residuals();
   expect(residuals[0].toStringAsFixed(6), '3.849460');
@@ -234,13 +132,13 @@ testCars() {
   expect(actualStdErrors[1].toStringAsFixed(5), '0.41551');
 }
 
-tests() {
+void tests() {
   group('Linear model regression: ', () {
     test('Longley data', () => testLongley());
     test('R cars data', () => testCars());
   });
 }
 
-main() {
+void main() {
   tests();
 }

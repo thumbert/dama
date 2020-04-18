@@ -14,7 +14,7 @@ abstract class Matrix {
 
   static String MULTIPLICATION_METHOD = 'NAIVE';
 
-  Matrix._empty(int this.nrow, int this.ncol);
+  Matrix._empty(this.nrow, this.ncol);
 
   /// Create a matrix from a list of values.  Elements are filled in column major order, e.g.
   /// for element [i,j] the index i varies faster.  You can fill elements in row major order by
@@ -37,15 +37,18 @@ abstract class Matrix {
 
   ///Get the row with index [i] from the matrix.
   Matrix row(int i) {
-    List<num> res = new List.filled(0, ncol);
-    for (int j=0; j<ncol; j++)
+    var res = List.filled(ncol, 0.0);
+    for (var j=0; j<ncol; j++) {
       res[j] = element(i,j);
+    }
     return Matrix(res, 1, ncol);
   }
 
   /// Overwrite the row [i] of the matrix with [values].
   void setRow(int i, List<num> values) {
-    for (int j = 0; j < ncol; j++) setElement(i,j, values[j].toDouble());
+    for (var j = 0; j < ncol; j++) {
+      setElement(i,j, values[j].toDouble());
+    }
   }
 
   /// Get the column with index [j] from the matrix.
@@ -56,32 +59,39 @@ abstract class Matrix {
 
   /// Overwrite the column [j] of the matrix with [values].
   void setColumn(int j, List<num> values) {
-    for (int i = 0; i < nrow; i++) setElement(i, j, values[i].toDouble());
+    for (var i = 0; i < nrow; i++) {
+      setElement(i, j, values[i].toDouble());
+    }
   }
 
 
   /// Reshape a matrix.  Arrange the given elements to a different matrix
   /// dimensions.  New dimensions should allow reshaping.
   Matrix reshape(int nrow, int ncol) {
-    if (this.nrow*this.ncol != nrow * ncol)
+    if (this.nrow*this.ncol != nrow * ncol) {
       throw 'Dimensions mismatch!';
-    return new Matrix(this.toList(), nrow, ncol);
+    }
+    return Matrix(toList(), nrow, ncol);
   }
 
   /// Return the main diagonal of the matrix.
   List get diag {
-    int s = min(nrow, ncol);
-    List res = new List.filled(s, element(0,0));
+    var s = min(nrow, ncol);
+    var res = List.filled(s, element(0,0));
     if (s > 1) {
-      for (int i = 1; i < s; i++) res[i] = element(i,i);
+      for (var i = 1; i < s; i++) {
+        res[i] = element(i,i);
+      }
     }
     return res;
   }
 
   /// Set the diagonal values of the matrix
   set diag(List<num> values) {
-    int s = min(nrow, ncol);
-    for (int i = 0; i < s; i++) setElement(i, i, values[i].toDouble());
+    var s = min(nrow, ncol);
+    for (var i = 0; i < s; i++) {
+      setElement(i, i, values[i].toDouble());
+    }
   }
 
   /// Transpose this matrix
@@ -91,23 +101,27 @@ abstract class Matrix {
   /// Function f takes an Iterable argument and returns a value.
   Matrix columnApply(Function f) {
     var res = <num>[];
-    for (int j = 0; j < ncol; j++) res.add(f(column(j).toList()));
-    return new Matrix(res, 1, ncol);
+    for (var j = 0; j < ncol; j++) {
+      res.add(f(column(j).toList()));
+    }
+    return Matrix(res, 1, ncol);
   }
 
   /// Apply function f to each row of the matrix.  Return a column matrix.
   /// Function f takes an Iterable argument and returns a value.
   Matrix rowApply(Function f) {
     var res = <num>[];
-    for (int i = 0; i < nrow; i++) res.add(f(row(i).toList()));
-    return new Matrix(res, nrow, 1);
+    for (var i = 0; i < nrow; i++) {
+      res.add(f(row(i).toList()));
+    }
+    return Matrix(res, nrow, 1);
   }
 
   /// Calculate the norm of the matrix.
   /// argument [p] can be '1' or 'INFINITY'
   /// If [p=1] it is the maximum absolute column sum of the matrix
   /// If [p=INFINITY] it is the maximum absolute row sum of the matrix
-  num norm({String p: '1'}) {
+  num norm({String p = '1'}) {
     Function absSum = (List<num> x) => x.fold(0.0, (a, num b) => a + b.abs());
     num res;
     if (p == '1') {
@@ -123,16 +137,20 @@ abstract class Matrix {
   }
 
   /// Extract the data from List<Float64List> back into a Float64List.
-  Float64List toList({bool byRow: false }) {
-    Float64List res = new Float64List(nrow*ncol);
+  Float64List toList({bool byRow = false }) {
+    var res = Float64List(nrow*ncol);
     if (byRow) {
-      for (int i=0; i<nrow; i++)
-        for (int j=0; j<ncol; j++)
-          res[i*ncol + j] = element(i,j);
+      for (var i=0; i<nrow; i++) {
+        for (var j = 0; j < ncol; j++) {
+          res[i * ncol + j] = element(i, j);
+        }
+      }
     } else {
-      for (int j=0; j<ncol; j++)
-        for (int i=0; i<nrow; i++)
-          res[j*nrow + i] = element(i,j);
+      for (var j=0; j<ncol; j++) {
+        for (var i = 0; i < nrow; i++) {
+          res[j * nrow + i] = element(i, j);
+        }
+      }
     }
 
     return res;
@@ -150,15 +168,17 @@ abstract class Matrix {
     setElement(ind[0], ind[1], value.toDouble());
   }
 
+  @override
   bool operator ==(dynamic that) {
     if (that is! Matrix) return false;
 
     if (that.nrow != nrow || that.ncol != ncol) return false;
 
-    for (int i = 0; i < nrow; i++)
-      for (int j = 0; j < ncol; j++)
-        if (element(i,j) != that.element(i,j)) return false;
-
+    for (var i = 0; i < nrow; i++) {
+      for (var j = 0; j < ncol; j++) {
+        if (element(i, j) != that.element(i, j)) return false;
+      }
+    }
     return true;
   }
 
@@ -166,17 +186,20 @@ abstract class Matrix {
   bool isSquare() => nrow == ncol ? true : false;
 
 
-
   /// used in double_matrix.dart
-  _populateMatrix(List<num> x, List<List<double>> data, {bool byRow: false}) {
+  void _populateMatrix(List<num> x, List<List<double>> data, {bool byRow = false}) {
     if (byRow) {
-      for (int i = 0; i < nrow; i++)
-        for (int j = 0; j < ncol; j++)
+      for (var i = 0; i < nrow; i++) {
+        for (var j = 0; j < ncol; j++) {
           data[i][j] = x[j + i * ncol].toDouble();
+        }
+      }
     } else {
-      for (int i = 0; i < nrow; i++)
-        for (int j = 0; j < ncol; j++)
+      for (var i = 0; i < nrow; i++) {
+        for (var j = 0; j < ncol; j++) {
           data[i][j] = x[i + j * nrow].toDouble();
+        }
+      }
     }
   }
 
