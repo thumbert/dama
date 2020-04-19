@@ -19,6 +19,7 @@ import 'stat/descriptive/ecdf_test.dart' as ecdf;
 import 'stat/descriptive/quantile_test.dart' as quantile;
 import 'stat/descriptive/summary_test.dart' as summary;
 import 'stat/regression/linear_model_test.dart' as lm;
+import 'stat/regression/linear_model_summary_test.dart' as lm_summary;
 import 'special/erf_test.dart' as erf;
 
 
@@ -44,6 +45,7 @@ void main(){
 
   // linear regression
   lm.tests();
+  lm_summary.tests();
 
   // special functions
   erf.main();

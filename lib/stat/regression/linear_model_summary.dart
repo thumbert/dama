@@ -45,7 +45,7 @@ class LinearModelSummary {
   /// Try to replicate R's output.
   @override
   String toString() {
-    var out = '\nResiduals:\n';
+    var out = 'Residuals:\n';
     var _aux = summary(lm.residuals());
     var _resid = {
       'Min': _aux['Min.'],
