@@ -3,17 +3,17 @@ library analysis.integration.tanhsinh_integrator;
 import 'dart:math';
 import 'package:logging/logging.dart';
 import 'package:dama/analysis/integration/univariate_integrator.dart';
-import 'package:dama/special//hyperbolic_trig.dart';
+import 'package:dama/special/hyperbolic_trig.dart';
 
-final Logger _log = new Logger("TanhSinh");
+final Logger _log = Logger("TanhSinh");
 
 class TanhSinhIntegrator extends BaseAbstractUnivariateIntegrator {
   final int TANHSINH_MAX_LEVEL_COUNT = 12;
 
-  /** Abscissas for the current method. */
+  /// Abscissas for the current method. */
   List<double> _abscissas;
 
-  /** Weights for the current method. */
+  /// Weights for the current method. */
   List<double> _weights;
 
   /// Implements TanhSinh quadrature. Finite interval integration.
