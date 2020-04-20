@@ -1,4 +1,4 @@
-library hyperbolic_trig;
+library special.hyperbolic_trig;
 
 import 'dart:math';
 
@@ -10,7 +10,6 @@ num cosh(num x) => 0.5*(exp(x) + exp(-x));
 
 /// Returns hyperbolic tangent of x.
 num tanh(num x) => (exp(2*x) - 1) / (exp(2*x) + 1);
-
 
 /// Returns hyperbolic cotangent of x.
 num coth(num x) => (exp(2*x) + 1) / (exp(2*x) - 1);
