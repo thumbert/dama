@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:dama/analysis/integration/tanhsinh_integrator.dart';
 import 'package:dama/dama.dart';
-import 'package:table/table.dart';
+import 'package:table/src/table_base.dart';
 
 class LinearModelSummary {
   LinearModel lm;
