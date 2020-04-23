@@ -52,7 +52,7 @@ Map<String, List<num>> cars() {
       24,
       24,
       24,
-      25
+      25,
     ],
     'dist': <num>[
       2,
@@ -104,7 +104,7 @@ Map<String, List<num>> cars() {
       92,
       93,
       120,
-      85
+      85,
     ]
   };
 }

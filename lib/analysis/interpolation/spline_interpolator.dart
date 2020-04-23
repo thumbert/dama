@@ -63,6 +63,7 @@ class SplineInterpolator {
 
     _fun = (num x) {
       var i = _findInd(x);
+      if (i == -1) return double.nan;
       var d = x - xData[i];
       return yData[i] + _b[i]*d + _c[i]*d*d + _d[i]*d*d*d;
     };
@@ -72,9 +73,9 @@ class SplineInterpolator {
   int _findInd(num x) {
     int i;
     if (x < xData.first) {
-      return 0;
+      return -1; // 0
     } else if (x > xData.last) {
-      return xData.length-1;
+      return -1; // xData.length-1;
     } else {
       i = _ind.lastWhere((i) => xData[i] <= x);
     }

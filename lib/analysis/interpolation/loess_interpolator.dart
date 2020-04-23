@@ -51,7 +51,7 @@ class LoessInterpolator {
   }
 
   /// Calculate the value of the loess interpolator at this abscissa by
-  /// spline interpolation.
+  /// spline interpolation.  Values that are extrapolated will return NaN.
   num valueAt(num x) => _splineInterpolator.valueAt(x);
 
 

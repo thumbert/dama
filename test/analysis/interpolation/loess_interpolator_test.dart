@@ -87,25 +87,29 @@ void tests() {
       var res = x.map((e) => loess.valueAt(e)).map((e) => round(e, 0.001)).toList();
       expect(res, yref);
     });
+
+    test('cars', () {
+      /// this Loess is degree 1, in R it's degree 2 by default.
+      var aux = cars();
+      var speed = aux['speed'].map((e) => e.toDouble()).toList();
+      var dist = aux['dist'].map((e) => e.toDouble()).toList();
+      var loess = LoessInterpolator(speed, dist);
+      var res = speed.map((x) => loess.valueAt(x)).toList();
+      expect(res.every((e) => e.isFinite), true);
+      // extrapolation doesn't fail
+      var y1 = loess.valueAt(2.0);
+      expect(y1.isNaN, true);
+      var y2 = loess.valueAt(26.0);
+      expect(y2.isNaN, true);
+    });
+
   });
 }
 
-void loessCarsTest(){
-  group('Loess interpolator', () {
-    /// this Loess is degree 1, in R it's degree 2 by default.
-    /// This fails, not sure why 4/26/2020
-    var aux = cars();
-    var speed = aux['speed'].map((e) => e.toDouble()).toList();
-    var dist = aux['dist'].map((e) => e.toDouble()).toList();
-    var loess = LoessInterpolator(speed, dist);
-    var res = speed.map((x) => loess.valueAt(x)).toList();
-    res.forEach(print);
-  });
-}
 
 void main() {
 //  loessInterpolatorTest();
 
-  loessCarsTest();
+  tests();
 
 }
