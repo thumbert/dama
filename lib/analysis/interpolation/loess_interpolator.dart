@@ -24,15 +24,22 @@ class LoessInterpolator {
 
   SplineInterpolator _splineInterpolator;
 
-  /// A 1-st order Loess interpolator.
-  LoessInterpolator(List<num> x, List<num> y,
-      {List<num> weights, this.bandwidth: 0.3, this.robustnessIters: 2,
-        this.accuracy: 1e-12}) {
-    if (bandwidth < 0 || bandwidth > 1)
-      throw new RangeError('Bandwidth needs to be between (0,1)');
+  /// A 1-st order Loess interpolator.  If the [weights] are not specified
+  /// they are set equal to 1.
+  LoessInterpolator(List<double> x, List<double> y,
+      {List<num> weights, this.bandwidth = 0.3, this.robustnessIters = 2,
+        this.accuracy = 1e-12}) {
+    if (bandwidth < 0 || bandwidth > 1) {
+      throw RangeError('Bandwidth needs to be between (0,1)');
+    }
 
-    var yVal = _smooth(x.cast<double>(), y.cast<double>(), weights: weights);
-    _splineInterpolator = new SplineInterpolator(x, yVal);
+    // sort the inputs by x values so the spline interpolation works
+    var ind = Map.fromIterables(x, List.generate(x.length, (i) => i));
+    var xs = List<double>.from(x)..sort();
+    var ys = [ for(var i=0; i<x.length; i++) y[ind[xs[i]]]];
+
+    var yVal = _smooth(xs, ys, weights: weights);
+    _splineInterpolator = SplineInterpolator(xs, yVal);
   }
 
   /// Calculate the value of the loess interpolator at this abscissa.
@@ -43,36 +50,38 @@ class LoessInterpolator {
   /// If the weights are not specified, they are set to 1.
   /// Return the calculated values at the input abscissae [x].
   List<double> _smooth(List<double> x, List<double> y, {List<double> weights}) {
-    if (x.length != y.length)
-      throw new ArgumentError('Dimensions of x and y inputs don\'t match');
-    weights ??= new List.filled(x.length, 1.0);
-    if (weights.length != x.length)
-      throw new ArgumentError(
+    if (x.length != y.length) {
+      throw ArgumentError('Dimensions of x and y inputs don\'t match');
+    }
+    weights ??= List.filled(x.length, 1.0);
+    if (weights.length != x.length) {
+      throw ArgumentError(
           'Length of weights does not equal length of data');
+    }
 
-    int n = x.length;
+    var n = x.length;
     if (n == 1) return [y[0]];
     if (n == 2) return [y[0], y[1]];
 
-    int bandwithInPoints = (bandwidth * n).floor();
-    List<double> res = new List(n);
-    List<double> residuals = new List(n);
-    List<double> sortedResiduals = new List(n);
-    List<double> robustnessWeights = new List.filled(n, 1.0);
+    var bandwithInPoints = (bandwidth * n).floor();
+    var res = List<double>.filled(n, null);
+    var residuals = List<double>.filled(n, null);
+    var sortedResiduals = List<double>.filled(n, null);
+    var robustnessWeights = List.filled(n, 1.0);
 
     /// Do an initial fit
-    for (int iter = 0; iter <= robustnessIters; ++iter) {
+    for (var iter = 0; iter <= robustnessIters; ++iter) {
       var bandwidthInterval = [0, bandwithInPoints - 1];
 
       /// At each x, compute a local weighted linerar regression
-      for (int i = 0; i < n; ++i) {
-        double _x = x[i].toDouble();
+      for (var i = 0; i < n; ++i) {
+        var _x = x[i].toDouble();
 
         /// Find out the interval of source points on which you do a regression
         if (i > 0) _updateBadwidthInteval(x, weights, i, bandwidthInterval);
 
-        int ileft = bandwidthInterval[0];
-        int iright = bandwidthInterval[1];
+        var ileft = bandwidthInterval[0];
+        var iright = bandwidthInterval[1];
 
         /// Compute the point of the bandwidth interval that is farthest
         int edge;
@@ -83,18 +92,18 @@ class LoessInterpolator {
         }
 
         /// Compute a least-squares linear fit weighted
-        double sumWeights = 0.0;
-        double sumX = 0.0;
-        double sumXSquared = 0.0;
-        double sumY = 0.0;
-        double sumXY = 0.0;
-        double denom = (1.0 / (x[edge] - _x)).abs();
-        for (int k = ileft; k <= iright; ++k) {
-          double xk = x[k].toDouble();
-          double yk = y[k].toDouble();
-          double dist = (k < i) ? _x - xk : xk - _x;
-          double w = _tricube(dist * denom) * robustnessWeights[k] * weights[k];
-          double xkw = xk * w;
+        var sumWeights = 0.0;
+        var sumX = 0.0;
+        var sumXSquared = 0.0;
+        var sumY = 0.0;
+        var sumXY = 0.0;
+        var denom = (1.0 / (x[edge] - _x)).abs();
+        for (var k = ileft; k <= iright; ++k) {
+          var xk = x[k];
+          var yk = y[k];
+          var dist = (k < i) ? _x - xk : xk - _x;
+          var w = _tricube(dist * denom) * robustnessWeights[k] * weights[k];
+          var xkw = xk * w;
           sumWeights += w;
           sumX += xkw;
           sumXSquared += xk * xkw;
@@ -102,10 +111,10 @@ class LoessInterpolator {
           sumXY += yk * xkw;
         }
 
-        double meanX = sumX / sumWeights;
-        double meanY = sumY / sumWeights;
-        double meanXY = sumXY / sumWeights;
-        double meanXSquared = sumXSquared / sumWeights;
+        var meanX = sumX / sumWeights;
+        var meanY = sumY / sumWeights;
+        var meanXY = sumXY / sumWeights;
+        var meanXSquared = sumXSquared / sumWeights;
 
         double beta;
         if ((meanXSquared - meanX * meanX).abs() < accuracy) {
@@ -114,7 +123,7 @@ class LoessInterpolator {
           beta = (meanXY - meanX * meanY) / (meanXSquared - meanX * meanX);
         }
 
-        final double alpha = meanY - beta * meanX;
+        final alpha = meanY - beta * meanX;
 
         res[i] = beta * _x + alpha;
         residuals[i] = (y[i] - res[i]).abs();
@@ -128,20 +137,20 @@ class LoessInterpolator {
 
       // Recompute the robustness weights.
       // Find the median residual.
-      sortedResiduals = new List.from(residuals);
+      sortedResiduals = List.from(residuals);
       sortedResiduals.sort();
-      final double medianResidual = sortedResiduals[n ~/ 2];
+      final medianResidual = sortedResiduals[n ~/ 2];
 
       if (medianResidual.abs() < accuracy) {
         break;
       }
 
-      for (int i = 0; i < n; ++i) {
-        final double arg = residuals[i] / (6 * medianResidual);
+      for (var i = 0; i < n; ++i) {
+        final arg = residuals[i] / (6 * medianResidual);
         if (arg >= 1) {
           robustnessWeights[i] = 0.0;
         } else {
-          final double w = 1 - arg * arg;
+          final w = 1 - arg * arg;
           robustnessWeights[i] = w * w;
         }
       }
@@ -153,12 +162,12 @@ class LoessInterpolator {
   /// Return a two element list [left,right].  Modify the [bandwidthInterval].
   void _updateBadwidthInteval(List<double> x, List<double> weights, int i,
       List<int> bandwidthInterval) {
-    int left = bandwidthInterval[0];
-    int right = bandwidthInterval[1];
+    var left = bandwidthInterval[0];
+    var right = bandwidthInterval[1];
 
-    int nextRight = _nextNonzero(weights, right);
+    var nextRight = _nextNonzero(weights, right);
     if (nextRight < x.length && x[nextRight] - x[i] < x[i] - x[left]) {
-      int nextLeft = _nextNonzero(weights, bandwidthInterval[0]);
+      var nextLeft = _nextNonzero(weights, bandwidthInterval[0]);
       bandwidthInterval[0] = nextLeft;
       bandwidthInterval[1] = nextRight;
     }
@@ -166,7 +175,7 @@ class LoessInterpolator {
 
   /// Return the smallest index
   int _nextNonzero(List<double> weights, int i) {
-    int j = i + 1;
+    var j = i + 1;
     while (j < weights.length && weights[j] == 0) {
       ++j;
     }
@@ -177,7 +186,7 @@ class LoessInterpolator {
   /// <a href="http://en.wikipedia.org/wiki/Local_regression#Weight_function">tricube</a>
   /// weight function (1 - |x|^3)^3 for |x| < 1, 0 otherwise
   double _tricube(double x) {
-    double absX = x.abs();
+    var absX = x.abs();
     if (absX >= 1.0) return 0.0;
     var tmp = 1 - absX * absX * absX;
     return tmp * tmp * tmp;

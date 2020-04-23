@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:dama/analysis/integration/tanhsinh_integrator.dart';
 import 'package:dama/dama.dart';
-import 'package:table/src/table_base.dart';
+import 'package:table/table_base.dart';
 
 class LinearModelSummary {
   LinearModel lm;
@@ -63,14 +63,23 @@ class LinearModelSummary {
     var tValues = [for (var i=0; i<names.length; i++) coeff[i]/sd[i]];
     nu = lm.residuals().length - coeff.length;
 
+    var _fmtValue = (double x) {
+      if (x.abs() < 1000) {
+        return x.toStringAsFixed(4);
+      } else {
+        return x.toStringAsExponential(4);
+      }
+    };
+
     out += '\n\nCoefficients:\n';
     var _coeffOptions = {
       'format': {
-        'Estimate': (x) => (x as double).toStringAsFixed(4),
-        'Std. Error': (x) => (x as double).toStringAsFixed(4),
+        'Estimate': (x) => _fmtValue(x as double),
+        'Std. Error': (x) => _fmtValue(x as double),
         't value': (x) => (x as double).toStringAsFixed(3),
         'Pr(>|t|)': (x) => (x as double).toStringAsPrecision(3),
-      }
+      },
+      'columnSeparation': ' ',
     };
     var prob = tValues.map((t) => pValue(t)).toList();
 

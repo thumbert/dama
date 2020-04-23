@@ -5,8 +5,8 @@ import 'package:dama/analysis/interpolation/loess_interpolator.dart';
 import 'package:dama/stat/descriptive/summary.dart';
 import '../../_data/cars.dart';
 
-loessInterpolatorTest() {
-  group('Loess interpolator', () {
+void loessInterpolatorTest() {
+  group('Loess interpolator: ', () {
 //    test('two points', () {
 //      var x = <num>[0.5, 0.6];
 //      var y = <num>[0.7, 0.8];
@@ -16,8 +16,7 @@ loessInterpolatorTest() {
 //    });
 
     test('math 296', () {
-      var x = <num>[
-        0.1,
+      var x = <double>[
         0.2,
         0.3,
         0.4,
@@ -36,10 +35,10 @@ loessInterpolatorTest() {
         1.7,
         1.8,
         1.9,
-        2.0
+        2.0,
+        0.1,
       ];
-      var y = <num>[
-        0.47,
+      var y = <double>[
         0.48,
         0.55,
         0.56,
@@ -58,10 +57,10 @@ loessInterpolatorTest() {
         3.54,
         3.46,
         3.36,
-        3.35
+        3.35,
+        0.47,
       ];
-      List yref = [
-        0.46076,
+      var yref = <double>[
         0.49997,
         0.54298,
         0.31910,
@@ -80,9 +79,10 @@ loessInterpolatorTest() {
         0.997028,
         3.45001,
         3.39075,
-        3.33677
+        3.33677,
+        0.46076,
       ].map((e) => round(e, 0.001)).toList();
-      var loess = new LoessInterpolator(x, y, bandwidth: 0.3, robustnessIters: 4,
+      var loess = LoessInterpolator(x, y, bandwidth: 0.3, robustnessIters: 4,
         accuracy: 1e-12);
       var res = x.map((e) => loess.valueAt(e)).map((e) => round(e, 0.001)).toList();
       expect(res, yref);
@@ -90,19 +90,22 @@ loessInterpolatorTest() {
   });
 }
 
-loessCarsTest(){
+void loessCarsTest(){
   group('Loess interpolator', () {
     /// this Loess is degree 1, in R it's degree 2 by default.
-    Map<String,List<num>> aux = cars();
-    var loess = new LoessInterpolator(aux['speed'], aux['dist']);
+    /// This fails, not sure why 4/26/2020
+    var aux = cars();
+    var speed = aux['speed'].map((e) => e.toDouble()).toList();
+    var dist = aux['dist'].map((e) => e.toDouble()).toList();
+    var loess = LoessInterpolator(speed, dist);
     var res = aux['speed'].map((x) => loess.valueAt(x)).toList();
     res.forEach(print);
   });
 }
 
-main() {
+void main() {
   loessInterpolatorTest();
 
-  //loessCarsTest();
+//  loessCarsTest();
 
 }

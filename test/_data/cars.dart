@@ -2,7 +2,7 @@
 
 Map<String, List<num>> cars() {
   return {
-    'speed': [
+    'speed': <num>[
       4,
       4,
       7,
@@ -54,7 +54,7 @@ Map<String, List<num>> cars() {
       24,
       25
     ],
-    'dist': [
+    'dist': <num>[
       2,
       10,
       4,
