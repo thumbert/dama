@@ -5,7 +5,7 @@ import 'package:dama/analysis/interpolation/loess_interpolator.dart';
 import 'package:dama/stat/descriptive/summary.dart';
 import '../../_data/cars.dart';
 
-void loessInterpolatorTest() {
+void tests() {
   group('Loess interpolator: ', () {
 //    test('two points', () {
 //      var x = <num>[0.5, 0.6];
@@ -98,14 +98,14 @@ void loessCarsTest(){
     var speed = aux['speed'].map((e) => e.toDouble()).toList();
     var dist = aux['dist'].map((e) => e.toDouble()).toList();
     var loess = LoessInterpolator(speed, dist);
-    var res = aux['speed'].map((x) => loess.valueAt(x)).toList();
+    var res = speed.map((x) => loess.valueAt(x)).toList();
     res.forEach(print);
   });
 }
 
 void main() {
-  loessInterpolatorTest();
+//  loessInterpolatorTest();
 
-//  loessCarsTest();
+  loessCarsTest();
 
 }

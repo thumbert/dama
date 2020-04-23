@@ -39,10 +39,19 @@ class LoessInterpolator {
     var ys = [ for(var i=0; i<x.length; i++) y[ind[xs[i]]]];
 
     var yVal = _smooth(xs, ys, weights: weights);
-    _splineInterpolator = SplineInterpolator(xs, yVal);
+    // to construct the spline interpolator, keep only the unique xs values
+    var xu = <double>[xs.first];
+    var yu  = <double>[yVal.first];
+    for (var i = 1; i < xs.length; ++i) {
+      if (xs[i] == xs[i-1]) continue;
+      xu.add(xs[i]);
+      yu.add(yVal[i]);
+    }
+    _splineInterpolator = SplineInterpolator(xu, yu);
   }
 
-  /// Calculate the value of the loess interpolator at this abscissa.
+  /// Calculate the value of the loess interpolator at this abscissa by
+  /// spline interpolation.
   num valueAt(num x) => _splineInterpolator.valueAt(x);
 
 

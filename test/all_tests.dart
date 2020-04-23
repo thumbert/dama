@@ -28,7 +28,7 @@ void main(){
   // analysis
   quadrature1d.main();
   spline_interpolation.main();
-  loess_interpolation.main();
+  loess_interpolation.tests();
   quadratic_interpolation.main();
 
   // basic
