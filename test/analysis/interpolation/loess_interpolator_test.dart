@@ -101,6 +101,8 @@ void tests() {
       expect(y1.isNaN, true);
       var y2 = loess.valueAt(26.0);
       expect(y2.isNaN, true);
+      var domain = loess.domain;
+      expect(domain, [4.0, 25.0]);
     });
 
   });

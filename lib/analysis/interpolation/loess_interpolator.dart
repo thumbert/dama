@@ -21,7 +21,11 @@ class LoessInterpolator {
   /// If the median residual at a certain robustness iteration
   /// is less than this amount, no more iterations are done.
   double accuracy;
-
+  
+  /// The range of [x] values which represents the domain of the
+  /// LoessInterpolator.
+  List<double> _domain;
+  
   SplineInterpolator _splineInterpolator;
 
   /// A 1-st order Loess interpolator.  If the [weights] are not specified
@@ -39,11 +43,17 @@ class LoessInterpolator {
     var ys = [ for(var i=0; i<x.length; i++) y[ind[xs[i]]]];
 
     var yVal = _smooth(xs, ys, weights: weights);
+    
     // to construct the spline interpolator, keep only the unique xs values
     var xu = <double>[xs.first];
     var yu  = <double>[yVal.first];
+    _domain = [xs.first, xs.first];
+    
     for (var i = 1; i < xs.length; ++i) {
       if (xs[i] == xs[i-1]) continue;
+      // calculate the range too
+      if (xs[i] > _domain[1]) _domain[1] = xs[i];
+      if (xs[i] < _domain[0]) _domain[0] = xs[i];
       xu.add(xs[i]);
       yu.add(yVal[i]);
     }
@@ -52,8 +62,13 @@ class LoessInterpolator {
 
   /// Calculate the value of the loess interpolator at this abscissa by
   /// spline interpolation.  Values that are extrapolated will return NaN.
-  num valueAt(num x) => _splineInterpolator.valueAt(x);
+  num valueAt(num x) {
+    if (x < _domain[0] || x > _domain[1]) return double.nan;
+    return _splineInterpolator.valueAt(x);
+  }
 
+  /// Get the domain of the interpolator (the range of x values.)
+  List<double> get domain => _domain;
 
   /// Compute the loess interpolation given the input data [x] and [y].
   /// If the weights are not specified, they are set to 1.
