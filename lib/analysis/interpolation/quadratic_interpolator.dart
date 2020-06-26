@@ -11,10 +11,12 @@ class QuadraticInterpolator {
   num _x01, _x02, _x12;
 
   QuadraticInterpolator(this.x, this.y) {
-    if (x.length != 3 || y.length != 3)
-      throw new ArgumentError('Length of input lists is not 3.');
-    if (min(x) != x[0] || max(x) != x[2])
-      throw new ArgumentError('xData input needs to be sorted');
+    if (x.length != 3 || y.length != 3) {
+      throw ArgumentError('Length of input lists is not 3.');
+    }
+    if (min(x) != x[0] || max(x) != x[2]) {
+      throw ArgumentError('xData input needs to be sorted');
+    }
 
     _x01 = x[0] - x[1];
     _x02 = x[0] - x[2];
