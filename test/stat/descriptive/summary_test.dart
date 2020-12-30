@@ -6,8 +6,7 @@ import 'package:dama/stat/descriptive/summary.dart';
 import 'package:dama/stat/descriptive/summary_ext.dart';
 import '../../_data/cars.dart';
 
-
-main() {
+void main() {
   group('Stat descriptive summary:', () {
     test('sum of an Iterable<num>', () {
       expect(sum([1, 2, 3]), 6);
@@ -17,7 +16,7 @@ main() {
       expect(sum([]), 0);
     });
     test('extension of sum', () {
-      expect(<num>[1,2,3].sum(), 6);
+      expect(<num>[1, 2, 3].sum(), 6);
     });
     test('max', () {
       expect(max([1, 2, 3, 4, 5]), 5);
@@ -44,13 +43,13 @@ main() {
       var y = [2, 1, 5];
       expect(manhattanDistance(x, y), 3.0);
     });
-    test('range test', (){
-      List r = range([4,2,1,5]);
-      expect(r, [1,5]);
+    test('range test', () {
+      List r = range([4, 2, 1, 5]);
+      expect(r, [1, 5]);
     });
-    test('range([4,2,NAN,5]) is [2,5]', (){
-      List r = range([4,2,double.nan,5]);
-      expect(r, [2,5]);
+    test('range([4,2,NAN,5]) is [2,5]', () {
+      List r = range([4, 2, double.nan, 5]);
+      expect(r, [2, 5]);
     });
     test('summary of an iterable', () {
       var res = summary([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -63,7 +62,7 @@ main() {
         'Max.': 10
       });
     });
-    test('ohlc', (){
+    test('ohlc', () {
       var res = ohlc([3, 6, 1, 2, 3, 6, 9, 10, 5, 7, 7]);
       expect(res, {'open': 3, 'high': 10, 'low': 1, 'close': 7});
     });

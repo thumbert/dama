@@ -67,7 +67,6 @@ num variance(Iterable<num> xs) {
   return double.nan;
 }
 
-
 /// Calculate the unbiased covariance estimator of two numeric vectors.
 /// cov(X, Y) = sum [(xi - E(X))(yi - E(Y))] / (n - 1)
 /// The length of the two vectors must be equal.///
@@ -105,11 +104,8 @@ num correlation(List<num> x, List<num> y) {
   var cov = covariance(x, y);
   var sx = sqrt(variance(x));
   var sy = sqrt(variance(y));
-  return cov/(sx * sy);
+  return cov / (sx * sy);
 }
-
-
-
 
 /// Calculate the open, high, low, close of this iterable.
 Map<String, num> ohlc(Iterable<num> xs) {
@@ -158,7 +154,7 @@ num manhattanDistance(List<num> x, List<num> y) {
     throw ArgumentError('The two vectors must have the same length');
   }
   var res = 0.0;
-  for (var i=0; i<x.length; i++) {
+  for (var i = 0; i < x.length; i++) {
     res += (y[i] - x[i]).abs();
   }
   return res;
