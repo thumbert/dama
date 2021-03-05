@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (released on 2021-03-05)
+- Last version before null safety 
+
+
 ## 1.0.1 (released on 2018-09-01)
 
 - Added loess and quadratic interpolators.  
