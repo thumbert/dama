@@ -3,7 +3,6 @@ library analysis.interpolation.loess_interpolation;
 import 'spline_interpolator.dart';
 
 class LoessInterpolator {
-
   /// The bandwidth parameter: when computing the loess fit at
   /// a particular point, this fraction of source points closest
   /// to the current point is taken into account for computing
@@ -21,18 +20,20 @@ class LoessInterpolator {
   /// If the median residual at a certain robustness iteration
   /// is less than this amount, no more iterations are done.
   double accuracy;
-  
+
   /// The range of [x] values which represents the domain of the
   /// LoessInterpolator.
-  List<double> _domain;
-  
-  SplineInterpolator _splineInterpolator;
+  late List<double> _domain;
+
+  late SplineInterpolator _splineInterpolator;
 
   /// A 1-st order Loess interpolator.  If the [weights] are not specified
   /// they are set equal to 1.
   LoessInterpolator(List<double> x, List<double> y,
-      {List<num> weights, this.bandwidth = 0.3, this.robustnessIters = 2,
-        this.accuracy = 1e-12}) {
+      {List<num>? weights,
+      this.bandwidth = 0.3,
+      this.robustnessIters = 2,
+      this.accuracy = 1e-12}) {
     if (bandwidth < 0 || bandwidth > 1) {
       throw RangeError('Bandwidth needs to be between (0,1)');
     }
@@ -40,17 +41,17 @@ class LoessInterpolator {
     // sort the inputs by x values so the spline interpolation works
     var ind = Map.fromIterables(x, List.generate(x.length, (i) => i));
     var xs = List<double>.from(x)..sort();
-    var ys = [ for(var i=0; i<x.length; i++) y[ind[xs[i]]]];
+    var ys = [for (var i = 0; i < x.length; i++) y[ind[xs[i]]!]];
 
-    var yVal = _smooth(xs, ys, weights: weights);
-    
+    var yVal = _smooth(xs, ys, weights: weights as List<double>?);
+
     // to construct the spline interpolator, keep only the unique xs values
     var xu = <double>[xs.first];
-    var yu  = <double>[yVal.first];
+    var yu = <double>[yVal.first];
     _domain = [xs.first, xs.first];
-    
+
     for (var i = 1; i < xs.length; ++i) {
-      if (xs[i] == xs[i-1]) continue;
+      if (xs[i] == xs[i - 1]) continue;
       // calculate the range too
       if (xs[i] > _domain[1]) _domain[1] = xs[i];
       if (xs[i] < _domain[0]) _domain[0] = xs[i];
@@ -64,7 +65,7 @@ class LoessInterpolator {
   /// spline interpolation.  Values that are extrapolated will return NaN.
   num valueAt(num x) {
     if (x < _domain[0] || x > _domain[1]) return double.nan;
-    return _splineInterpolator.valueAt(x);
+    return _splineInterpolator.valueAt(x)!;
   }
 
   /// Get the domain of the interpolator (the range of x values.)
@@ -73,14 +74,14 @@ class LoessInterpolator {
   /// Compute the loess interpolation given the input data [x] and [y].
   /// If the weights are not specified, they are set to 1.
   /// Return the calculated values at the input abscissae [x].
-  List<double> _smooth(List<double> x, List<double> y, {List<double> weights}) {
+  List<double> _smooth(List<double> x, List<double> y,
+      {List<double>? weights}) {
     if (x.length != y.length) {
       throw ArgumentError('Dimensions of x and y inputs don\'t match');
     }
     weights ??= List.filled(x.length, 1.0);
     if (weights.length != x.length) {
-      throw ArgumentError(
-          'Length of weights does not equal length of data');
+      throw ArgumentError('Length of weights does not equal length of data');
     }
 
     var n = x.length;
@@ -88,9 +89,9 @@ class LoessInterpolator {
     if (n == 2) return [y[0], y[1]];
 
     var bandwithInPoints = (bandwidth * n).floor();
-    var res = List<double>.filled(n, null);
-    var residuals = List<double>.filled(n, null);
-    var sortedResiduals = List<double>.filled(n, null);
+    var res = List<double>.filled(n, 0.0);
+    var residuals = List<double>.filled(n, 0.0);
+    var sortedResiduals = List<double>.filled(n, 0.0);
     var robustnessWeights = List.filled(n, 1.0);
 
     /// Do an initial fit

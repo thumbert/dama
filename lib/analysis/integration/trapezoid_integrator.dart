@@ -6,13 +6,13 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
   
   static final int TRAPEZOID_MAX_ITERATIONS_COUNT = 64;
   
-  double _s;
+  double? _s;
 
   TrapezoidIntegrator({
-      double relativeAccuracy, 
-      double absoluteAccuracy, 
-      int minimalIterationCount, 
-      int maximalIterationCount }) {
+      double? relativeAccuracy, 
+      double? absoluteAccuracy, 
+      int? minimalIterationCount, 
+      int? maximalIterationCount }) {
     if (relativeAccuracy == null) 
       relativeAccuracy = BaseAbstractUnivariateIntegrator.DEFAULT_RELATIVE_ACCURACY;
     if (absoluteAccuracy == null) 
@@ -47,7 +47,7 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
    * @throws TooManyEvaluationsException if the maximal number of evaluations
    * is exceeded.
    */
-  double stage(final BaseAbstractUnivariateIntegrator baseIntegrator, final int n) {
+  double? stage(final BaseAbstractUnivariateIntegrator baseIntegrator, final int n) {
 
     if (n == 0) {
       final double max = baseIntegrator.max;
@@ -69,20 +69,20 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
         x += spacing;
       }
       // add the new sum to previously calculated result
-      _s = 0.5 * (_s + sum * spacing);
+      _s = 0.5 * (_s! + sum * spacing);
       return _s;
     }
   }
 
   
-  double doIntegrate() {
-    double oldt = stage(this, 0);
+  double? doIntegrate() {
+    double? oldt = stage(this, 0);
     iterations.incrementCount();
     while (true) {
       final int i = iterations.count;
-      final double t = stage(this, i);
+      final double? t = stage(this, i);
       if (i >= getMinimalIterationCount()) {
-        final double delta = (t - oldt).abs();
+        final double delta = (t! - oldt!).abs();
         final double rLimit =
             getRelativeAccuracy() * (oldt + t).abs() * 0.5;
         if ((delta <= rLimit) || (delta <= getAbsoluteAccuracy())) {

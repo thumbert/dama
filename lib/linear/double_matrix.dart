@@ -1,9 +1,9 @@
 part of matrix.dart;
 
 class DoubleMatrix extends Matrix {
-  List<Float64List> data;
+  late List<Float64List> data;
 
-  static int _fmt_decimal_digits = 3;
+  static final int _fmt_decimal_digits = 3;
 
   /// A matrix will all double elements backed by a List<Float64List>.
   DoubleMatrix(List<num> x, int nrow, int ncol, {bool byRow: false})
@@ -23,17 +23,20 @@ class DoubleMatrix extends Matrix {
   }
 
   DoubleMatrix column(int j) {
-    List<double> x = List.generate(nrow, (i) => data[i][j]);
+    var x = List<double>.generate(nrow, (i) => data[i][j]);
     return DoubleMatrix(x, nrow, 1);
   }
 
   /// Get the row with index [i] from the matrix as a DoubleMatrix.
+  @override
   DoubleMatrix row(int i) => DoubleMatrix(data[i], 1, ncol);
 
   /// Get the element [i,j] of the matrix.
+  @override
   double element(int i, int j) => data[i][j];
 
   /// Set the matrix element [i,j] to [value].
+  @override
   void setElement(int i, int j, num value) {
     data[i][j] = value.toDouble();
   }

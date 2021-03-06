@@ -1,3 +1,5 @@
+
+
 library test.stat.descriptive.summary;
 
 import 'package:dama/src/utils/matchers.dart';
@@ -33,8 +35,8 @@ void main() {
     });
     test('correlation', () {
       var _cars = cars();
-      var speed = _cars['speed'];
-      var distance = _cars['dist'];
+      var speed = _cars['speed']!;
+      var distance = _cars['dist']!;
       expect(correlation(speed, distance),
           equalsWithPrecision(0.8068949, precision: 1E-6));
     });

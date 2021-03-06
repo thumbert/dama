@@ -1,3 +1,5 @@
+
+
 library linear.speed_test;
 
 
@@ -22,12 +24,12 @@ speed_test_doubleMatrix() {
   int N = 1500;
   print('Speed test Double Matrix');
   Stopwatch sw = new Stopwatch()..start();
-  DoubleMatrix a = _makeTestMatrix(N);
+  DoubleMatrix a = _makeTestMatrix(N) as DoubleMatrix;
   Matrix b = _makeTestMatrix(N);
   sw.stop();
   print('created in ${sw.elapsed}');
   sw.start();
-  Matrix c = a.multiply(b);
+  Matrix c = a.multiply(b as DoubleMatrix);
   print(c.element(N~/2, N~/2)); // -143.50016666665678
   print('multiplied in ${sw.elapsed}');
 }

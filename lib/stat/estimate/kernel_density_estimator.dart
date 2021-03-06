@@ -1,3 +1,5 @@
+
+
 library stat.estimate.kernel_density_estimator;
 
 import 'dart:math';
@@ -7,10 +9,10 @@ enum KernelType { gaussian, epanechnikov, biweight }
 
 class KernelDensityEstimator {
   List<num> data;
-  num bandwidth;
+  num? bandwidth;
   KernelType kernelType;
 
-  num Function(num) kernel;
+  late num Function(num) kernel;
 
   final _functions = {
     KernelType.gaussian: (num x) => exp(-0.5 * x * x) / sqrt(2 * pi),
@@ -28,12 +30,12 @@ class KernelDensityEstimator {
 
   KernelDensityEstimator(this.data,
       {this.bandwidth, this.kernelType = KernelType.gaussian}) {
-    bandwidth ??= _constants[kernelType] *
+    bandwidth ??= _constants[kernelType]! *
         sqrt(variance(data)) *
         exp(-0.2 * log(data.length));
     var _fun = _functions[kernelType];
     kernel =
-        (x) => mean(data.map((e) => _fun((x - e) / bandwidth))) / bandwidth;
+        (x) => mean(data.map((e) => _fun!((x - e) / bandwidth!))) / bandwidth!;
   }
 
   num valueAt(num x) => kernel(x);

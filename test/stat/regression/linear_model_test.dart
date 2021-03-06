@@ -1,3 +1,5 @@
+
+
 library test.stat.regression;
 
 import 'package:test/test.dart';
@@ -111,8 +113,8 @@ void testLongley() {
 void testCars() {
   var data = cars();
   var X =
-      ColumnMatrix.filled(50, 1.0).cbind(DoubleMatrix(data['speed'], 50, 1));
-  var reg = LinearModel(X, ColumnMatrix(data['dist']));
+      ColumnMatrix.filled(50, 1.0).cbind(DoubleMatrix(data['speed']!, 50, 1));
+  var reg = LinearModel(X, ColumnMatrix(data['dist']!));
   expect(reg.coefficients.map((e) => e.toStringAsFixed(4)).toList(),
       ['-17.5791', '3.9324']);
 

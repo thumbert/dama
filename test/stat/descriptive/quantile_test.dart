@@ -1,3 +1,5 @@
+
+
 library test_median;
 
 import 'dart:math';
@@ -79,7 +81,7 @@ speedTest() {
     int N = 20000000;
     List x = List.generate(N, (i) => i);
     x.shuffle(Random(0));
-    Quantile q = Quantile(x, shuffle: false);
+    Quantile q = Quantile(x as List<num>, shuffle: false);
     var w = Stopwatch()..start();
     var res = List.generate(1000000, (i) => i * 200).map((e) => q.minK(e));
     print('evaluation microseconds: ${w.elapsedMicroseconds}');

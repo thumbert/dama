@@ -9,7 +9,8 @@ import 'dart:math';
 double Phi(num x) {
   if (x < -8.0) return 0.0;
   if (x > 8.0) return 1.0;
-  double sum = 0.0, term = x;
+  var sum = 0.0;
+  var term = x.toDouble();
   for (var i = 3; sum + term != sum; i += 2) {
     sum += term;
     term *= x * x / i;
@@ -37,7 +38,7 @@ double cPhi(num x) {
     .0710695805388521071,
     0.0622586659950261958
   ];
-  double pwr = 1.0,
+  var pwr = 1.0,
       a = R[j],
       z = 2.0 * j,
       b = a * z - 1,

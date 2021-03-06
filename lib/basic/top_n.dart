@@ -12,13 +12,15 @@ import 'dart:collection';
 /// (in sorted order), element [0] being the max, element [1] being the second
 /// highest, etc.  If [n] is higher than the list values, return the list
 /// values, sorted.
-List<int> topN(List x, int n, {Function extractor, Function comparator}) {
+List<int> topN<K extends Comparable>(List<K> x, int n,
+    {K Function(int)? extractor, int Function(int a, int b)? comparator}) {
   extractor ??= (i) => x[i];
-  comparator ??= (i,j) => -extractor(i).compareTo(extractor(j)); // the max function
-  if (n < 1) throw new ArgumentError('n needs to be >= 1.');
-  var out = new SplayTreeSet.from(new List.generate(n, (i) => i), comparator);
+  comparator ??=
+      (i, j) => -extractor!(i).compareTo(extractor(j)); // the max function
+  if (n < 1) throw ArgumentError('n needs to be >= 1.');
+  var out = SplayTreeSet.from(List.generate(n, (i) => i), comparator);
   if (n >= x.length) return out.toList();
-  for (int i=n; i<x.length; i++) {
+  for (var i = n; i < x.length; i++) {
     if (comparator(out.last, i) == 1) {
       out.remove(out.last);
       out.add(i);

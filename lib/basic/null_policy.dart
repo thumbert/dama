@@ -1,24 +1,16 @@
 library basic.null_policy;
 
 /// Experimental.  How to maintain the type?
-class NullPolicy {
-  final Function _function;
+class NullPolicy<K> {
+  final K Function(K?) _function;
   const NullPolicy._internal(this._function);
 
-  static var nullToEmpty = NullPolicy._internal((x) {
-    if (x == null) return '';
-    return x;
-  });
+  static final nullToEmpty = NullPolicy._internal((String? x) => x ?? '');
 
-  static var nullToZero = NullPolicy._internal((num x) {
-    if (x == null) return 0;
-    return x;
-  });
+  static final nullToZero = NullPolicy._internal((num? x) => x ?? 0);
 
-  static nullToValue(value) => NullPolicy._internal((x) {
-    if (x == null) return value;
-    return x;
-  });
+  static NullPolicy nullToValue(dynamic value) =>
+      NullPolicy._internal((dynamic x) => x ?? value);
 
-  call(x) => _function(x);
+  dynamic call(dynamic x) => _function(x);
 }

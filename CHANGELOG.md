@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.0 (released on 2021-03-06)
+- Null safety version, without package table 
+
 ## 1.1.0 (released on 2021-03-05)
 - Last version before null safety 
 

@@ -1,3 +1,5 @@
+
+
 library test.stat.regression.linear_model_summary_test;
 
 import 'package:test/test.dart';
@@ -10,8 +12,8 @@ void tests() {
     test('cars data', () {
       var data = cars();
       var X = DoubleMatrix.filled(1.0, 50, 1)
-          .cbind(DoubleMatrix(data['speed'], 50, 1));
-      var lm = LinearModel(X, ColumnMatrix(data['dist']),
+          .cbind(DoubleMatrix(data['speed']!, 50, 1));
+      var lm = LinearModel(X, ColumnMatrix(data['dist']!),
           names: ['(Intercept)', 'speed']);
       var res = lm.summary();
       expect(res.toString(), '''Residuals:

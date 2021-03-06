@@ -7,23 +7,23 @@ import 'package:dama/distribution/gaussian_distribution.dart';
 class GeometricBrownianMotion {
   /// initial value
   num x0;
+
   /// drift
   num mu;
+
   /// standard deviation
   num sigma;
-  GaussianDistribution rand;
+  late GaussianDistribution rand;
 
-  num _current;
+  late num _current;
 
-  GeometricBrownianMotion(this.x0, this.mu, this.sigma, [int seed]) {
+  GeometricBrownianMotion(this.x0, this.mu, this.sigma, [int? seed]) {
     _current = x0;
-    rand = new GaussianDistribution(mu: mu, sigma:sigma, seed:seed);
+    rand = GaussianDistribution(mu: mu, sigma: sigma, seed: seed);
   }
 
-  num next() {
-    _current *= exp(mu + sigma*rand.sample());
+  num? next() {
+    _current *= exp(mu + sigma * rand.sample());
     return _current;
   }
-
-
 }

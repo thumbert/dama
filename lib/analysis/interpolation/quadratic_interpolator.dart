@@ -3,12 +3,11 @@ library analysis.interpolation.quadratic_interpolator;
 import 'package:dama/dama.dart';
 
 class QuadraticInterpolator {
-
   List<num> x;
   List<num> y;
 
-  Function _l0, _l1, _l2;
-  num _x01, _x02, _x12;
+  late Function _l0, _l1, _l2;
+  late num _x01, _x02, _x12;
 
   QuadraticInterpolator(this.x, this.y) {
     if (x.length != 3 || y.length != 3) {
@@ -22,15 +21,13 @@ class QuadraticInterpolator {
     _x02 = x[0] - x[2];
     _x12 = x[1] - x[2];
 
-    _l0 = (e) => (e-x[1])*(e-x[2])/(_x01*_x02);
-    _l1 = (e) => -(e-x[0])*(e-x[2])/(_x01*_x12);
-    _l2 = (e) => (e-x[0])*(e-x[1])/(_x02*_x12);
-
+    _l0 = (e) => (e - x[1]) * (e - x[2]) / (_x01 * _x02);
+    _l1 = (e) => -(e - x[0]) * (e - x[2]) / (_x01 * _x12);
+    _l2 = (e) => (e - x[0]) * (e - x[1]) / (_x02 * _x12);
   }
 
   /// return the interpolated value.
   num valueAt(num x) {
-    return y[0]*_l0(x) + y[1]*_l1(x) + y[2]*_l2(x);
+    return y[0] * _l0(x) + y[1] * _l1(x) + y[2] * _l2(x);
   }
-
 }

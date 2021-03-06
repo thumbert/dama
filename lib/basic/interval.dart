@@ -1,12 +1,6 @@
 library basic.interval;
 
-
-enum IntervalType {
-  closedOpen,
-  openClosed,
-  openOpen,
-  closedClosed
-}
+enum IntervalType { closedOpen, openClosed, openOpen, closedClosed }
 
 class Interval<K extends Comparable> {
   K start;
@@ -15,12 +9,12 @@ class Interval<K extends Comparable> {
 
   /// a numerical interval
   Interval(this.start, this.end, {this.intervalType: IntervalType.closedOpen}) {
-     assert(start.compareTo(end) < 0);
+    assert(start.compareTo(end) < 0);
   }
 
   /// Check if a value is contained in the interval
   bool contains(K value) {
-    bool res;
+    var res = false;
     switch (intervalType) {
       case IntervalType.closedOpen:
         res = value.compareTo(start) >= 0 && value.compareTo(end) < 0;
@@ -37,7 +31,6 @@ class Interval<K extends Comparable> {
     }
     return res;
   }
-
 
   /// Split this interval into two intervals: a left interval [start,value)
   /// and a right interval [value, end).  The [intervalType] is kept the
@@ -56,17 +49,16 @@ class Interval<K extends Comparable> {
   /// each, use the function f = (x) => new Interval(x, x+1)
   List<Interval> splitLeft(Interval Function(K) f) {
     var res = <Interval>[];
-    Interval current = f(start);
+    var current = f(start);
     while (current.end.compareTo(end) < 1) {
       res.add(current);
-      current = f(current.end);
+      current = f(current.end as K);
     }
     return res;
   }
 
-
   String toString() {
-    String res;
+    late String res;
     switch (intervalType) {
       case IntervalType.closedOpen:
         res = '[$start,$end)';
@@ -83,5 +75,4 @@ class Interval<K extends Comparable> {
     }
     return res;
   }
-
 }

@@ -1,3 +1,5 @@
+
+
 library linear.matrix_test;
 
 import 'package:test/test.dart';
@@ -84,12 +86,12 @@ void basicOps() {
     });
     test('row apply', (){
       var m1 = Matrix([0,1,2,3,4,5], 2, 3);
-      Function sum = (List x) => x.fold(0.0, (a,b) => a+b);
+      Function sum = (List x) => x.fold(0.0, (dynamic a,b) => a+b);
       expect(m1.rowApply(sum).toList(), [6,9]);
     });
     test('column apply', (){
       var m1 = Matrix([0,1,2,3,4,5], 2, 3);
-      Function sum = (List x) => x.fold(0.0, (a,b) => a+b);
+      Function sum = (List x) => x.fold(0.0, (dynamic a,b) => a+b);
       expect(m1.columnApply(sum).toList(), [1,5,9]);
     });
     test('matrix norm', (){

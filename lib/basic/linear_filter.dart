@@ -5,13 +5,12 @@ import 'package:more/math.dart';
 
 enum Align { past, center, future }
 
-
 /// Calculate a moving average.
+/// When data can't be calculated, return null.
 /// <p>Argument [weights] a numeric list of length n.
 /// <p>Align past uses the last n available observations.
-List<num> movingAverageFilter(
-    List<num> x, List<num> weights, {Align align = Align.past}) {
-
+List<num?> movingAverageFilter(List<num> x, List<num> weights,
+    {Align align = Align.past}) {
   int offset;
   if (align == Align.past) {
     offset = weights.length - 1;
@@ -19,7 +18,7 @@ List<num> movingAverageFilter(
     throw ArgumentError('$align not implemented yet');
   }
 
-  var out = List<num>(x.length);
+  var out = List<num?>.filled(x.length, null);
   num value;
   // the bulk
   for (var i = offset; i < x.length; i++) {
@@ -40,7 +39,7 @@ List<num> movingAverageFilter(
 /// around the ends of the series, so no nulls are returned.  This is useful
 /// if the data is truly periodic.
 ///
-List<num> binomialFilter(List<num> x, int order, {bool circular = false}) {
+List<num?> binomialFilter(List<num> x, int order, {bool circular = false}) {
   if (order <= 1) throw ArgumentError('Order should be > 1');
   if (order % 2 != 0) throw ArgumentError('The order needs to be even');
   if (2 * order + 1 > x.length) {
@@ -50,7 +49,7 @@ List<num> binomialFilter(List<num> x, int order, {bool circular = false}) {
   var weights = _getBinomialWeights(order);
   var offset = order ~/ 2;
 
-  var out = List<num>(x.length);
+  var out = List<num?>.filled(x.length, null);
   num value;
   if (circular) {
     // the beginning
@@ -93,9 +92,9 @@ List<num> binomialFilter(List<num> x, int order, {bool circular = false}) {
 /// For n=2, return [1,2,1]; for n=4, return [1,4,6,4,1], etc.
 List<double> _getBinomialWeights(int n) {
   var denominator = pow(2, n);
-  var out = List<double>(n + 1);
+  var out = List.filled(n + 1, 0.0);
   for (var k = 0; k < n; k++) {
-    out[k] = binomial(n, k) / denominator;
+    out[k] = n.binomial(k) / denominator;
     out[n - k] = out[k];
   }
   return out;

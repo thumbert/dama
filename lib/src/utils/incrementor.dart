@@ -1,33 +1,27 @@
 library incrementor;
 
 class Incrementor {
-  
-  int _maximalCount;
-  
+  late int maximalCount;
+
   int _count = 0;
-  
-  Incrementor([int max]) {
-    this._maximalCount = max;
+
+  Incrementor([int? max]) {
+    maximalCount = max ?? 2147483647;
   }
-  
-  int get maximalCount => _maximalCount;
-  set maximalCount(int value) => _maximalCount = value;
- 
-  
+
   int get count => _count;
-  
+
   bool canIncrement() {
-    return _count < _maximalCount;
+    return _count < maximalCount;
   }
-  
-  incrementCount([int value=1]) {
-     for (int i = 0; i<value; i++) {
-       if (++_count > _maximalCount) {
-         throw _maximalCount; // FIXME: don't just thow me.
-       }
-     }
+
+  void incrementCount([int value = 1]) {
+    for (var i = 0; i < value; i++) {
+      if (++_count > maximalCount) {
+        throw maximalCount;
+      }
+    }
   }
-  
-  resetCount() => _count = 0;
-  
+
+  void resetCount() => _count = 0;
 }

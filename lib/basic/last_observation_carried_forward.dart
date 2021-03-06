@@ -1,7 +1,7 @@
 /// Given a list of stuff, replace the missing value usually a null,
 /// by the last available observation.  If the input list starts with
 /// missing values, they get ignored until the fist value. 
-List<K> lastObservationCarriedForward<K>(List<K> x, {Function isMissing}) {
+List<K> lastObservationCarriedForward<K>(List<K> x, {Function? isMissing}) {
   isMissing ??= (x) => x == null;
   if (x.isEmpty) return x;
   ///int ind = x.indexWhere((e) => !isMissing(e));  TODO: for Dart 2.0

@@ -7,15 +7,15 @@ import 'package:dama/special/erf.dart';
 
 class GaussianDistribution {
   num mu, sigma;
-  num _y, _aux;
-  Random rand;
-  static final _invSqrt2Pi = 1/sqrt(2*pi);
-  num _sigma2;
+  num? _y, _aux;
+  late Random rand;
+  static final _invSqrt2Pi = 1 / sqrt(2 * pi);
+  late num _sigma2;
 
-
-  GaussianDistribution({this.mu: 0, this.sigma:1, int seed}) {
-    if (sigma < 0)
+  GaussianDistribution({this.mu: 0, this.sigma: 1, int? seed}) {
+    if (sigma < 0) {
       throw ArgumentError('Argument sigma needs to be > 0');
+    }
     rand = Random(seed);
     _sigma2 = 2 * sigma * sigma;
   }
@@ -23,8 +23,9 @@ class GaussianDistribution {
   /// calculate the value of the quantile function (inverse of the distribution
   /// function) at point [probability].
   num quantile(num probability) {
-    if (probability < 0 || probability > 1)
+    if (probability < 0 || probability > 1) {
       throw ArgumentError('Probability needs to be between 0 and 1');
+    }
 
     if (probability == 1) return double.infinity;
     if (probability == 0) return double.negativeInfinity;
@@ -44,7 +45,7 @@ class GaussianDistribution {
 
   /// calculate the value of the distribution function at point [x]
   num probability(num x) {
-    var z = (x - mu)/sigma;
+    var z = (x - mu) / sigma;
     return Phi(z);
   }
 
@@ -56,17 +57,17 @@ class GaussianDistribution {
     if (_y != null) {
       _aux = _y;
       _y = null;
-      return _aux;
+      return _aux!;
     } else {
-      num s,u,v,r;
+      num s, u, v, r;
       do {
-        u = 2*rand.nextDouble()-1;
-        v = 2*rand.nextDouble()-1;
-        s = u*u + v*v;
+        u = 2 * rand.nextDouble() - 1;
+        v = 2 * rand.nextDouble() - 1;
+        s = u * u + v * v;
       } while (s >= 1 && u != -1 && v != -1);
-      r = sqrt(-2*log(s)/s);
-      _y = mu + sigma*v*r;
-      return mu + sigma*u*r;
+      r = sqrt(-2 * log(s) / s);
+      _y = mu + sigma * v * r;
+      return mu + sigma * u * r;
     }
   }
 }

@@ -10,22 +10,26 @@ import 'package:dama/stat/regression/linear_model_summary.dart';
 class LinearModel {
   /// The design matrix of independent (explanatory) variables.
   DoubleMatrix X;
+
   /// The dependent (response) variable.
   ColumnMatrix y;
+
   /// Coefficient names
-  List<String> names;
+  List<String>? names;
+
   /// QR decomposition threshold value
   double threshold;
 
-  QRDecomposition _qr;
-  List<double> _coeff;
+  late QRDecomposition _qr;
+  List<double>? _coeff;
 
   /// Solve the ordinary least-square regression problem
   /// X b = y + \epsilon
   ///
   LinearModel(this.X, this.y, {this.names, this.threshold = 1E-10}) {
-    if (names != null && names.length != X.ncol) {
-      throw ArgumentError('Number of coefficient names don\'t match design matrix X dimension');
+    if (names != null && names!.length != X.ncol) {
+      throw ArgumentError(
+          'Number of coefficient names don\'t match design matrix X dimension');
     }
     _qr = QRDecomposition(X, threshold: threshold);
   }
@@ -35,10 +39,9 @@ class LinearModel {
     return _coeff ?? _qr.getSolver().solveVector(y).toList().toList();
   }
 
-
   /// If [pX] is not specified, use the original design matrix [X];
-  List<double> predict({DoubleMatrix pX}) {
-    if (pX == null)  {
+  List<double> predict({DoubleMatrix? pX}) {
+    if (pX == null) {
       return X.multiply(DoubleMatrix(coefficients, X.ncol, 1)).toList();
     }
     return pX.multiply(DoubleMatrix(coefficients, X.ncol, 1)).toList();
@@ -59,7 +62,7 @@ class LinearModel {
   List<double> regressionParametersStandardErrors() {
     var betaVariance = calculateBetaVariance().data;
     var sigma2 = errorVariance();
-    var res = List<double>(X.ncol);
+    var res = List.filled(X.ncol, 0.0);
     for (var i = 0; i < X.ncol; i++) {
       res[i] = sqrt(sigma2 * betaVariance[i][i]);
     }
@@ -67,16 +70,15 @@ class LinearModel {
   }
 
   double rSquared() {
-    return 1 - residualSumOfSquares()/totalSumOfSquares();
+    return 1 - residualSumOfSquares() / totalSumOfSquares();
   }
 
-  double residualSumOfSquares() => residuals().fold(0.0, (a,b) => a + b*b);
+  double residualSumOfSquares() => residuals().fold(0.0, (a, b) => a + b * b);
 
   double totalSumOfSquares() {
     var meanY = mean(y.data);
-    return y.data.fold(0.0, (a,b) => (a + (b - meanY)*(b - meanY)));
+    return y.data.fold(0.0, (a, b) => (a + (b - meanY) * (b - meanY)));
   }
-
 
   /// Calculates the variance-covariance matrix of the regression parameters.
   /// </p>
@@ -89,13 +91,11 @@ class LinearModel {
     return Rinv.multiply(Rinv.transpose());
   }
 
-
   double errorVariance() {
-    var dp = residuals().fold((0.0), (a,b) => a + b*b);
-    return dp/(X.nrow - X.ncol);
+    var dp = residuals().fold((0.0), (double a, double b) => a + b * b);
+    return dp / (X.nrow - X.ncol);
   }
 
   /// Organize a summary object, similar to R
   LinearModelSummary summary() => LinearModelSummary(this);
-
 }

@@ -138,7 +138,7 @@ List<num> range(Iterable<num> x) {
 /// maximum value of this iterable.
 /// By default the [isValid] function takes out the NAN values.
 ///
-Map<String, num> summary(Iterable<num> x, {Function isValid}) {
+Map<String, num> summary(Iterable<num> x, {bool Function(num)? isValid}) {
   isValid ??= (num x) => x.isNaN ? false : true;
   var q = Quantile(x.where(isValid).toList(growable: false));
   var probs = [0, 0.25, 0.5, 0.75, 1];

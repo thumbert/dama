@@ -1,3 +1,5 @@
+
+
 library test.loess_interpolator_test;
 
 import 'package:test/test.dart';
@@ -91,8 +93,8 @@ void tests() {
     test('cars', () {
       /// this Loess is degree 1, in R it's degree 2 by default.
       var aux = cars();
-      var speed = aux['speed'].map((e) => e.toDouble()).toList();
-      var dist = aux['dist'].map((e) => e.toDouble()).toList();
+      var speed = aux['speed']!.map((e) => e.toDouble()).toList();
+      var dist = aux['dist']!.map((e) => e.toDouble()).toList();
       var loess = LoessInterpolator(speed, dist);
       var res = speed.map((x) => loess.valueAt(x)).toList();
       expect(res.every((e) => e.isFinite), true);

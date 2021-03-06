@@ -8,7 +8,7 @@ import 'package:more/hash.dart';
 enum QuantileEstimationType { R1, R2, R3, R4, R5, R6, R7, R8, R9 }
 
 class OutOfRangeException implements Exception {
-  String message;
+  String message = '';
   OutOfRangeException([message]);
 }
 
@@ -27,21 +27,20 @@ class QuantilePair {
   @override
   bool operator ==(other) {
     if (other is! QuantilePair) return false;
-    QuantilePair qp = other;
+    var qp = other;
     return qp.probability == probability && qp.value == value;
   }
 }
-
 
 ///No need to do a full sorting Nlog(N).  Partition based selection is a
 ///linear-time algorithm.  Caching the pivot, speeds up the search even more
 ///(inspired from Apache commons math).
 class Quantile {
-  List<num> _x;
+  late List<num> _x;
   QuantileEstimationType quantileEstimationType;
 
   /// keep cached the index of elements that are in the right position.
-  SplayTreeSet<int> _cachedK;
+  late SplayTreeSet<int> _cachedK;
 
   /// Calculate the quantile of an input list.  The input list [x] does not to be sorted.  The
   /// implementation calculates the rank statistic so is has linear performance.
@@ -101,7 +100,8 @@ class Quantile {
         break;
 
       default:
-        break;
+        throw StateError(
+            'Unsupported quantile estimation type $quantileEstimationType');
     }
 
     return result;
