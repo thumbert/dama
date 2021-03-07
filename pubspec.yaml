@@ -7,9 +7,9 @@ environment:
 dependencies:
   logging: ^1.0.0
   more: ^3.0.1
-#  table:
-#    git:
-#      url: git://github.com/thumbert/table.git
+  table:
+    git:
+      url: git://github.com/thumbert/table.git
 
 dev_dependencies:
   pedantic: ^1.11.0

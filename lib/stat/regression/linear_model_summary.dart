@@ -1,12 +1,10 @@
-
-
 library stat.regression.linear_model_summary;
 
 import 'dart:math';
 
 import 'package:dama/analysis/integration/tanhsinh_integrator.dart';
 import 'package:dama/dama.dart';
-// import 'package:table/table_base.dart';
+import 'package:table/table_base.dart';
 
 class LinearModelSummary {
   LinearModel lm;
@@ -56,8 +54,8 @@ class LinearModelSummary {
       '3Q': _aux['3rd Qu.'],
       'Max': _aux['Max.'],
     };
-    // var residuals = Table.from([_resid], options: _residualsOptions);
-    // out += residuals.toString();
+    var residuals = Table.from([_resid], options: _residualsOptions);
+    out += residuals.toString();
 
     var names = lm.names ?? List.generate(lm.coefficients.length, (i) => '$i');
     var coeff = lm.coefficients;
@@ -85,14 +83,14 @@ class LinearModelSummary {
     };
     var prob = tValues.map((t) => pValue(t)).toList();
 
-    // var table = Table(options: _coeffOptions)
-    //   ..addColumn(names, name: ' ')
-    //   ..addColumn(coeff, name: 'Estimate')
-    //   ..addColumn(sd, name: 'Std. Error')
-    //   ..addColumn(tValues, name: 't value')
-    //   ..addColumn(prob, name: 'Pr(>|t|)')
-    //   ..addColumn(prob.map(stars).toList(), name: '  ');
-    // out += table.toString();
+    var table = Table(options: _coeffOptions)
+      ..addColumn(names, name: ' ')
+      ..addColumn(coeff, name: 'Estimate')
+      ..addColumn(sd, name: 'Std. Error')
+      ..addColumn(tValues, name: 't value')
+      ..addColumn(prob, name: 'Pr(>|t|)')
+      ..addColumn(prob.map(stars).toList(), name: '  ');
+    out += table.toString();
     out += '\n---';
     out +=
         '\nSignif. codes:  0 \'***\' 0.001 \'**\' 0.01 \'*\' 0.05 \'.\' 0.1 \' \' 1';
