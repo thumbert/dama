@@ -28,14 +28,19 @@ num max(Iterable<num> x) => x.reduce((a, b) => a >= b ? a : b);
 num min(Iterable<num> x) => x.reduce((a, b) => a <= b ? a : b);
 
 /// Calculate the mean of an iterable.
-num mean(Iterable<num> x) {
-  var i = 0;
-  var res = 0.0;
-  x.forEach((e) {
-    res += e;
+/// Implements the stable mean algorithm see
+/// https://news.ycombinator.com/item?id=27470323
+num mean(Iterable<num> xs) {
+  if (xs.isEmpty) {
+    throw StateError('Input is empty!');
+  }
+  var mu = xs.first;
+  var i = 1;
+  for (var x in xs.skip(1)) {
     i++;
-  });
-  return res / i;
+    mu += (x - mu) / i;
+  }
+  return mu;
 }
 
 /// Calculate the weighted mean of an iterable.

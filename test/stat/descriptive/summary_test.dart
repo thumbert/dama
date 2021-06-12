@@ -1,5 +1,3 @@
-
-
 library test.stat.descriptive.summary;
 
 import 'package:dama/src/utils/matchers.dart';
@@ -20,6 +18,12 @@ void main() {
     test('extension of sum', () {
       expect(<num>[1, 2, 3].sum(), 6);
     });
+    test('mean', () {
+      /// See https://www.nu42.com/2015/03/how-you-average-numbers.html
+      var x = List.generate(50000, (i) => [1000000000.1, 1.1]).expand((e) => e);
+      // naive mean is 500000000.60091573
+      expect(mean(x), 500000000.6);
+    });
     test('max', () {
       expect(max([1, 2, 3, 4, 5]), 5);
     });
@@ -27,6 +31,10 @@ void main() {
       expect(min([1, 3, -3, 5]), -3);
       expect(min([1, 3, double.nan, -3, 5]), -3);
       expect(min([1, 3, double.negativeInfinity, 5]), double.negativeInfinity);
+    });
+    test('variance', () {
+      var xs = [4, 7, 13, 16].map((e) => e + 1000000000).toList();
+      expect(xs.variance(), 30.0);
     });
     test('covariance', () {
       var x = List.generate(10, (i) => i + 1);
