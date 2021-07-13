@@ -1,11 +1,10 @@
-
-
 library test.loess_interpolator_test;
 
 import 'package:test/test.dart';
 import 'package:dama/analysis/interpolation/loess_interpolator.dart';
 import 'package:dama/stat/descriptive/summary.dart';
 import '../../_data/cars.dart';
+import '../../_data/energy.dart';
 
 void tests() {
   group('Loess interpolator: ', () {
@@ -84,9 +83,10 @@ void tests() {
         3.33677,
         0.46076,
       ].map((e) => round(e, 0.001)).toList();
-      var loess = LoessInterpolator(x, y, bandwidth: 0.3, robustnessIters: 4,
-        accuracy: 1e-12);
-      var res = x.map((e) => loess.valueAt(e)).map((e) => round(e, 0.001)).toList();
+      var loess = LoessInterpolator(x, y,
+          bandwidth: 0.3, robustnessIters: 4, accuracy: 1e-12);
+      var res =
+          x.map((e) => loess.valueAt(e)).map((e) => round(e, 0.001)).toList();
       expect(res, yref);
     });
 
@@ -106,14 +106,11 @@ void tests() {
       var domain = loess.domain;
       expect(domain, [4.0, 25.0]);
     });
-
   });
 }
-
 
 void main() {
 //  loessInterpolatorTest();
 
   tests();
-
 }

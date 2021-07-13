@@ -1,8 +1,9 @@
 library stat.descriptive.tabulate;
 
 /// Count the number of occurrences in a list.
-Map<K, int> count<K>(List<K> xs) {
-  var out = <K, int>{};
+/// If an [input] map is passed, the calculation adds to the existing count.
+Map<K, int> count<K>(Iterable<K> xs, {Map<K, int>? input}) {
+  var out = input ?? <K, int>{};
   for (var x in xs) {
     if (out.containsKey(x)) {
       out[x] = out[x]! + 1;
