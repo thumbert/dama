@@ -1,22 +1,30 @@
-library distibution.gaussian;
+library distribution.lognormal;
 
-import 'dart:math' show Random, sqrt, log, exp, pi;
+import 'dart:math';
 
 import 'package:dama/analysis/solver/bisection_solver.dart';
+import 'package:dama/dama.dart' as dama;
 import 'package:dama/special/erf.dart';
 
-class GaussianDistribution {
-  num mu, sigma;
-  num? _y, _aux;
+class LogNormalDistribution {
+  late num mu, sigma;
   late Random rand;
   static final _invSqrt2Pi = 1 / sqrt(2 * pi);
   late num _sigma2;
 
-  GaussianDistribution({this.mu = 0, this.sigma = 1, int? seed}) {
+  LogNormalDistribution({this.mu = 0, this.sigma = 1}) {
     if (sigma < 0) {
       throw ArgumentError('Argument sigma needs to be > 0');
     }
-    rand = Random(seed);
+    _sigma2 = 2 * sigma * sigma;
+  }
+
+  /// Get the distribution by estimating the maximum likelihood parameters.
+  /// The variance is bias corrected.
+  LogNormalDistribution.fromMaximumLikelihood(List<num> xs) {
+    mu = dama.mean(xs.map((e) => log(e)));
+    sigma = dama.sum(xs.map((e) => (log(e) - mu) * (log(e) - mu))) /
+        (xs.length - 1);
     _sigma2 = 2 * sigma * sigma;
   }
 
@@ -39,35 +47,34 @@ class GaussianDistribution {
 
   /// calculate the value of the probability density function at point [x]
   num density(num x) {
-    var z = (x - mu) * (x - mu) / _sigma2;
-    return _invSqrt2Pi * exp(-z) / sigma;
+    var aux = log(x) - mu;
+    var z = aux * aux / _sigma2;
+    return _invSqrt2Pi * exp(-z) / (sigma * x);
   }
 
   /// calculate the value of the distribution function at point [x]
   num probability(num x) {
-    var z = (x - mu) / sigma;
+    var z = (log(x) - mu) / sigma;
     return Phi(z);
   }
 
-  /// Generate a value from a standard Gaussian distribution N(0,1)
-  /// using the Box-Muller transform.
-  /// See https://en.wikipedia.org/wiki/Normal_distribution#Generating_values_from_normal_distribution
-  ///
-  num sample() {
-    if (_y != null) {
-      _aux = _y;
-      _y = null;
-      return _aux!;
-    } else {
-      num s, u, v, r;
-      do {
-        u = 2 * rand.nextDouble() - 1;
-        v = 2 * rand.nextDouble() - 1;
-        s = u * u + v * v;
-      } while (s >= 1 && u != -1 && v != -1);
-      r = sqrt(-2 * log(s) / s);
-      _y = mu + sigma * v * r;
-      return mu + sigma * u * r;
-    }
+  /// Generate a sample value from this distribution
+  num sample({int? seed}) {
+    var r = Random();
   }
+
+  /// the mean of this distribution
+  num mean() {
+    return exp(mu + 0.5 * sigma * sigma);
+  }
+
+  /// Var[X] = E[X^2] - E[X]^2
+  num variance() {
+    var s2 = sigma * sigma;
+    return exp(2 * mu + s2) * (exp(s2) - 1);
+  }
+
+  num median() => exp(mu);
+
+  num mode() => exp(mu - sigma * sigma);
 }
