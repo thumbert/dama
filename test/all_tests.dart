@@ -1,5 +1,3 @@
-
-
 library all_tests;
 
 import 'analysis/integration/quadrature1D_test.dart' as quadrature1d;
@@ -16,6 +14,8 @@ import 'basic/linear_filter_test.dart' as linear_filter;
 import 'basic/num_extensions_test.dart' as num_extensions;
 
 import 'distribution/discrete_distribution_test.dart' as discrete_distribution;
+import 'distribution/lognormal_distribution_test.dart'
+    as lognormal_distribution;
 import 'distribution/normal_distribution_test.dart' as normal_distribution;
 
 import 'linear/matrix_test.dart' as matrix;
@@ -42,6 +42,7 @@ void main() {
 
   bisection.main();
   discrete_distribution.main();
+  lognormal_distribution.tests();
   normal_distribution.tests();
 
   // linear algebra

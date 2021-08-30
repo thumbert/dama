@@ -8,15 +8,14 @@ import 'package:dama/special/erf.dart';
 class GaussianDistribution {
   num mu, sigma;
   num? _y, _aux;
-  late Random rand;
+  Random? rand;
   static final _invSqrt2Pi = 1 / sqrt(2 * pi);
   late num _sigma2;
 
-  GaussianDistribution({this.mu = 0, this.sigma = 1, int? seed}) {
+  GaussianDistribution({this.mu = 0, this.sigma = 1}) {
     if (sigma < 0) {
       throw ArgumentError('Argument sigma needs to be > 0');
     }
-    rand = Random(seed);
     _sigma2 = 2 * sigma * sigma;
   }
 
@@ -54,6 +53,7 @@ class GaussianDistribution {
   /// See https://en.wikipedia.org/wiki/Normal_distribution#Generating_values_from_normal_distribution
   ///
   num sample() {
+    rand ??= Random();
     if (_y != null) {
       _aux = _y;
       _y = null;
@@ -61,8 +61,8 @@ class GaussianDistribution {
     } else {
       num s, u, v, r;
       do {
-        u = 2 * rand.nextDouble() - 1;
-        v = 2 * rand.nextDouble() - 1;
+        u = 2 * rand!.nextDouble() - 1;
+        v = 2 * rand!.nextDouble() - 1;
         s = u * u + v * v;
       } while (s >= 1 && u != -1 && v != -1);
       r = sqrt(-2 * log(s) / s);

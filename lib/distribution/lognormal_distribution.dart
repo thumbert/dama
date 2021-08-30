@@ -4,11 +4,13 @@ import 'dart:math';
 
 import 'package:dama/analysis/solver/bisection_solver.dart';
 import 'package:dama/dama.dart' as dama;
+import 'package:dama/distribution/gaussian_distribution.dart';
 import 'package:dama/special/erf.dart';
 
 class LogNormalDistribution {
   late num mu, sigma;
-  late Random rand;
+  Random? rand;
+  GaussianDistribution? _gaussianDistribution;
   static final _invSqrt2Pi = 1 / sqrt(2 * pi);
   late num _sigma2;
 
@@ -41,7 +43,7 @@ class LogNormalDistribution {
     // not by using bisection.
 
     var f = (num x) => this.probability(x) - probability;
-    var res = bisectionSolver(f, -1000, 1000);
+    var res = bisectionSolver(f, 0, 1000);
     return res;
   }
 
@@ -59,8 +61,11 @@ class LogNormalDistribution {
   }
 
   /// Generate a sample value from this distribution
-  num sample({int? seed}) {
-    var r = Random();
+  num sample() {
+    rand ??= Random();
+    _gaussianDistribution ??= GaussianDistribution(mu: mu, sigma: sigma)
+      ..rand = rand;
+    return exp(_gaussianDistribution!.sample());
   }
 
   /// the mean of this distribution

@@ -17,9 +17,9 @@ class GeometricBrownianMotion {
 
   late num _current;
 
-  GeometricBrownianMotion(this.x0, this.mu, this.sigma, [int? seed]) {
+  GeometricBrownianMotion(this.x0, this.mu, this.sigma) {
     _current = x0;
-    rand = GaussianDistribution(mu: mu, sigma: sigma, seed: seed);
+    rand = GaussianDistribution(mu: mu, sigma: sigma);
   }
 
   num? next() {
