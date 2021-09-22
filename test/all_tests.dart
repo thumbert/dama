@@ -3,6 +3,8 @@ library all_tests;
 import 'analysis/integration/quadrature1D_test.dart' as quadrature1d;
 import 'analysis/interpolation/spline_interpolator_test.dart'
     as spline_interpolation;
+import 'analysis/interpolation/stepwise_interpolator_test.dart'
+    as stepwise_interpolation;
 import 'analysis/interpolation/loess_interpolator_test.dart'
     as loess_interpolation;
 import 'analysis/interpolation/quadratic_interpolator_test.dart'
@@ -31,9 +33,10 @@ import 'special/erf_test.dart' as erf;
 void main() {
   // analysis
   quadrature1d.main();
-  spline_interpolation.main();
   loess_interpolation.tests();
   quadratic_interpolation.main();
+  spline_interpolation.main();
+  stepwise_interpolation.tests();
 
   // basic
   basic.tests();
