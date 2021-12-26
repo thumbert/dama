@@ -7,10 +7,10 @@ import 'package:dama/integer/square_root.dart';
 
 testSquareRoot() {
   test('isqrt(10) == 3', () {
-    expect(isqrt(new BigInt.from(10)), BigInt.from(3));
+    expect(isqrt(BigInt.from(10)), BigInt.from(3));
   });
   test('isqrt(15) == 3', () {
-    expect(isqrt(new BigInt.from(15)), BigInt.from(3));
+    expect(isqrt(BigInt.from(15)), BigInt.from(3));
   });
   test('isqrt(152415789666209426002111556165263283035677489)', () {
     expect(isqrt(BigInt.parse('152415789666209426002111556165263283035677489')),

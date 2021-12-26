@@ -75,13 +75,13 @@ void tests() {
   });
 }
 
-speedTest() {
+void speedTest() {
   //How it is so fast?!  takes 11 milliseconds to do this!
   test('performance for large inputs', () {
-    int N = 20000000;
-    List x = List.generate(N, (i) => i);
+    var N = 20000000;
+    var x = List.generate(N, (i) => i);
     x.shuffle(Random(0));
-    Quantile q = Quantile(x as List<num>, shuffle: false);
+    var q = Quantile(x, shuffle: false);
     var w = Stopwatch()..start();
     var res = List.generate(1000000, (i) => i * 200).map((e) => q.minK(e));
     print('evaluation microseconds: ${w.elapsedMicroseconds}');

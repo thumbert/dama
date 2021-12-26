@@ -2,8 +2,6 @@ library stat.descriptive.quantile;
 
 import 'dart:collection';
 
-import 'package:more/hash.dart';
-
 /// See http://en.wikipedia.org/wiki/Quantile
 enum QuantileEstimationType { R1, R2, R3, R4, R5, R6, R7, R8, R9 }
 
@@ -23,7 +21,7 @@ class QuantilePair {
     }
   }
   @override
-  int get hashCode => hash2(probability, value);
+  int get hashCode => Object.hash(probability, value);
   @override
   bool operator ==(other) {
     if (other is! QuantilePair) return false;
@@ -53,7 +51,7 @@ class Quantile {
   /// See http://en.wikipedia.org/wiki/Quantile for different quantile estimation methods.
   Quantile(List<num> x,
       {this.quantileEstimationType = QuantileEstimationType.R7,
-      bool shuffle: true}) {
+      bool shuffle = true}) {
     _x = List.from(x, growable: false);
     if (shuffle) _x.shuffle();
     _cachedK = SplayTreeSet();
@@ -134,7 +132,9 @@ class Quantile {
         return _x[k];
       } else if (j > k) {
         hi = j - 1;
-      } else if (j < k) lo = j + 1;
+      } else if (j < k) {
+        lo = j + 1;
+      }
     }
 
     return _x[k];

@@ -96,7 +96,7 @@ class SplineInterpolator {
 
   /// Calculate the derivative of the spline interpolating function at
   /// location [x].
-  num derivativeAt(num x, {int order: 1}) {
+  num derivativeAt(num x, {int order = 1}) {
     var i = _findInd(x);
     var h = x - xData[i];
     num res = 0; // if order is greater than 3

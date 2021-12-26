@@ -45,5 +45,5 @@ class ColumnMatrix extends Matrix {
   DoubleMatrix toDoubleMatrix() => DoubleMatrix(data, data.length, 1);
 
   @override
-  toString() => toDoubleMatrix().toString();
+  String toString() => toDoubleMatrix().toString();
 }

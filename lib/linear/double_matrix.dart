@@ -6,7 +6,7 @@ class DoubleMatrix extends Matrix {
   static final int _fmt_decimal_digits = 3;
 
   /// A matrix will all double elements backed by a List<Float64List>.
-  DoubleMatrix(List<num> x, int nrow, int ncol, {bool byRow: false})
+  DoubleMatrix(List<num> x, int nrow, int ncol, {bool byRow = false})
       : super._empty(nrow, ncol) {
     data = List.generate(nrow, (i) => Float64List(ncol));
     _populateMatrix(x, data, byRow: byRow);
@@ -22,6 +22,7 @@ class DoubleMatrix extends Matrix {
     data = List.generate(nrow, (i) => Float64List(ncol));
   }
 
+  @override
   DoubleMatrix column(int j) {
     var x = List<double>.generate(nrow, (i) => data[i][j]);
     return DoubleMatrix(x, nrow, 1);
@@ -53,7 +54,7 @@ class DoubleMatrix extends Matrix {
   DoubleMatrix cbind(DoubleMatrix that) {
     if (nrow != that.nrow) throw 'Dimensions mismatch';
     var res = DoubleMatrix.filled(0.0, nrow, ncol + that.ncol);
-    for (int i = 0; i < nrow; i++) {
+    for (var i = 0; i < nrow; i++) {
       var row = List<double>.from(data[i])..addAll(that.data[i]);
       res.data[i] = Float64List.fromList(row);
     }
@@ -75,10 +76,12 @@ class DoubleMatrix extends Matrix {
 //
 //    } else {
     Matrix c = that.transpose();
-    for (int j = 0; j < that.ncol; j++) {
-      for (int i = 0; i < nrow; i++) {
+    for (var j = 0; j < that.ncol; j++) {
+      for (var i = 0; i < nrow; i++) {
         var s = 0.0;
-        for (int k = 0; k < ncol; k++) s += element(i, k) * c.element(j, k);
+        for (var k = 0; k < ncol; k++) {
+          s += element(i, k) * c.element(j, k);
+        }
         res.setElement(i, j, s);
       }
     }
@@ -87,10 +90,13 @@ class DoubleMatrix extends Matrix {
   }
 
   /// Transpose this matrix
+  @override
   DoubleMatrix transpose() {
     var res = DoubleMatrix.filled(0.0, ncol, nrow);
-    for (int i = 0; i < ncol; i++)
-      for (int j = 0; j < nrow; j++) res.data[i][j] = data[j][i];
+    for (var i = 0; i < ncol; i++)
+      for (var j = 0; j < nrow; j++) {
+        res.data[i][j] = data[j][i];
+      }
     return res;
   }
 
@@ -99,12 +105,13 @@ class DoubleMatrix extends Matrix {
   DoubleMatrix getSubmatrix(
       int startRow, int endRow, int startColumn, int endColumn) {
     if (endRow > nrow) throw ArgumentError('Input endRow can\'t be > $nrow');
-    if (endColumn > ncol)
+    if (endColumn > ncol) {
       throw ArgumentError('Input endColumn can\'t be > $ncol');
+    }
     if (startRow < 0) throw ArgumentError('Input startRow can\'t be < 0');
     if (startColumn < 0) throw ArgumentError('Input startColumn can\'t be < 0');
     var _data = <double>[];
-    for (int i = startRow; i <= endRow; i++) {
+    for (var i = startRow; i <= endRow; i++) {
       _data.addAll(data[i].sublist(startColumn, endColumn + 1));
     }
     return DoubleMatrix(
@@ -112,20 +119,23 @@ class DoubleMatrix extends Matrix {
         byRow: true);
   }
 
+  @override
   String toString() {
-    List<String> out = [' ']..addAll(new List.generate(nrow, (i) => '[$i,]'));
+    var out = <String>[' ', ...new List.generate(nrow, (i) => '[$i,]')];
     var width = out.last.length;
     out = out.map((String e) => e.padLeft(width)).toList();
 
-    for (int j = 0; j < ncol; j++) {
+    for (var j = 0; j < ncol; j++) {
       List<double> col = column(j).toList();
-      List<String> aux = ['[,$j]']
-        ..addAll(col.map((double e) => e.toStringAsFixed(_fmt_decimal_digits)));
+      var aux = <String>['[,$j]', ...col.map((double e) => e.toStringAsFixed(_fmt_decimal_digits))]
+        ;
 
       var width = aux.fold(0, (int prev, String e) => max(prev, e.length));
       aux = aux.map((String e) => e.padLeft(width)).toList(growable: false);
-      for (int i = 0; i <= nrow; i++) out[i] = '${out[i]} ${aux[i]}';
+      for (var i = 0; i <= nrow; i++) {
+        out[i] = '${out[i]} ${aux[i]}';
+      }
     }
-    return out.join("\n");
+    return out.join('\n');
   }
 }

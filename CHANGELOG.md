@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2 (released on 2021-12-26)
+- Require Dart 2.14, add lints, remove more hash dependency
+
 ## 2.0.1 (released on 2021-03-07)
 - Null safety version, with package table
 

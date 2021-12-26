@@ -8,7 +8,7 @@ class Interval<K extends Comparable> {
   IntervalType intervalType;
 
   /// a numerical interval
-  Interval(this.start, this.end, {this.intervalType: IntervalType.closedOpen}) {
+  Interval(this.start, this.end, {this.intervalType = IntervalType.closedOpen}) {
     assert(start.compareTo(end) < 0);
   }
 
@@ -57,6 +57,7 @@ class Interval<K extends Comparable> {
     return res;
   }
 
+  @override
   String toString() {
     late String res;
     switch (intervalType) {

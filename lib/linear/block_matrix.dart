@@ -7,7 +7,7 @@ class BlockMatrix extends Matrix {
   late int _ncolBlocks;
 
   /// A Matrix represented as block arrays for cache friendliness.
-  BlockMatrix(List<num> x, int nrow, int ncol, {bool byRow: false})
+  BlockMatrix(List<num> x, int nrow, int ncol, {bool byRow = false})
       : super._empty(nrow, ncol) {
     _nrowBlocks = (nrow + BLOCK_SIZE - 1) ~/ BLOCK_SIZE;
     _ncolBlocks = (ncol + BLOCK_SIZE - 1) ~/ BLOCK_SIZE;
@@ -27,18 +27,18 @@ class BlockMatrix extends Matrix {
     _blocks = List.filled(_nrowBlocks * _ncolBlocks, Float64List(0));
     var blockIndex = 0;
     for (var iBlock = 0; iBlock < _nrowBlocks; iBlock++) {
-      int pStart = iBlock * BLOCK_SIZE;
+      var pStart = iBlock * BLOCK_SIZE;
       int pEnd = min(pStart + BLOCK_SIZE, nrow);
-      int iHeight = pEnd - pStart;
-      for (int jBlock = 0; jBlock < _ncolBlocks; jBlock++) {
-        int qStart = jBlock * BLOCK_SIZE;
+      var iHeight = pEnd - pStart;
+      for (var jBlock = 0; jBlock < _ncolBlocks; jBlock++) {
+        var qStart = jBlock * BLOCK_SIZE;
         int qEnd = min(qStart + BLOCK_SIZE, ncol);
-        int jWidth = qEnd - qStart;
+        var jWidth = qEnd - qStart;
 
-        _blocks[blockIndex] = new Float64List(iHeight * jWidth);
+        _blocks[blockIndex] = Float64List(iHeight * jWidth);
         // populate the block
-        int index = 0;
-        for (int p = pStart; p < pEnd; p++) {
+        var index = 0;
+        for (var p = pStart; p < pEnd; p++) {
           _blocks[blockIndex]
               .setRange(index, index + jWidth, rawData[p].skip(qStart));
           index += jWidth;
@@ -48,33 +48,36 @@ class BlockMatrix extends Matrix {
     }
   }
 
+  @override
   double element(int i, int j) {
-    int iBlock = i ~/ BLOCK_SIZE;
-    int jBlock = j ~/ BLOCK_SIZE;
-    int k = (i - iBlock * BLOCK_SIZE) * _blockWidth(jBlock) +
+    var iBlock = i ~/ BLOCK_SIZE;
+    var jBlock = j ~/ BLOCK_SIZE;
+    var k = (i - iBlock * BLOCK_SIZE) * _blockWidth(jBlock) +
         (j - jBlock * BLOCK_SIZE);
     return _blocks[iBlock * _ncolBlocks + jBlock][k];
   }
 
+  @override
   void setElement(int i, int j, num value) {
-    int iBlock = i ~/ BLOCK_SIZE;
-    int jBlock = j ~/ BLOCK_SIZE;
-    int k = (i - iBlock * BLOCK_SIZE) * _blockWidth(jBlock) +
+    var iBlock = i ~/ BLOCK_SIZE;
+    var jBlock = j ~/ BLOCK_SIZE;
+    var k = (i - iBlock * BLOCK_SIZE) * _blockWidth(jBlock) +
         (j - jBlock * BLOCK_SIZE);
     _blocks[iBlock * _ncolBlocks + jBlock][k] = value.toDouble();
   }
 
+  @override
   ColumnMatrix column(int j) {
-    var out = new Float64List(nrow);
-    int jBlock = j ~/ BLOCK_SIZE;
-    int jColumn = j - jBlock * BLOCK_SIZE;
-    int jWidth = _blockWidth(jBlock);
+    var out = Float64List(nrow);
+    var jBlock = j ~/ BLOCK_SIZE;
+    var jColumn = j - jBlock * BLOCK_SIZE;
+    var jWidth = _blockWidth(jBlock);
 
-    int outIdx = 0;
-    for (int iBlock = 0; iBlock < _nrowBlocks; ++iBlock) {
-      int iHeight = _blockHeight(iBlock);
+    var outIdx = 0;
+    for (var iBlock = 0; iBlock < _nrowBlocks; ++iBlock) {
+      var iHeight = _blockHeight(iBlock);
       var block = _blocks[iBlock * _ncolBlocks + jBlock];
-      for (int i = 0; i < iHeight; i++) {
+      for (var i = 0; i < iHeight; i++) {
         out[outIdx++] = block[i * jWidth + jColumn];
       }
     }
@@ -95,7 +98,7 @@ class BlockMatrix extends Matrix {
   DoubleMatrix cbind(Matrix that) {
     if (nrow != that.nrow) throw 'Dimensions mismatch';
 
-    DoubleMatrix res = new DoubleMatrix.filled(0.0, nrow, 1 + that.ncol);
+    var res = DoubleMatrix.filled(0.0, nrow, 1 + that.ncol);
 //    for (int i = 0; i < nrow; i++) {
 //      var row = new List.from(data[i])..addAll(that.data[i]);
 //      res.data[i] = new Float64List.fromList(row);
@@ -106,9 +109,9 @@ class BlockMatrix extends Matrix {
   //ColumnMatrix rbind(ColumnMatrix that) => new ColumnMatrix(data..addAll(that.data));
 
   DoubleMatrix toDoubleMatrix() {
-    Float64List data = new Float64List(nrow * ncol);
-    for (int j = 0; j < ncol; j++) {
-      for (int i = 0; i < nrow; i++) {
+    var data = Float64List(nrow * ncol);
+    for (var j = 0; j < ncol; j++) {
+      for (var i = 0; i < nrow; i++) {
         data[i + j * nrow] = element(i, j);
       }
     }

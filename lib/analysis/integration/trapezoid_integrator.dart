@@ -13,16 +13,12 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
       double? absoluteAccuracy, 
       int? minimalIterationCount, 
       int? maximalIterationCount }) {
-    if (relativeAccuracy == null) 
-      relativeAccuracy = BaseAbstractUnivariateIntegrator.DEFAULT_RELATIVE_ACCURACY;
-    if (absoluteAccuracy == null) 
-      absoluteAccuracy = BaseAbstractUnivariateIntegrator.DEFAULT_ABSOLUTE_ACCURACY;
-    if (minimalIterationCount == null) 
-      minimalIterationCount = BaseAbstractUnivariateIntegrator.DEFAULT_MIN_ITERATIONS_COUNT;
-    if (maximalIterationCount == null) 
-      maximalIterationCount = TRAPEZOID_MAX_ITERATIONS_COUNT;
+    relativeAccuracy ??= BaseAbstractUnivariateIntegrator.DEFAULT_RELATIVE_ACCURACY;
+    absoluteAccuracy ??= BaseAbstractUnivariateIntegrator.DEFAULT_ABSOLUTE_ACCURACY;
+    minimalIterationCount ??= BaseAbstractUnivariateIntegrator.DEFAULT_MIN_ITERATIONS_COUNT;
+    maximalIterationCount ??= TRAPEZOID_MAX_ITERATIONS_COUNT;
     if (maximalIterationCount > TRAPEZOID_MAX_ITERATIONS_COUNT) {
-      throw "Too many iterations for TrapezoidIntegrator.";
+      throw 'Too many iterations for TrapezoidIntegrator.';
     }
     
     super.initialize(
@@ -50,21 +46,21 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
   double? stage(final BaseAbstractUnivariateIntegrator baseIntegrator, final int n) {
 
     if (n == 0) {
-      final double max = baseIntegrator.max;
-      final double min = baseIntegrator.min;
+      final max = baseIntegrator.max;
+      final min = baseIntegrator.min;
       _s = 0.5 * (max - min) *
           (baseIntegrator.computeObjectiveValue(min) +
               baseIntegrator.computeObjectiveValue(max));
       return _s;
     } else {
-      final int np = 1 << (n-1);           // number of new points in this stage
-      double sum = 0.0;
-      final double max = baseIntegrator.max;
-      final double min = baseIntegrator.min;
+      final np = 1 << (n-1);           // number of new points in this stage
+      var sum = 0.0;
+      final max = baseIntegrator.max;
+      final min = baseIntegrator.min;
       // spacing between adjacent new points
-      final double spacing = (max - min) / np;
-      double x = min + 0.5 * spacing;    // the first new point
-      for (int i = 0; i < np; i++) {
+      final spacing = (max - min) / np;
+      var x = min + 0.5 * spacing;    // the first new point
+      for (var i = 0; i < np; i++) {
         sum += baseIntegrator.computeObjectiveValue(x);
         x += spacing;
       }
@@ -75,15 +71,16 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
   }
 
   
+  @override
   double? doIntegrate() {
-    double? oldt = stage(this, 0);
+    var oldt = stage(this, 0);
     iterations.incrementCount();
     while (true) {
-      final int i = iterations.count;
-      final double? t = stage(this, i);
+      final i = iterations.count;
+      final t = stage(this, i);
       if (i >= getMinimalIterationCount()) {
-        final double delta = (t! - oldt!).abs();
-        final double rLimit =
+        final delta = (t! - oldt!).abs();
+        final rLimit =
             getRelativeAccuracy() * (oldt + t).abs() * 0.5;
         if ((delta <= rLimit) || (delta <= getAbsoluteAccuracy())) {
           return t;

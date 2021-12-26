@@ -6,8 +6,8 @@ BigInt isqrt(BigInt n) {
   BigInt _newX(BigInt n, BigInt x) {
     return ((x + (n~/x))~/BigInt.from(2));
   }
-  BigInt x = BigInt.from(1);
-  BigInt newX = _newX(n, x);
+  var x = BigInt.from(1);
+  var newX = _newX(n, x);
   while (x != newX && (x != newX + BigInt.from(1))) {
     x = newX;
     newX = _newX(n, x);
@@ -17,8 +17,8 @@ BigInt isqrt(BigInt n) {
 
 /// Check if a number is a perfect square.  Using the Babylonian method.
 bool isSquare(int n) {
-  int x = n ~/ 2;
-  Set seen = new Set()..add(x);
+  var x = n ~/ 2;
+  var seen = Set()..add(x);
   while (x*x != n) {
     x = (x + n ~/ x) ~/ 2;
     if (seen.contains(x)) return false;

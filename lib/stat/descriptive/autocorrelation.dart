@@ -56,8 +56,8 @@ class Autocorrelation {
   /// [confidenceInterval] is the value where the confidence interval should be
   /// calculated (two-sided).
   num confidenceInterval(
-      {num confidenceInterval: 0.95,
-      InputType inputType: InputType.whiteNoise}) {
+      {num confidenceInterval = 0.95,
+      InputType inputType = InputType.whiteNoise}) {
     num out;
     if (inputType == InputType.whiteNoise) {
       out = GaussianDistribution().quantile((1 + confidenceInterval) / 2) /
@@ -72,7 +72,7 @@ class Autocorrelation {
 
 // calculate both the mean and the resid sum of squares in one pass
 List<num> _meanAndResidSumOfSquares(Iterable<num> xs) {
-  int count = 0;
+  var count = 0;
   num mean = 0;
   num sum = 0; // calculate \sum_{i=1}^N (x_i - E(x))^2
   num delta;

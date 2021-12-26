@@ -126,15 +126,15 @@ class QRDecomposition {
 }
 
 class _QRSolver implements DecompositionSolver {
-  DoubleMatrix _qrt;
-  List _rDiag;
+  final DoubleMatrix _qrt;
+  final List _rDiag;
   num threshold;
 
   _QRSolver(this._qrt, this._rDiag, this.threshold);
 
   @override
   bool isNonSingular() {
-    for (num diag in _rDiag as Iterable<num>) {
+    for (var diag in _rDiag as Iterable<num>) {
       if (diag.abs() <= threshold) {
         return false;
       }
@@ -183,22 +183,22 @@ class _QRSolver implements DecompositionSolver {
 
   @override
   Matrix solveMatrix(Matrix b) {
-    final int n = _qrt.nrow;
-    final int m = _qrt.ncol;
+    final n = _qrt.nrow;
+    final m = _qrt.ncol;
     if (b.nrow != m) throw 'Dimensions mismatch';
 
     if (!isNonSingular()) throw 'Matrix is singular';
 
     throw 'NOT YET IMPLEMENTED ...';
 
-    final int columns = b.ncol;
+    final columns = b.ncol;
 //    final int blockSize      = BlockRealMatrix.BLOCK_SIZE;
 //    final int cBlocks        = (columns + blockSize - 1) / blockSize;
 //    final double[][] xBlocks = BlockRealMatrix.createBlocksLayout(n, columns);
 //    final double[][] y       = new double[b.getRowDimension()][blockSize];
 //    final double[]   alpha   = new double[blockSize];
 
-    return new Matrix([1], 1, 1); // TODO:  Fix me here!
+    return Matrix([1], 1, 1); // TODO:  Fix me here!
   }
 
   @override

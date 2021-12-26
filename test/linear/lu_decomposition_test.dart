@@ -20,7 +20,7 @@ tests() {
       var xRef = DoubleMatrix([19, -71, -6, 22, -2, 9], 3, 2, byRow: true);
       var out = solver.solveMatrix(b);
       var err = 0.0;
-      for (int i = 0; i < 6; i++) {
+      for (var i = 0; i < 6; i++) {
         err += (out.toList()[i] - xRef.toList()[i]).abs();
       }
       expect(err < 1E-13, true);

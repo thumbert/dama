@@ -2,7 +2,7 @@
 
 library stat.descriptive.ecdf;
 
-typedef num Ecfd(num x);
+typedef Ecfd = num Function(num x);
 
 int _indexOf<T>(List<T> elements, bool Function(T element) predicate) {
   for (var i = 0; i < elements.length; i++) {

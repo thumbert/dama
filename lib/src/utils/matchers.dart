@@ -4,8 +4,8 @@ library utils.matchers;
 
 import 'package:test/test.dart';
 
-equalsWithPrecision(num value, {num precision: 7E-13, bool relative: false}) =>
-new _EqualsWithPrecision(value, precision, relative);
+_EqualsWithPrecision equalsWithPrecision(num value, {num precision = 7E-13, bool relative = false}) =>
+_EqualsWithPrecision(value, precision, relative);
 
 class _EqualsWithPrecision extends Matcher {
   num value;
@@ -13,14 +13,15 @@ class _EqualsWithPrecision extends Matcher {
   bool relative;
   _EqualsWithPrecision(this.value, this.precision, this.relative);
 
+  @override
   bool matches(dynamic item, Map matchState) {
     bool res;
     if (item.isNaN){
 
     }
-    if ((item.isNaN && !value.isNaN) || (!item.isNaN && value.isNaN))
+    if ((item.isNaN && !value.isNaN) || (!item.isNaN && value.isNaN)) {
       return false;
-    else {
+    } else {
       if (relative) {
         res = ((item/value - 1.0).abs() > precision) ? false : true;
       } else {
@@ -30,6 +31,7 @@ class _EqualsWithPrecision extends Matcher {
     }
   }
 
+  @override
   Description describe(Description description) =>
   description.addDescriptionOf(value).add(' up to precision $precision');
 }

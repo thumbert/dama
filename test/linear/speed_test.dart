@@ -14,18 +14,19 @@ speed_test_doubleMatrix() {
   Matrix _makeTestMatrix(int N) {
     var m = <num>[];
     var aux = 1.0/N/N;
-    for (int i=0; i<N; i++)
-      for (int j=0; j<N; j++)
+    for (var i=0; i<N; i++)
+      for (var j=0; j<N; j++) {
         m.add(aux*(i-j)*(i+j));
+      }
 
     return Matrix(m, N, N);
   }
 
-  int N = 1500;
+  var N = 1500;
   print('Speed test Double Matrix');
-  Stopwatch sw = new Stopwatch()..start();
-  DoubleMatrix a = _makeTestMatrix(N) as DoubleMatrix;
-  Matrix b = _makeTestMatrix(N);
+  var sw = Stopwatch()..start();
+  var a = _makeTestMatrix(N) as DoubleMatrix;
+  var b = _makeTestMatrix(N);
   sw.stop();
   print('created in ${sw.elapsed}');
   sw.start();

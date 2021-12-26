@@ -96,7 +96,7 @@ class LinearModelSummary {
         '\nSignif. codes:  0 \'***\' 0.001 \'**\' 0.01 \'*\' 0.05 \'.\' 0.1 \' \' 1';
 
     var rse = lm.regressionStandardError().toStringAsFixed(3);
-    out += '\n\nResidual standard error: $rse on ${nu} degrees of freedom';
+    out += '\n\nResidual standard error: $rse on $nu degrees of freedom';
     out += '\nMultiple R-squared: ${lm.rSquared().toStringAsFixed(4)}';
 
     return out;
