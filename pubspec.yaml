@@ -1,14 +1,15 @@
 name: dama
 description: DArt MAth package.
 version: 2.0.2
+publish_to: none
+
 environment:
   sdk: '>=2.14.0 <3.0.0'
 dependencies:
   logging: ^1.0.0
   more: ^3.0.1
   table:
-    git:
-      url: git://github.com/thumbert/table.git
+    git: https://github.com/thumbert/table.git
 
 dev_dependencies:
   lints: ^1.0.1
