@@ -7,22 +7,35 @@ library basic.rle;
 /// input values.
 List<num> runLenghtEncode(List<num> xs, {Set<num>? keys}) {
   if (keys != null) {
-    return _rle(xs, keys);
+    return _rleKeys(xs, keys);
   } else {
-    throw ArgumentError('Not implemented yet');
+    return _rle(xs);
   }
 }
 
 /// Decode (expand) the input list given the [keys].
 List<num> runLenghtDecode(List<num> xs, {Set<num>? keys}) {
   if (keys != null) {
-    return _rld(xs, keys);
+    return _rldKeys(xs, keys);
   } else {
-    throw ArgumentError('Not implemented yet');
+    return _rld(xs);
   }
 }
 
-List<num> _rld(List<num> xs, Set<num> keys) {
+List<num> _rld(List<num> xs) {
+  if (xs.isEmpty) return xs;
+  var ys = <num>[];
+  for (var i = 0; i < xs.length; i = i + 2) {
+    if (xs[i] == 1) {
+      ys.add(xs[i + 1]);
+    } else {
+      ys.addAll(List.filled(xs[i] as int, xs[i + 1]));
+    }
+  }
+  return ys;
+}
+
+List<num> _rldKeys(List<num> xs, Set<num> keys) {
   var ys = <num>[];
   var flag = false;
   for (var i = 0; i < xs.length; i++) {
@@ -47,8 +60,39 @@ List<num> _rld(List<num> xs, Set<num> keys) {
   return ys;
 }
 
-/// with keys specified
-List<num> _rle(List<num> xs, Set<num> keys) {
+/// Perform run length encoding on the input list [xs].
+/// For example, given [1, 1, 1, 2, 3, 3, 3] return [3, 1, 1, 2, 3, 3]
+List<num> _rle(List<num> xs) {
+  if (xs.isEmpty) return xs;
+
+  var ys = <num>[];
+  var counter = 0;
+  var anchorValue = xs.first;
+  for (var value in xs) {
+    if (value == anchorValue) {
+      counter += 1;
+    } else {
+      if (counter > 0) {
+        // previous run is over, record it
+        ys.add(counter);
+        ys.add(anchorValue);
+      }
+      // a new run starts
+      counter = 1;
+      anchorValue = value;
+    }
+  }
+  // deal with the last group
+  if (counter > 0) {
+    ys.add(counter);
+    ys.add(anchorValue);
+  }
+  return ys;
+}
+
+/// Only encode values that belong to the keys specified.  The other values
+/// are left unchanged.
+List<num> _rleKeys(List<num> xs, Set<num> keys) {
   var ys = <num>[];
   var counter = 0;
   var anchorValue = xs.first;

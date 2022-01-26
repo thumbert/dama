@@ -43,6 +43,18 @@ void tests() {
     interval_tests.tests();
     null_policy.tests();
 
+    test('run length encoding', () {
+      var xs = [1, 1, 1, 2, 3, 3, 3];
+      var ys = runLenghtEncode(xs);
+      expect(ys, [3, 1, 1, 2, 3, 3]);
+    });
+
+    test('run length decoding', () {
+      var xs = [3, 1, 1, 2, 3, 3];
+      var ys = runLenghtDecode(xs);
+      expect(ys, [1, 1, 1, 2, 3, 3, 3]);
+    });
+
     test('run length encoding with keys, 1', () {
       var xs = [
         0.31,
