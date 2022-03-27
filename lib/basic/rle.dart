@@ -1,5 +1,8 @@
 library basic.rle;
 
+/// TODO:  Make it a class so it supports encoding/decoding for a generic
+/// list inputs (not only numeric).
+
 /// Given an input list of numbers, encode (compress) it based on adjacency of
 /// repeated values.
 ///

@@ -21,6 +21,7 @@ void tests() {
     test('cumsum', () {
       var x = [1, 2, 3, 4];
       expect(cumsum(x).toList(), [1, 3, 6, 10]);
+      expect(cumMean(x).toList(), [1, 1.5, 2, 2.5]);
     });
     test('last observation carried forward, one missing value in the middle',
         () {
