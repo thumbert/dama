@@ -62,7 +62,7 @@ num variance(Iterable<num> xs) {
   var count = 0;
   var mean = 0.0;
   var sum = 0.0;
-  var delta;
+  num delta;
   for (var x in xs) {
     delta = x - mean;
     mean += delta / ++count;
@@ -117,12 +117,12 @@ Map<String, num> ohlc(Iterable<num> xs) {
   var first = xs.first;
   var high = xs.first;
   var low = xs.first;
-  var close;
-  xs.forEach((x) {
+  late num close;
+  for (var x in xs) {
     if (x > high) high = x;
     if (x < low) low = x;
     close = x;
-  });
+  }
   return <String, num>{'open': first, 'high': high, 'low': low, 'close': close};
 }
 
@@ -146,7 +146,7 @@ List<num> range(Iterable<num> x) {
 Map<String, num> summary(Iterable<num> x, {bool Function(num)? isValid}) {
   isValid ??= (num x) => x.isNaN ? false : true;
   var q = Quantile(x.where(isValid).toList(growable: false));
-  var probs = [0, 0.25, 0.5, 0.75, 1];
+  const probs = [0, 0.25, 0.5, 0.75, 1];
   var res = probs.map((p) => q.value(p)).toList();
   res.insert(3, mean(x));
   var names = ['Min.', '1st Qu.', 'Median', 'Mean', '3rd Qu.', 'Max.'];
