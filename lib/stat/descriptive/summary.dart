@@ -58,6 +58,8 @@ num weightedMean(Iterable<num> x, Iterable<num> weights) {
 
 /// Calculate the variance of an iterable.  Return [nan] if the iterable has
 /// less than 2 elements.
+///
+/// See also [mad] for a robust measure of data dispersion.
 num variance(Iterable<num> xs) {
   var count = 0;
   var mean = 0.0;
@@ -110,6 +112,16 @@ num correlation(List<num> x, List<num> y) {
   var sx = sqrt(variance(x));
   var sy = sqrt(variance(y));
   return cov / (sx * sy);
+}
+
+/// Calculate the Median Absolute Deviation (MAD) a robust measure of the
+/// variability of a univariate sample.  The return value is not adjusted
+/// by the multiplier 1.4826.
+/// https://en.wikipedia.org/wiki/Median_absolute_deviation
+num mad(Iterable<num> x) {
+  var _median = Quantile(x.toList()).value(0.5);
+  var ys = x.map((e) => (e - _median).abs()).toList();
+  return Quantile(ys).value(0.5);
 }
 
 /// Calculate the open, high, low, close of this iterable.

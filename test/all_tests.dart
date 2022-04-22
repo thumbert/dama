@@ -25,6 +25,7 @@ import 'linear/qrdecomposition_test.dart' as qr_decomposition;
 import 'stat/descriptive/autocorrelation_test.dart' as autocorrelation;
 import 'stat/descriptive/ecdf_test.dart' as ecdf;
 import 'stat/descriptive/quantile_test.dart' as quantile;
+import 'stat/descriptive/moving_statistic_test.dart' as moving_stat;
 import 'stat/descriptive/summary_test.dart' as summary;
 import 'stat/regression/linear_model_test.dart' as lm;
 import 'stat/regression/linear_model_summary_test.dart' as lm_summary;
@@ -62,6 +63,7 @@ void main() {
   // statistics
   autocorrelation.tests();
   ecdf.main();
+  moving_stat.tests();
   quantile.main();
   summary.main();
 }

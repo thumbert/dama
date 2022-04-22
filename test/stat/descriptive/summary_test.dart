@@ -48,6 +48,10 @@ void main() {
       expect(correlation(speed, distance),
           equalsWithPrecision(0.8068949, precision: 1E-6));
     });
+    test('median absolute deviation', () {
+      var xs = [1, 1, 2, 2, 4, 6, 9];
+      expect(mad(xs), 1.0);
+    });
     test('Manhattan distance', () {
       var x = [1, 2, 4];
       var y = [2, 1, 5];

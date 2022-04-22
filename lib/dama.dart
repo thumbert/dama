@@ -15,6 +15,7 @@ export 'distribution/markov_chain.dart';
 
 export 'linear/matrix.dart';
 
+export 'stat/descriptive/moving_statistic.dart';
 export 'stat/descriptive/quantile.dart';
 export 'stat/descriptive/summary.dart';
 export 'stat/regression/linear_model.dart';
