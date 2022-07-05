@@ -18,6 +18,13 @@ void tests() {
       expect(
           out.map((e) => e.item2).toList(), [4, 8, 8, 8, 6, -1, -1, 3, 4, 5]);
     });
+    test('moving correlation', () {
+      var xy = [[9, 19], [12, 36], [20, 29], [12, 26], [14, 33], [15, 18]];
+      var mw = MovingStatistics(leftWindow: 3, rightWindow: 0);
+      var out = mw.movingCorrelation(xy);
+      expect(out.length, 6);
+      expect(out[2], 0.36020636179256577);
+    });
   });
 }
 

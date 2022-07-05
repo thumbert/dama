@@ -105,7 +105,7 @@ num covariance(List<num> x, List<num> y) {
   return result * (n / (n - 1));
 }
 
-/// Calculate Pearson't correlation as defined by formula:
+/// Calculate Pearson's correlation as defined by formula:
 /// cor(X, Y) = sum[(xi - E(X))(yi - E(Y))] / [(n - 1)s(X)s(Y)]
 num correlation(List<num> x, List<num> y) {
   var cov = covariance(x, y);

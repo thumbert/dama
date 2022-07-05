@@ -1,5 +1,7 @@
 library stat.descriptive.moving_statistic;
 
+import 'dart:math';
+
 import 'package:dama/stat/descriptive/summary.dart' as summary;
 import 'package:tuple/tuple.dart';
 
@@ -43,7 +45,17 @@ class MovingStatistics {
 
   final int leftWindow;
   final int rightWindow;
+  /// Not used yet anywhere
   final EndpointStrategy endpointStrategy;
+
+  /// Calculate moving correlation
+  /// See for a exponentially weighted formula
+  /// https://support.numxl.com/hc/en-us/articles/216100603-EWXCF-Exponential-Weighted-Correlation
+  List<num> movingCorrelation(List<List<num>> xy) {
+    final _acc =
+        Accumulator(_correlation, windowSize: leftWindow + rightWindow + 1);
+    return xy.map((e) => (_acc..add(e)).value).toList();
+  }
 
   List<num> movingMax(List<num> xs) {
     final _acc =
@@ -107,4 +119,30 @@ class Accumulator<T, S> {
   }
 
   T get value => _value!;
+}
+
+num _correlation(List<List<num>> xy) {
+  var cov = _covariance(xy);
+  var sx = sqrt(summary.variance(xy.map((e) => e[0])));
+  var sy = sqrt(summary.variance(xy.map((e) => e[1])));
+  return cov / (sx * sy);
+}
+
+num _covariance(List<List<num>> xy) {
+  num meanX = 0.0;
+  num meanY = 0.0;
+  var n = xy.length;
+  for (var i = 0; i < n; i++) {
+    meanX += xy[i][0];
+    meanY += xy[i][1];
+  }
+  meanX /= n;
+  meanY /= n;
+  num result = 0.0;
+  for (var i = 0; i < n; i++) {
+    final xDev = xy[i][0] - meanX;
+    final yDev = xy[i][1] - meanY;
+    result += (xDev * yDev - result) / (i + 1);
+  }
+  return result * (n / (n - 1));
 }
