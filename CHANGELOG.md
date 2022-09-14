@@ -1,5 +1,11 @@
 # Changelog
 
+## To do:
+- Implement meboost
+
+## Updated 2022-09-14
+- Provide MultiLinearInterpolator and deprecate LinearInterpolator.
+
 ## 2.0.2 (released on 2021-12-26)
 - Require Dart 2.14, add lints, remove more hash dependency
 

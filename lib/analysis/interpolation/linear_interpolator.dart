@@ -1,5 +1,7 @@
 library analysis.interpolation.linear_interpolator;
 
+@Deprecated(
+    'Use MultiLinearInterpolator which is a generalization to an arbitrary number of points')
 class LinearInterpolator {
   late List<num> _x, _y;
   late Function _fun;

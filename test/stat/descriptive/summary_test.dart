@@ -24,6 +24,30 @@ void main() {
       // naive mean is 500000000.60091573
       expect(mean(x), 500000000.6);
     });
+    test('trimmed mean', () {
+      var xs = <num>[
+        10,
+        8,
+        12,
+        10,
+        9,
+        7,
+        25,
+        23,
+        11,
+        9,
+        18,
+        19,
+        15,
+        11,
+        12,
+        14,
+        23,
+        19,
+      ];
+      var tm = trimmedMean(xs, trimPercentage: 0.1);
+      expect(tm, 13.9375);
+    });
     test('max', () {
       expect(max([1, 2, 3, 4, 5]), 5);
     });

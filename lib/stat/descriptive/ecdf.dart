@@ -1,5 +1,3 @@
-
-
 library stat.descriptive.ecdf;
 
 typedef Ecfd = num Function(num x);
@@ -13,12 +11,12 @@ int _indexOf<T>(List<T> elements, bool Function(T element) predicate) {
 
 /// Calculate the empirical cumulative distribution function from a list
 /// of numerical values.
-/// Return a function of (num)-> num.
+/// Return a stepwise function of (num)-> num.
 Ecfd ecdf(List<num> values) {
   assert(values.isNotEmpty);
   values.sort();
   num step = 1 / values.length;
-  var res = (num x) {
+  res(num x) {
     if (x < values.first) {
       return 0;
     } else if (x >= values[values.length - 1]) {
@@ -26,6 +24,7 @@ Ecfd ecdf(List<num> values) {
     } else {
       return _indexOf(values, (num y) => y > x) * step;
     }
-  };
+  }
+
   return res;
 }

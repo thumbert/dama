@@ -43,6 +43,20 @@ num mean(Iterable<num> xs) {
   return mu;
 }
 
+/// Calculate the trimmed mean for a list of numbers.
+/// For example, to remove the lowest 10% and the highest 10% of the
+/// observations use [trimmedPercentage] = 0.1
+num trimmedMean(List<num> xs, {num trimPercentage = 0.1}) {
+  assert(trimPercentage > 0 && trimPercentage < 0.5);
+  xs.sort();
+
+  /// Note that R uses floor in the calculation below.  One can
+  /// also use round, or other variations, see
+  /// https://stats.stackexchange.com/questions/16528/is-rs-trimmed-means-function-biased
+  var ind = (trimPercentage * xs.length).floor();
+  return mean(xs.sublist(ind, xs.length - ind));
+}
+
 /// Calculate the weighted mean of an iterable.
 num weightedMean(Iterable<num> x, Iterable<num> weights) {
   num res = 0;
