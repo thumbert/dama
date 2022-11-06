@@ -6,6 +6,8 @@
 ## Release 2022-11-07
 - Restrict Interval class to be only extending numerical values.  Add a 
 fromJson static method and a toJson method.
+- Modify MultiLinearInterpolator to work with +/-Infinity on the x axis.
+Show and example of discontinuous function. 
 
 ## Release 2022-09-14
 - Provide MultiLinearInterpolator and deprecate LinearInterpolator.

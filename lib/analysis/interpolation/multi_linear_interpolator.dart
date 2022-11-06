@@ -10,7 +10,9 @@ class MultiLinearInterpolator {
 
   /// A linear interpolator for a list of points.
   /// The input list [xs] needs to be sorted.
-  ///
+  /// Infinity is allowed on x values.  All y values need to be finite!
+  /// Discontinuous points need to be explicitly specified.  See example in
+  /// tests.
   MultiLinearInterpolator(this.xs, this.ys, {this.extrapolate = false}) {
     if (xs.length != ys.length) {
       throw ArgumentError(
@@ -22,6 +24,9 @@ class MultiLinearInterpolator {
     if (xs.length == 2 && xs[0] == xs[1]) {
       throw ArgumentError('Can\'t have the same start and end values.');
     }
+    if (ys.any((e) => !e.isFinite)) {
+      throw ArgumentError('All input ys values need to be finite!');
+    }
   }
 
   /// Calculates the value of this stepwise linear function at abscissa [x].
@@ -32,8 +37,12 @@ class MultiLinearInterpolator {
           'No extrapolation allowed.  $x is outside [${xs.first}, ${xs.last}]');
     }
     var ind = _comparableBinarySearch(x);
-    var slope = (ys[ind + 1] - ys[ind]) / (xs[ind + 1] - xs[ind]);
-    return ys[ind] + slope * (x - xs[ind]);
+    if (x.isFinite & xs[ind].isFinite) {
+      var slope = (ys[ind + 1] - ys[ind]) / (xs[ind + 1] - xs[ind]);
+      return ys[ind] + slope * (x - xs[ind]);
+    } else {
+      return ys[ind];
+    }
   }
 
   /// Return the index [i] such that xs[i] <= key < xs[i+1] with two exceptions.
