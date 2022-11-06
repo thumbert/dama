@@ -14,6 +14,7 @@ import 'analysis/interpolation/quadratic_interpolator_test.dart'
 import 'analysis/solver/bisection_solver_test.dart' as bisection;
 
 import 'basic/basic_test.dart' as basic;
+import 'basic/interval_test.dart' as interval;
 import 'basic/linear_filter_test.dart' as linear_filter;
 import 'basic/num_extensions_test.dart' as num_extensions;
 
@@ -44,6 +45,7 @@ void main() {
 
   // basic
   basic.tests();
+  interval.tests();
   linear_filter.tests();
   num_extensions.tests();
 

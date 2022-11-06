@@ -3,7 +3,11 @@
 ## To do:
 - Implement meboost
 
-## Updated 2022-09-14
+## Release 2022-11-07
+- Restrict Interval class to be only extending numerical values.  Add a 
+fromJson static method and a toJson method.
+
+## Release 2022-09-14
 - Provide MultiLinearInterpolator and deprecate LinearInterpolator.
 
 ## 2.0.2 (released on 2021-12-26)

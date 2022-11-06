@@ -2,15 +2,53 @@ library basic.interval;
 
 enum IntervalType { closedOpen, openClosed, openOpen, closedClosed }
 
-class Interval<K extends Comparable> {
+const _mapTypes = <String, IntervalType>{
+  'gtelte' : IntervalType.closedClosed,
+  'gtlte' : IntervalType.openClosed,
+  'gtelt' : IntervalType.closedOpen,
+  'gtlt' : IntervalType.openOpen,
+  'lt': IntervalType.openOpen,
+  'lte': IntervalType.openClosed,
+  'gt': IntervalType.openOpen,
+  'gte': IntervalType.closedOpen,
+};
+
+class Interval<K extends num> {
+   /// a numerical interval
+  Interval(this.start, this.end, {this.intervalType = IntervalType.closedOpen}) {
+    assert(start.compareTo(end) < 0);
+  }
+
   K start;
   K end;
   IntervalType intervalType;
 
-  /// a numerical interval
-  Interval(this.start, this.end, {this.intervalType = IntervalType.closedOpen}) {
-    assert(start.compareTo(end) < 0);
+  /// Parse a map containing the operators 'lte', 'gte', 'lt', 'gt
+  /// For example,
+  /// ```
+  /// {
+  ///   'gte': '1.5',
+  /// }
+  /// ```
+  /// returns the double interval [1.5, \infty), etc.
+  static Interval<double> fromJson(Map<String,num> xs) {
+    var start = double.negativeInfinity;
+    var end = double.infinity;
+    var key = (xs.keys.toList()..sort()).join();
+    var intervalType = _mapTypes[key];
+    if (intervalType == null) {
+      throw ArgumentError('Incorrect interval specification $xs');
+    }
+
+    if (xs.containsKey('gte') || xs.containsKey('gt')) {
+      start = (xs['gte'] ?? xs['gt']!).toDouble();
+    }
+    if (xs.containsKey('lte') || xs.containsKey('lt')) {
+      end = (xs['lte'] ?? xs['lt']!).toDouble();
+    }
+    return Interval(start, end, intervalType: intervalType);
   }
+
 
   /// Check if a value is contained in the interval
   bool contains(K value) {
@@ -31,17 +69,6 @@ class Interval<K extends Comparable> {
     }
     return res;
   }
-
-  /// Split this interval into two intervals: a left interval [start,value)
-  /// and a right interval [value, end).  The [intervalType] is kept the
-  /// same.
-//  List<Interval> split(K value) {
-//    if (start.compareTo(value) >= 0 || value.compareTo(end) >= 0)
-//      throw 'Split value needs to be inside the interval.';
-//    Interval left = new Interval(start, value, intervalType: intervalType);
-//    Interval right = new Interval(value, end, intervalType: intervalType);
-//    return [left, right];
-//  }
 
   /// Starting from the left value, generate an iterable of intervals according
   /// to the function f.
@@ -76,4 +103,40 @@ class Interval<K extends Comparable> {
     }
     return res;
   }
+
+  /// Because Json doesn't support \infty or -\infty, have to encode an
+  /// interval using the mathematical operators.  I use the same names as
+  /// MongoDb
+  ///
+  Map<String,double> toJson() {
+    var res = <String,double>{};
+    switch (intervalType) {
+      case IntervalType.closedOpen:
+        res['gte'] = start.toDouble();
+        if (end.isFinite) {
+          res['lt'] = end.toDouble();
+        }
+        break;
+      case IntervalType.openClosed:
+        res['lte'] = end.toDouble();
+        if (start.isFinite) {
+          res['gt'] = start.toDouble();
+        }
+        break;
+      case IntervalType.openOpen:
+        if (start.isFinite) {
+          res['gt'] = start.toDouble();
+        }
+        if (end.isFinite) {
+          res['lt'] = end.toDouble();
+        }
+        break;
+      case IntervalType.closedClosed:
+        res['gte'] = start.toDouble();
+        res['lte'] = end.toDouble();
+        break;
+    }
+    return res;
+  }
+
 }
