@@ -3,6 +3,9 @@
 ## To do:
 - Implement meboost
 
+## Release 2023-05-10
+- Implement moving mean and variance in one pass. 
+
 ## Release 2022-11-07
 - Restrict Interval class to be only extending numerical values.  Add a 
 fromJson static method and a toJson method.
