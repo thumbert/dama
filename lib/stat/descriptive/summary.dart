@@ -72,8 +72,11 @@ num weightedMean(Iterable<num> x, Iterable<num> weights) {
 
 /// Calculate the variance of an iterable.  Return [nan] if the iterable has
 /// less than 2 elements.
-///
+/// This is the Welford's algorithm see
+/// https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm
 /// See also [mad] for a robust measure of data dispersion.
+/// Return [double.nan] if the input iterable has length 1.
+///
 num variance(Iterable<num> xs) {
   var count = 0;
   var mean = 0.0;
