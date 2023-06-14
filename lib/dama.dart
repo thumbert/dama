@@ -9,6 +9,7 @@ export 'analysis/interpolation/spline_interpolator.dart';
 export 'basic/cumsum.dart';
 export 'basic/null_policy.dart';
 export 'basic/num_extensions.dart';
+export 'basic/num_iterable_extensions.dart';
 
 export 'distribution/discrete_distribution.dart';
 export 'distribution/markov_chain.dart';

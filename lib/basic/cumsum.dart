@@ -6,7 +6,7 @@ library basic.cumsum;
 /// sense to me.
 Iterable<num> cumsum(Iterable<num> x) {
   num partial = 0;
-  if (x.isEmpty) return [];
+  if (x.isEmpty) return <num>[];
   return x.map((e) {
     partial += e;
     return partial;
@@ -20,7 +20,7 @@ Iterable<num> cumsum(Iterable<num> x) {
 /// This is in contrast with R, where you get 0 which doesn't make
 /// sense to me.
 Iterable<num> cumMean(Iterable<num> x) {
-  if (x.isEmpty) return [];
+  if (x.isEmpty) return <num>[];
   num partial = 0;
   var i = 0;
   return x.map((e) {

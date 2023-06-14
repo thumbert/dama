@@ -3,6 +3,9 @@
 ## To do:
 - Implement meboost
 
+## Release 2023-06-14
+- Added indexOfMin, indexOfMax to Iterable<num> extensions.  
+
 ## Release 2023-05-29
 - Bump the sdk upper limit to 4.0.0
 

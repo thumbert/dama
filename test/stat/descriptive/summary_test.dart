@@ -15,9 +15,6 @@ void main() {
       // Same as R, python, Fortran, etc.
       expect(sum([]), 0);
     });
-    test('extension of sum', () {
-      expect(<num>[1, 2, 3].sum(), 6);
-    });
     test('mean', () {
       /// See https://www.nu42.com/2015/03/how-you-average-numbers.html
       var x = List.generate(50000, (i) => [1000000000.1, 1.1]).expand((e) => e);
@@ -58,7 +55,7 @@ void main() {
     });
     test('variance', () {
       var xs = [4, 7, 13, 16].map((e) => e + 1000000000).toList();
-      expect(xs.variance(), 30.0);
+      expect(variance(xs), 30.0);
     });
     test('covariance', () {
       var x = List.generate(10, (i) => i + 1);

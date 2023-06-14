@@ -136,8 +136,8 @@ num correlation(List<num> x, List<num> y) {
 /// by the multiplier 1.4826.
 /// https://en.wikipedia.org/wiki/Median_absolute_deviation
 num mad(Iterable<num> x) {
-  var _median = Quantile(x.toList()).value(0.5);
-  var ys = x.map((e) => (e - _median).abs()).toList();
+  var median = Quantile(x.toList()).value(0.5);
+  var ys = x.map((e) => (e - median).abs()).toList();
   return Quantile(ys).value(0.5);
 }
 
