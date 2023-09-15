@@ -3,7 +3,6 @@ library test.stat.descriptive.summary;
 import 'package:dama/src/utils/matchers.dart';
 import 'package:test/test.dart';
 import 'package:dama/stat/descriptive/summary.dart';
-import 'package:dama/stat/descriptive/summary_ext.dart';
 import '../../_data/cars.dart';
 
 void main() {

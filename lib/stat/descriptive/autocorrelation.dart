@@ -5,8 +5,6 @@ library stat.descriptive.autocorrelation;
 import 'dart:math';
 
 import 'package:dama/distribution/gaussian_distribution.dart';
-import 'package:dama/special/erf.dart';
-import 'package:dama/stat/descriptive/ecdf.dart';
 
 enum InputType { whiteNoise, autoregressive }
 

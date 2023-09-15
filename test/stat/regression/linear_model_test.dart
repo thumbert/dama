@@ -58,8 +58,10 @@ void testLongley() {
     -0.511041056535807E-01,
     1829.15146461355
   ];
-  List.generate(7, (i) => i).forEach((i) => expect(coeffAct[i],
-      equalsWithPrecision(coeffExp[i], precision: 1E-11, relative: true)));
+  for (var i in List.generate(7, (i) => i)) {
+    expect(coeffAct[i],
+      equalsWithPrecision(coeffExp[i], precision: 1E-11, relative: true));
+  }
 
   var residualsAct = lm.residuals();
   var residualsExp = [

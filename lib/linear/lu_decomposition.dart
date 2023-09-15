@@ -1,6 +1,5 @@
 library linear.lu_decomposition;
 
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:dama/linear/decomposition_solver.dart';

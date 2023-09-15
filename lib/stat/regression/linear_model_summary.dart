@@ -7,10 +7,37 @@ import 'package:dama/dama.dart';
 import 'package:table/table_base.dart';
 
 class LinearModelSummary {
-  LinearModel lm;
+  LinearModelSummary(this.lm) {
+    nu = lm.residuals().length - lm.coefficients.length;
+  }
 
+  final LinearModel lm;
   /// degrees of freedom
-  late int nu;
+  late final int nu;
+
+  List<Map<String,dynamic>> makeTable() {
+    var names = lm.names ?? List.generate(lm.coefficients.length, (i) => '$i');
+    var coeff = lm.coefficients;
+    var sd = lm.regressionParametersStandardErrors();
+    var tValues = [for (var i = 0; i < names.length; i++) coeff[i] / sd[i]];
+    var prob = tValues.map((t) => pValue(t)).toList();
+    var star = prob.map(stars).toList();
+
+    var out = <Map<String,dynamic>>[];
+    for (var i=0; i<names.length; i++){
+      out.add({
+        ' ': names[i],
+        'Estimate': coeff[i],
+        'Std. Error': sd[i],
+        't value': tValues[i],
+        'Pr(>|t|)': prob[i],
+        '  ': star[i],
+      });
+    }
+
+    return out;
+  }
+
 
   final _quad = TanhSinhIntegrator();
 
@@ -26,7 +53,7 @@ class LinearModelSummary {
   };
 
   /// Calculate the stars given the probability
-  final String Function(double) stars = (double p) {
+  String stars(double p) {
     if (p <= 0.001) {
       return '***';
     } else if (p <= 0.01) {
@@ -38,58 +65,43 @@ class LinearModelSummary {
     } else {
       return '';
     }
-  };
-
-  LinearModelSummary(this.lm);
+  }
 
   /// Try to replicate R's output.
   @override
   String toString() {
     var out = 'Residuals:\n';
-    var _aux = summary(lm.residuals());
-    var _resid = {
-      'Min': _aux['Min.'],
-      '1Q': _aux['1st Qu.'],
-      'Median': _aux['Median'],
-      '3Q': _aux['3rd Qu.'],
-      'Max': _aux['Max.'],
+    var aux = summary(lm.residuals());
+    var resid = {
+      'Min': aux['Min.'],
+      '1Q': aux['1st Qu.'],
+      'Median': aux['Median'],
+      '3Q': aux['3rd Qu.'],
+      'Max': aux['Max.'],
     };
-    var residuals = Table.from([_resid], options: _residualsOptions);
+    var residuals = Table.from([resid], options: _residualsOptions);
     out += residuals.toString();
 
-    var names = lm.names ?? List.generate(lm.coefficients.length, (i) => '$i');
-    var coeff = lm.coefficients;
-    var sd = lm.regressionParametersStandardErrors();
-    var tValues = [for (var i = 0; i < names.length; i++) coeff[i] / sd[i]];
-    nu = lm.residuals().length - coeff.length;
-
-    var _fmtValue = (double x) {
+    fmtValue(double x) {
       if (x.abs() < 1000) {
         return x.toStringAsFixed(4);
       } else {
         return x.toStringAsExponential(4);
       }
-    };
+    }
 
     out += '\n\nCoefficients:\n';
-    var _coeffOptions = {
+    var coeffOptions = {
       'format': {
-        'Estimate': (x) => _fmtValue(x as double),
-        'Std. Error': (x) => _fmtValue(x as double),
+        'Estimate': (x) => fmtValue(x as double),
+        'Std. Error': (x) => fmtValue(x as double),
         't value': (x) => (x as double).toStringAsFixed(3),
         'Pr(>|t|)': (x) => (x as double).toStringAsPrecision(3),
       },
       'columnSeparation': ' ',
     };
-    var prob = tValues.map((t) => pValue(t)).toList();
 
-    var table = Table(options: _coeffOptions)
-      ..addColumn(names, name: ' ')
-      ..addColumn(coeff, name: 'Estimate')
-      ..addColumn(sd, name: 'Std. Error')
-      ..addColumn(tValues, name: 't value')
-      ..addColumn(prob, name: 'Pr(>|t|)')
-      ..addColumn(prob.map(stars).toList(), name: '  ');
+    var table = Table.from(makeTable(), options: coeffOptions);
     out += table.toString();
     out += '\n---';
     out +=

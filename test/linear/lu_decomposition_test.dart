@@ -2,7 +2,6 @@
 
 library test.linear.lu_decomposition_test;
 
-import 'dart:math' show abs;
 import 'package:dama/dama.dart';
 import 'package:test/test.dart';
 import 'package:dama/linear/lu_decomposition.dart';

@@ -15,5 +15,7 @@ main() {
     x.add(gbm.next());
     i--;
   }
-  x.forEach((e)=>print(e!.toStringAsFixed(2)));
+  for (var e in x) {
+    print(e!.toStringAsFixed(2));
+  }
 }

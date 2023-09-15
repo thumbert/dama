@@ -1,7 +1,11 @@
 # Changelog
 
 ## To do:
-- Implement meboost
+- 
+
+## Release 2023-09-15
+- Get rid of all the warnings
+- Separate some of the code from LinearModelSummary to be available outside the toString() method
 
 ## Release 2023-06-14
 - Added indexOfMin, indexOfMax to Iterable<num> extensions.  

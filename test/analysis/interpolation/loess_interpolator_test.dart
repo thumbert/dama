@@ -4,7 +4,6 @@ import 'package:test/test.dart';
 import 'package:dama/analysis/interpolation/loess_interpolator.dart';
 import 'package:dama/stat/descriptive/summary.dart';
 import '../../_data/cars.dart';
-import '../../_data/energy.dart';
 
 void tests() {
   group('Loess interpolator: ', () {

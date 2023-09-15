@@ -10,15 +10,15 @@ import 'package:dama/linear/matrix.dart';
 /// pretty decent results.
 ///
 /// I've got a 30% speedup on JavaScript V8 on 7/1/2015.
-speed_test_doubleMatrix() {
+speedTestDoubleMatrix() {
   Matrix _makeTestMatrix(int N) {
     var m = <num>[];
     var aux = 1.0/N/N;
-    for (var i=0; i<N; i++)
+    for (var i=0; i<N; i++){
       for (var j=0; j<N; j++) {
         m.add(aux*(i-j)*(i+j));
       }
-
+    }
     return Matrix(m, N, N);
   }
 
@@ -37,5 +37,5 @@ speed_test_doubleMatrix() {
 
 
 main() {
-  speed_test_doubleMatrix();
+  speedTestDoubleMatrix();
 }

@@ -5,7 +5,6 @@ library linear.qrdecomposition_test;
 import 'package:test/test.dart';
 import 'package:dama/linear/matrix.dart';
 import 'package:dama/linear/qr_decomposition.dart';
-import 'package:dama/linear/decomposition_solver.dart';
 import 'package:dama/src/utils/matchers.dart';
 
 qrDecomposition() {

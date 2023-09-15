@@ -183,22 +183,23 @@ class _QRSolver implements DecompositionSolver {
 
   @override
   Matrix solveMatrix(Matrix b) {
-    final n = _qrt.nrow;
-    final m = _qrt.ncol;
-    if (b.nrow != m) throw 'Dimensions mismatch';
-
-    if (!isNonSingular()) throw 'Matrix is singular';
-
-    throw 'NOT YET IMPLEMENTED ...';
-
-    final columns = b.ncol;
+    throw UnimplementedError('Fix me!');
+    // final n = _qrt.nrow;
+    // final m = _qrt.ncol;
+    // if (b.nrow != m) throw 'Dimensions mismatch';
+    //
+    // if (!isNonSingular()) throw 'Matrix is singular';
+    //
+    // throw 'NOT YET IMPLEMENTED ...';
+    //
+    // final columns = b.ncol;
 //    final int blockSize      = BlockRealMatrix.BLOCK_SIZE;
 //    final int cBlocks        = (columns + blockSize - 1) / blockSize;
 //    final double[][] xBlocks = BlockRealMatrix.createBlocksLayout(n, columns);
 //    final double[][] y       = new double[b.getRowDimension()][blockSize];
 //    final double[]   alpha   = new double[blockSize];
 
-    return Matrix([1], 1, 1); // TODO:  Fix me here!
+    // return Matrix([1], 1, 1); // TODO:  Fix me here!
   }
 
   @override
