@@ -3,6 +3,9 @@
 ## To do:
 - 
 
+## Release 2023-11-12
+- Bump up dependencies, fixed some lints
+
 ## Release 2023-09-15
 - Get rid of all the warnings
 - Separate some of the code from LinearModelSummary to be available outside the toString() method

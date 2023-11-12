@@ -9,7 +9,7 @@ final Logger _log = Logger('GaussLegendre');
 /// Implements Gauss-Legendre quadrature. Finite interval integration.
 class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
   /// Abscissas for the 4 points method. */
-  static final List<double> _ABSCISSAS_4 = [
+  static final List<double> _abscissas4 = [
     -sqrt((15.0 + 2.0 * sqrt(30.0)) / 35.0),
     -sqrt((15.0 - 2.0 * sqrt(30.0)) / 35.0),
     sqrt((15.0 - 2.0 * sqrt(30.0)) / 35.0),
@@ -17,7 +17,7 @@ class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
   ];
 
   /// Weights for the 4 points method. */
-  static final List<double> _WEIGHTS_4 = [
+  static final List<double> _weights4 = [
     (90.0 - 5.0 * sqrt(30.0)) / 180.0,
     (90.0 + 5.0 * sqrt(30.0)) / 180.0,
     (90.0 + 5.0 * sqrt(30.0)) / 180.0,
@@ -25,7 +25,7 @@ class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
   ];
 
   /// Abscissas for the 64 points method. */
-  static final List<double> _ABSCISSAS_64 = [
+  static final List<double> _abscissas64 = [
     0.0243502926634244325089558,
     0.0729931217877990394495429,
     0.1214628192961205544703765,
@@ -61,7 +61,7 @@ class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
   ];
 
   /// Weights for the 64 points method. */
-  static final List<double> _WEIGHTS_64 = [
+  static final List<double> _weights64 = [
     0.0486909570091397203833654,
     0.0485754674415034269347991,
     0.0483447622348029571697695,
@@ -96,9 +96,9 @@ class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
     0.0017832807216964329472961
   ];
 
-  // NEED TO REFLECT THEM
+  /// NEED TO REFLECT THEM
   /// Abscissas for the 1024 points method. */
-  static final List<double> _ABSCISSAS_1024 = [
+  static final List<double> _abscissas1024 = [
     0.0015332313560626384065387,
     0.0045996796509132604743248,
     0.0076660846940754867627839,
@@ -614,7 +614,7 @@ class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
   ];
 
   /// Weights for the 1024 points method. */
-  static final List<double> _WEIGHTS_1024 = [
+  static final List<double> _weights1024 = [
     0.0030664603092439082115513,
     0.0030664314747171934849726,
     0.0030663738059349007324470,
@@ -1151,20 +1151,20 @@ class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
 
     switch (n) {
       case 4:
-        _abscissas = _ABSCISSAS_4;
-        _weights = _WEIGHTS_4;
+        _abscissas = _abscissas4;
+        _weights = _weights4;
         break;
       case 64:
-        _abscissas = List.from(_ABSCISSAS_64);
-        _abscissas.addAll(_ABSCISSAS_64.map((e) => -e));
-        _weights = List.from(_WEIGHTS_64);
-        _weights.addAll(_WEIGHTS_64);
+        _abscissas = List.from(_abscissas64);
+        _abscissas.addAll(_abscissas64.map((e) => -e));
+        _weights = List.from(_weights64);
+        _weights.addAll(_weights64);
         break;
       case 1024:
-        _abscissas = List.from(_ABSCISSAS_1024);
-        _abscissas.addAll(_ABSCISSAS_1024.map((e) => -e));
-        _weights = List.from(_WEIGHTS_1024);
-        _weights.addAll(_WEIGHTS_1024);
+        _abscissas = List.from(_abscissas1024);
+        _abscissas.addAll(_abscissas1024.map((e) => -e));
+        _weights = List.from(_weights1024);
+        _weights.addAll(_weights1024);
         break;
       default:
         throw Exception('Only order 4, 64, 1024 is supported!');

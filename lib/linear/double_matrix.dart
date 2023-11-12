@@ -93,10 +93,11 @@ class DoubleMatrix extends Matrix {
   @override
   DoubleMatrix transpose() {
     var res = DoubleMatrix.filled(0.0, ncol, nrow);
-    for (var i = 0; i < ncol; i++)
+    for (var i = 0; i < ncol; i++){
       for (var j = 0; j < nrow; j++) {
         res.data[i][j] = data[j][i];
       }
+    }
     return res;
   }
 
@@ -121,7 +122,7 @@ class DoubleMatrix extends Matrix {
 
   @override
   String toString() {
-    var out = <String>[' ', ...new List.generate(nrow, (i) => '[$i,]')];
+    var out = <String>[' ', ...List.generate(nrow, (i) => '[$i,]')];
     var width = out.last.length;
     out = out.map((String e) => e.padLeft(width)).toList();
 

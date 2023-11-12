@@ -8,7 +8,7 @@ import 'package:dama/analysis/solver/bisection_solver.dart';
 import 'package:dama/src/utils/matchers.dart';
 
 
-test_bisection_solver() {
+testBisectionSolver() {
   group('Bisection solver:', () {
     test('sin', () {
       var value = bisectionSolver((x) => sin(x), 3, 4);
@@ -23,5 +23,5 @@ test_bisection_solver() {
 }
 
 main() {
-  test_bisection_solver();
+  testBisectionSolver();
 }

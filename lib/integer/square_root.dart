@@ -18,7 +18,7 @@ BigInt isqrt(BigInt n) {
 /// Check if a number is a perfect square.  Using the Babylonian method.
 bool isSquare(int n) {
   var x = n ~/ 2;
-  var seen = Set()..add(x);
+  var seen = <int>{x};
   while (x*x != n) {
     x = (x + n ~/ x) ~/ 2;
     if (seen.contains(x)) return false;

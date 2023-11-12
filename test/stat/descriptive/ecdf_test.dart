@@ -5,7 +5,7 @@ library test.stat.descriptive;
 import 'package:dama/stat/descriptive/ecdf.dart';
 import 'package:test/test.dart';
 
-ecdf_test() {
+ecdfTest() {
   test('ecdf 1', (){
     var f = ecdf([1,3,4,2]);
     var x = [0,1,1.4,3.2,4,5];
@@ -21,7 +21,7 @@ ecdf_test() {
 }
 
 main() {
-  ecdf_test();
+  ecdfTest();
 }
 
 

@@ -21,7 +21,9 @@ qrDecomposition() {
       var solver = qr.getSolver();
       List x = solver.solveVector(ColumnMatrix([1,1,1])).data;
       var xExp = [0.0514285714285714, -0.0102857142857143, -0.0354285714285714];
-      [0,1,2].forEach((i) => expect(x[i], equalsWithPrecision(xExp[i], precision: 1E-14)));
+      for (var i in [0,1,2]) {
+        expect(x[i], equalsWithPrecision(xExp[i], precision: 1E-14));
+      }
     });
     test('3x3 singular', (){
       var m = Matrix([1,2,3,4,5,6,7,8,9], 3, 3);
@@ -61,7 +63,9 @@ qrDecomposition() {
       var solver = QRDecomposition(m).getSolver();
       List x = solver.solveVector(ColumnMatrix([1,1,1])).data;
       var xExp = [0.0514285714285714, -0.0102857142857143, -0.0354285714285714];
-      [0,1,2].forEach((i) => expect(x[i], equalsWithPrecision(xExp[i], precision: 1E-14)));
+      for (var i in [0,1,2]) {
+        expect(x[i], equalsWithPrecision(xExp[i], precision: 1E-14));
+      }
     });
   });
 

@@ -13,7 +13,7 @@ tests() {
     expect(i.toString(), '[0,1)');
   });
 
-  test('Create interval [0, \infty)', () {
+  test('Create interval [0, \\infty)', () {
     var i = Interval(0.0, double.infinity);
     expect(i.start, 0.0);
     expect(i.end, double.infinity);

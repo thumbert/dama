@@ -28,21 +28,19 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
         maximalIterationCount: maximalIterationCount); 
   }
   
-  /**
-   * Compute the n-th stage integral of trapezoid rule. This function
-   * should only be called by API <code>integrate()</code> in the package.
-   * To save time it does not verify arguments - caller does.
-   * <p>
-   * The interval is divided equally into 2^n sections rather than an
-   * arbitrary m sections because this configuration can best utilize the
-   * already computed values.</p>
-  *
-   * @param baseIntegrator integrator holding integration parameters
-   * @param n the stage of 1/2 refinement, n = 0 is no refinement
-   * @return the value of n-th stage integral
-   * @throws TooManyEvaluationsException if the maximal number of evaluations
-   * is exceeded.
-   */
+  /// Compute the n-th stage integral of trapezoid rule. This function
+  /// should only be called by API <code>integrate()</code> in the package.
+  /// To save time it does not verify arguments - caller does.
+  /// <p>
+  /// The interval is divided equally into 2^n sections rather than an
+  /// arbitrary m sections because this configuration can best utilize the
+  /// already computed values.</p>
+  ///
+  /// @param baseIntegrator integrator holding integration parameters
+  /// @param n the stage of 1/2 refinement, n = 0 is no refinement
+  /// @return the value of n-th stage integral
+  /// @throws TooManyEvaluationsException if the maximal number of evaluations
+  /// is exceeded.
   double? stage(final BaseAbstractUnivariateIntegrator baseIntegrator, final int n) {
 
     if (n == 0) {

@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 import 'package:dama/special/erf.dart';
 import 'package:dama/src/utils/matchers.dart';
 
-erf_test(){
+erfTest(){
   test('erf', (){
     expect(Phi(0.0), 0.5);
     expect(erf(0.0), 0.0);
@@ -30,6 +30,6 @@ erf_test(){
 
 main() {
   group('Special functions:', (){
-    erf_test();
+    erfTest();
   });
 }

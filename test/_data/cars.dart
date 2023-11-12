@@ -1,7 +1,4 @@
 /// The cars data set from R, speed vs. distance, 50 observations.
-
-
-
 Map<String, List<num>> cars() {
   return {
     'speed': <num>[

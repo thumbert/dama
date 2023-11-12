@@ -31,7 +31,7 @@ class GaussianDistribution {
     // TODO: there should be algorithms to calculate this directly
     // not by using bisection.
 
-    var f = (num x) => this.probability(x) - probability;
+    f(num x) => this.probability(x) - probability;
     var res = bisectionSolver(f, -1000, 1000);
     return res;
   }

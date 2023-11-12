@@ -20,7 +20,7 @@ class FilonIntegrator extends BaseAbstractUnivariateIntegrator {
   /// http://ltpth.web.psi.ch/seminars/2006/slides-rosenfelder-20060601.pdf
   ///
   FilonIntegrator(
-    num omega, {
+    this.omega, {
     double relativeAccuracy =
         BaseAbstractUnivariateIntegrator.DEFAULT_RELATIVE_ACCURACY,
     double absoluteAccuracy =
@@ -32,8 +32,6 @@ class FilonIntegrator extends BaseAbstractUnivariateIntegrator {
     if (maximalIterationCount > FILON_MAX_ITERATIONS_COUNT) {
       throw 'Too many iterations for FilonIntegrator.';
     }
-
-    this.omega = omega;
 
     super.initialize(
         relativeAccuracy: relativeAccuracy,

@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 import 'package:dama/distribution/discrete_distribution.dart';
 import 'package:dama/distribution/markov_chain.dart';
 
-test_discrete_distribution() {
+testDiscreteDistribution() {
   group('Discrete distribution test:', (){
     var dist = DiscreteDistribution(['A', 'B', 'C'], [0.1, 0.25, 0.65], 0);
 
@@ -18,7 +18,7 @@ test_discrete_distribution() {
   });
 }
 
-test_markov() {
+testMarkov() {
   group('Markov Chain test', () {
     var mat = [[0.1, 0.95], [0.9, 0.05]];
 
@@ -38,7 +38,7 @@ test_markov() {
 
 main() {
 
-  test_discrete_distribution();
+  testDiscreteDistribution();
 
-  test_markov();
+  testMarkov();
 }

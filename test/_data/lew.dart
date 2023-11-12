@@ -9,9 +9,6 @@
 /// Order of variables per line image--
 /// Response variable = deflection
 ///
-
-
-
 List<num> lew() {
   var deflection = '''
     -213

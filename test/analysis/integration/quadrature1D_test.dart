@@ -144,7 +144,7 @@ Map<int, Map<String, dynamic>> getHarness() {
 
 void testQuadrature1D(UnivariateIntegrator quad, Map precision) {
   var harness = getHarness();
-  harness.keys.forEach((i) {
+  for (var i in harness.keys) {
     var info = harness[i]!;
     num? r = quad.integrate(
         1000000,
@@ -161,7 +161,7 @@ void testQuadrature1D(UnivariateIntegrator quad, Map precision) {
                 precision: rel!, relative: true));
       });
     }
-  });
+  }
 }
 
 void main() {
