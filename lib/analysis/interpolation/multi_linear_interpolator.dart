@@ -64,7 +64,7 @@ class MultiLinearInterpolator {
         if (max - mid == 1) {
           return mid;
         }
-        min = mid + 1;
+        min = mid;
       } else {
         max = mid;
       }

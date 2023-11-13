@@ -3,6 +3,9 @@
 ## To do:
 - 
 
+## Release 2023-11-13
+- Fix multi-linear interpolator bug
+
 ## Release 2023-11-12
 - Bump up dependencies, fixed some lints
 

@@ -15,6 +15,14 @@ void tests() {
     expect(() => ir.valueAt(-1), throwsArgumentError);
     expect(() => ir.valueAt(10), throwsArgumentError);
   });
+
+  test('Multi linear interpolator, 2', () {
+    // fix error by one
+    var ir = MultiLinearInterpolator(
+        [23, 51, 82, 112, 143, 144, 173, 204], [0, 4, 10, 12, 20, 28, 32, 40]);
+    expect(ir.valueAt(83), 10.066666666666666);
+  });
+
   test('Multi linear interpolator, using infinity', () {
     var ir = MultiLinearInterpolator([0, 15, double.infinity], [15, 0, 0],
         extrapolate: true);
@@ -24,6 +32,7 @@ void tests() {
     expect(ir.valueAt(20), 0);
     expect(ir.valueAt(double.infinity), 0);
   });
+
   test('Multi linear interpolator, using +/-infinity', () {
     var ir = MultiLinearInterpolator(
         [double.negativeInfinity, 0, 15, double.infinity], [15, 15, 0, 0],
