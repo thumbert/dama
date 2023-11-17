@@ -7,7 +7,9 @@ extension NumIterableExtensions on Iterable<num> {
 
   Iterable<num> cumMean() => cs.cumMean(this);
 
-  Iterable<num> cumSum() => cs.cumsum(this);
+  Iterable<num> cumSum() => cs.cumSum(this);
+
+  Iterable<num> cumProd() => cs.cumProd(this);
 
   /// Return the index of the max value of this iterable
   ///
