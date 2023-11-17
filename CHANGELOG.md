@@ -3,6 +3,9 @@
 ## To do:
 - 
 
+## Release 2023-11-17
+- Add a cumProd function
+
 ## Release 2023-11-13
 - Fix multi-linear interpolator bug
 

@@ -18,10 +18,11 @@ void tests() {
       var xs = ['a', 'b', 'a', 'a', 'a'];
       expect(count(xs, input: {'a': 4, 'b': 1}), {'a': 8, 'b': 2});
     });
-    test('cumsum', () {
+    test('cumSum, cumMean, cumProd', () {
       var x = [1, 2, 3, 4];
-      expect(cumsum(x).toList(), [1, 3, 6, 10]);
+      expect(cumSum(x).toList(), [1, 3, 6, 10]);
       expect(cumMean(x).toList(), [1, 1.5, 2, 2.5]);
+      expect(cumProd(x).toList(), [1, 2, 6, 24]);
     });
     test('last observation carried forward, one missing value in the middle',
         () {
