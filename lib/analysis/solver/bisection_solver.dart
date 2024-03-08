@@ -6,9 +6,9 @@ num bisectionSolver(num Function(num) f, num lower, num upper,
   if (lower >= upper) {
     throw 'Lower limit needs to be lower than the upper limit.';
   }
+  assert(f(lower) * f(upper) < 0);
 
   var iter = 0;
-
   while (true) {
     var m = 0.5 * (lower + upper);
     var fMin = f(lower);

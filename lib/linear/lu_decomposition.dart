@@ -22,7 +22,7 @@ import 'matrix.dart';
 ///<li>the {@code det} method has been renamed as {@link #getDeterminant()
 ///getDeterminant},</li>
 ///<li>the {@code getDoublePivot} method has been removed (but the int based
-///{@link #getPivot() getPivot} method has been kept),</li>
+///{getPivot} method has been kept),</li>
 ///<li>the {@code solve} and {@code isNonSingular} methods have been replaced
 ///by a {@link #getSolver() getSolver} method and the equivalent methods
 ///provided by the returned {@link DecompositionSolver}.</li>

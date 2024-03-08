@@ -3,6 +3,9 @@
 ## To do:
 - 
 
+## Release 2024-03-08
+- Add an assert in bisectionSolver to check that the function changes signs at the range end
+
 ## Release 2023-11-17
 - Add a cumProd function
 

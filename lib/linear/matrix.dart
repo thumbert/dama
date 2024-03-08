@@ -169,7 +169,7 @@ abstract class Matrix {
   }
 
   @override
-  bool operator ==(dynamic that) {
+  bool operator ==(Object that) {
     if (that is! Matrix) return false;
 
     if (that.nrow != nrow || that.ncol != ncol) return false;
