@@ -88,7 +88,7 @@ class LoessInterpolator {
     if (n == 1) return [y[0]];
     if (n == 2) return [y[0], y[1]];
 
-    var bandwithInPoints = (bandwidth * n).floor();
+    var bandwidthInPoints = (bandwidth * n).floor();
     var res = List<double>.filled(n, 0.0);
     var residuals = List<double>.filled(n, 0.0);
     var sortedResiduals = List<double>.filled(n, 0.0);
@@ -96,24 +96,24 @@ class LoessInterpolator {
 
     /// Do an initial fit
     for (var iter = 0; iter <= robustnessIters; ++iter) {
-      var bandwidthInterval = [0, bandwithInPoints - 1];
+      var bandwidthInterval = [0, bandwidthInPoints - 1];
 
-      /// At each x, compute a local weighted linerar regression
+      /// At each x, compute a local weighted linear regression
       for (var i = 0; i < n; ++i) {
-        var _x = x[i].toDouble();
+        var xi = x[i].toDouble();
 
         /// Find out the interval of source points on which you do a regression
-        if (i > 0) _updateBadwidthInteval(x, weights, i, bandwidthInterval);
+        if (i > 0) _updateBandwidthInterval(x, weights, i, bandwidthInterval);
 
-        var ileft = bandwidthInterval[0];
-        var iright = bandwidthInterval[1];
+        var iLeft = bandwidthInterval[0];
+        var iRight = bandwidthInterval[1];
 
         /// Compute the point of the bandwidth interval that is farthest
         int edge;
-        if (x[i] - x[ileft] > x[iright] - x[i]) {
-          edge = ileft;
+        if (x[i] - x[iLeft] > x[iRight] - x[i]) {
+          edge = iLeft;
         } else {
-          edge = iright;
+          edge = iRight;
         }
 
         /// Compute a least-squares linear fit weighted
@@ -122,11 +122,11 @@ class LoessInterpolator {
         var sumXSquared = 0.0;
         var sumY = 0.0;
         var sumXY = 0.0;
-        var denom = (1.0 / (x[edge] - _x)).abs();
-        for (var k = ileft; k <= iright; ++k) {
+        var denom = (1.0 / (x[edge] - xi)).abs();
+        for (var k = iLeft; k <= iRight; ++k) {
           var xk = x[k];
           var yk = y[k];
-          var dist = (k < i) ? _x - xk : xk - _x;
+          var dist = (k < i) ? xi - xk : xk - xi;
           var w = _tricube(dist * denom) * robustnessWeights[k] * weights[k];
           var xkw = xk * w;
           sumWeights += w;
@@ -150,7 +150,7 @@ class LoessInterpolator {
 
         final alpha = meanY - beta * meanX;
 
-        res[i] = beta * _x + alpha;
+        res[i] = beta * xi + alpha;
         residuals[i] = (y[i] - res[i]).abs();
       }
 
@@ -185,7 +185,7 @@ class LoessInterpolator {
   }
 
   /// Return a two element list [left,right].  Modify the [bandwidthInterval].
-  void _updateBadwidthInteval(List<double> x, List<double> weights, int i,
+  void _updateBandwidthInterval(List<double> x, List<double> weights, int i,
       List<int> bandwidthInterval) {
     var left = bandwidthInterval[0];
     var right = bandwidthInterval[1];

@@ -8,7 +8,7 @@ import 'package:dama/special/hyperbolic_trig.dart';
 final Logger _log = Logger('TanhSinh');
 
 class TanhSinhIntegrator extends BaseAbstractUnivariateIntegrator {
-  final int TANHSINH_MAX_LEVEL_COUNT = 12;
+  final int tanhSinhMaxLevelCount = 12;
 
   /// Abscissas for the current method. */
   late List<double> _abscissas;
@@ -26,13 +26,13 @@ class TanhSinhIntegrator extends BaseAbstractUnivariateIntegrator {
       int? minimalIterationCount,
       int? maximalIterationCount}) {
     relativeAccuracy ??=
-        BaseAbstractUnivariateIntegrator.DEFAULT_RELATIVE_ACCURACY;
+        BaseAbstractUnivariateIntegrator.defaultRelativeAccuracy;
     absoluteAccuracy ??=
-        BaseAbstractUnivariateIntegrator.DEFAULT_ABSOLUTE_ACCURACY;
+        BaseAbstractUnivariateIntegrator.defaultAbsoluteAccuracy;
     minimalIterationCount ??=
-        BaseAbstractUnivariateIntegrator.DEFAULT_MIN_ITERATIONS_COUNT;
-    maximalIterationCount ??= TANHSINH_MAX_LEVEL_COUNT;
-    if (maximalIterationCount > TANHSINH_MAX_LEVEL_COUNT) {
+        BaseAbstractUnivariateIntegrator.defaultMinIterationsCount;
+    maximalIterationCount ??= tanhSinhMaxLevelCount;
+    if (maximalIterationCount > tanhSinhMaxLevelCount) {
       throw 'Too many iterations for TanhSinhIntegrator.';
     }
 
@@ -44,7 +44,7 @@ class TanhSinhIntegrator extends BaseAbstractUnivariateIntegrator {
   }
 
   /// Calculate the quadrature order.
-  int _quad_order(h) {
+  int _quadOrder(h) {
     num t, u1, u2;
     double? w;
 
@@ -120,7 +120,7 @@ class TanhSinhIntegrator extends BaseAbstractUnivariateIntegrator {
     var h = pow(2, -k); // spacing
 
     //int N = 8*pow(2, k);   // quadrature order
-    var N = _quad_order(h);
+    var N = _quadOrder(h);
     _log.info('Quad order: $N');
 
     // calculate the abscissas and weights

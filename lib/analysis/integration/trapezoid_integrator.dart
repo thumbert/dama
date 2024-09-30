@@ -2,32 +2,34 @@ library analysis.integration.trapezoid_integrator;
 
 import 'package:dama/analysis/integration/univariate_integrator.dart';
 
-class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
-  
-  static final int TRAPEZOID_MAX_ITERATIONS_COUNT = 64;
-  
+class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator {
+  static final int trapezoidMaxIterationsCount = 64;
+
   double? _s;
 
-  TrapezoidIntegrator({
-      double? relativeAccuracy, 
-      double? absoluteAccuracy, 
-      int? minimalIterationCount, 
-      int? maximalIterationCount }) {
-    relativeAccuracy ??= BaseAbstractUnivariateIntegrator.DEFAULT_RELATIVE_ACCURACY;
-    absoluteAccuracy ??= BaseAbstractUnivariateIntegrator.DEFAULT_ABSOLUTE_ACCURACY;
-    minimalIterationCount ??= BaseAbstractUnivariateIntegrator.DEFAULT_MIN_ITERATIONS_COUNT;
-    maximalIterationCount ??= TRAPEZOID_MAX_ITERATIONS_COUNT;
-    if (maximalIterationCount > TRAPEZOID_MAX_ITERATIONS_COUNT) {
+  TrapezoidIntegrator(
+      {double? relativeAccuracy,
+      double? absoluteAccuracy,
+      int? minimalIterationCount,
+      int? maximalIterationCount}) {
+    relativeAccuracy ??=
+        BaseAbstractUnivariateIntegrator.defaultRelativeAccuracy;
+    absoluteAccuracy ??=
+        BaseAbstractUnivariateIntegrator.defaultAbsoluteAccuracy;
+    minimalIterationCount ??=
+        BaseAbstractUnivariateIntegrator.defaultMinIterationsCount;
+    maximalIterationCount ??= trapezoidMaxIterationsCount;
+    if (maximalIterationCount > trapezoidMaxIterationsCount) {
       throw 'Too many iterations for TrapezoidIntegrator.';
     }
-    
+
     super.initialize(
-        relativeAccuracy: relativeAccuracy, 
-        absoluteAccuracy: absoluteAccuracy, 
-        minimalIterationCount: minimalIterationCount, 
-        maximalIterationCount: maximalIterationCount); 
+        relativeAccuracy: relativeAccuracy,
+        absoluteAccuracy: absoluteAccuracy,
+        minimalIterationCount: minimalIterationCount,
+        maximalIterationCount: maximalIterationCount);
   }
-  
+
   /// Compute the n-th stage integral of trapezoid rule. This function
   /// should only be called by API <code>integrate()</code> in the package.
   /// To save time it does not verify arguments - caller does.
@@ -41,23 +43,24 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
   /// @return the value of n-th stage integral
   /// @throws TooManyEvaluationsException if the maximal number of evaluations
   /// is exceeded.
-  double? stage(final BaseAbstractUnivariateIntegrator baseIntegrator, final int n) {
-
+  double? stage(
+      final BaseAbstractUnivariateIntegrator baseIntegrator, final int n) {
     if (n == 0) {
       final max = baseIntegrator.max;
       final min = baseIntegrator.min;
-      _s = 0.5 * (max - min) *
+      _s = 0.5 *
+          (max - min) *
           (baseIntegrator.computeObjectiveValue(min) +
               baseIntegrator.computeObjectiveValue(max));
       return _s;
     } else {
-      final np = 1 << (n-1);           // number of new points in this stage
+      final np = 1 << (n - 1); // number of new points in this stage
       var sum = 0.0;
       final max = baseIntegrator.max;
       final min = baseIntegrator.min;
       // spacing between adjacent new points
       final spacing = (max - min) / np;
-      var x = min + 0.5 * spacing;    // the first new point
+      var x = min + 0.5 * spacing; // the first new point
       for (var i = 0; i < np; i++) {
         sum += baseIntegrator.computeObjectiveValue(x);
         x += spacing;
@@ -68,7 +71,6 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
     }
   }
 
-  
   @override
   double? doIntegrate() {
     var oldt = stage(this, 0);
@@ -78,8 +80,7 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
       final t = stage(this, i);
       if (i >= getMinimalIterationCount()) {
         final delta = (t! - oldt!).abs();
-        final rLimit =
-            getRelativeAccuracy() * (oldt + t).abs() * 0.5;
+        final rLimit = getRelativeAccuracy() * (oldt + t).abs() * 0.5;
         if ((delta <= rLimit) || (delta <= getAbsoluteAccuracy())) {
           return t;
         }
@@ -87,9 +88,5 @@ class TrapezoidIntegrator extends BaseAbstractUnivariateIntegrator{
       oldt = t;
       iterations.incrementCount();
     }
-
-    
   }
-  
-  
 }

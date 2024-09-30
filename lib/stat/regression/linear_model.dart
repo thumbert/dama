@@ -3,11 +3,22 @@ library stat.regression.linear;
 import 'dart:math';
 import 'package:dama/dama.dart';
 import 'package:dama/linear/lu_decomposition.dart';
-import 'package:dama/linear/matrix.dart';
+
 import 'package:dama/linear/qr_decomposition.dart';
 import 'package:dama/stat/regression/linear_model_summary.dart';
 
 class LinearModel {
+  /// Solve the ordinary least-square regression problem
+  /// X b = y + \epsilon
+  ///
+  LinearModel(this.X, this.y, {this.names, this.threshold = 1E-10}) {
+    if (names != null && names!.length != X.ncol) {
+      throw ArgumentError(
+          'Number of coefficient names don\'t match design matrix X dimension');
+    }
+    _qr = QRDecomposition(X, threshold: threshold);
+  }
+
   /// The design matrix of independent (explanatory) variables.
   DoubleMatrix X;
 
@@ -23,17 +34,6 @@ class LinearModel {
   late QRDecomposition _qr;
   List<double>? _coeff;
 
-  /// Solve the ordinary least-square regression problem
-  /// X b = y + \epsilon
-  ///
-  LinearModel(this.X, this.y, {this.names, this.threshold = 1E-10}) {
-    if (names != null && names!.length != X.ncol) {
-      throw ArgumentError(
-          'Number of coefficient names don\'t match design matrix X dimension');
-    }
-    _qr = QRDecomposition(X, threshold: threshold);
-  }
-
   /// Get the regression coefficients.
   List<double> get coefficients {
     return _coeff ?? _qr.getSolver().solveVector(y).toList().toList();
@@ -46,6 +46,13 @@ class LinearModel {
     }
     return pX.multiply(DoubleMatrix(coefficients, X.ncol, 1)).toList();
   }
+
+  /// Implement the equivalent of R's
+  /// data("cars")
+  /// model <- lm(dist ~ speed, data = cars)
+  /// new <- data.frame(speed = seq(3, 27, 1))
+  /// ci <- predict(model, new, interval="confidence", level=0.99)
+  // List<num> predictConfidenceIntervals(DoubleMatrix pX, {required num level}) {}
 
   /// Calculate residuals
   List<double> residuals() {
@@ -86,9 +93,9 @@ class LinearModel {
   /// </p>
   DoubleMatrix calculateBetaVariance() {
     var p = X.ncol;
-    var Raug = _qr.getR().getSubmatrix(0, p - 1, 0, p - 1);
-    var Rinv = LuDecomposition(Raug).getSolver().inverse() as DoubleMatrix;
-    return Rinv.multiply(Rinv.transpose());
+    var rAug = _qr.getR().getSubmatrix(0, p - 1, 0, p - 1);
+    var rInv = LuDecomposition(rAug).getSolver().inverse() as DoubleMatrix;
+    return rInv.multiply(rInv.transpose());
   }
 
   double errorVariance() {

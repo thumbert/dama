@@ -1141,13 +1141,13 @@ class GaussLegendreIntegrator extends BaseAbstractUnivariateIntegrator {
       int? minimalIterationCount,
       int? maximalIterationCount}) {
     relativeAccuracy ??=
-        BaseAbstractUnivariateIntegrator.DEFAULT_RELATIVE_ACCURACY;
+        BaseAbstractUnivariateIntegrator.defaultRelativeAccuracy;
     absoluteAccuracy ??=
-        BaseAbstractUnivariateIntegrator.DEFAULT_ABSOLUTE_ACCURACY;
+        BaseAbstractUnivariateIntegrator.defaultAbsoluteAccuracy;
     minimalIterationCount ??=
-        BaseAbstractUnivariateIntegrator.DEFAULT_MIN_ITERATIONS_COUNT;
+        BaseAbstractUnivariateIntegrator.defaultMinIterationsCount;
     maximalIterationCount ??=
-        BaseAbstractUnivariateIntegrator.DEFAULT_MAX_ITERATIONS_COUNT;
+        BaseAbstractUnivariateIntegrator.defaultMaxIterationsCount;
 
     switch (n) {
       case 4:

@@ -4,7 +4,6 @@
 List<K> lastObservationCarriedForward<K>(List<K> x, {Function? isMissing}) {
   isMissing ??= (x) => x == null;
   if (x.isEmpty) return x;
-  ///int ind = x.indexWhere((e) => !isMissing(e));  TODO: for Dart 2.0
   for (var i=1; i<x.length; i++) {
     if (isMissing(x[i-1])) continue;
     if (isMissing(x[i])) {

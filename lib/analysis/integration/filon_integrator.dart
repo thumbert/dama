@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 final Logger _log = Logger('Filon');
 
 class FilonIntegrator extends BaseAbstractUnivariateIntegrator {
-  static const FILON_MAX_ITERATIONS_COUNT = 64;
+  static const filonMaxIterationsCount = 64;
 
   late double _alpha, _beta, _gamma;
   late num omega; // the frequency
@@ -22,14 +22,14 @@ class FilonIntegrator extends BaseAbstractUnivariateIntegrator {
   FilonIntegrator(
     this.omega, {
     double relativeAccuracy =
-        BaseAbstractUnivariateIntegrator.DEFAULT_RELATIVE_ACCURACY,
+        BaseAbstractUnivariateIntegrator.defaultRelativeAccuracy,
     double absoluteAccuracy =
-        BaseAbstractUnivariateIntegrator.DEFAULT_ABSOLUTE_ACCURACY,
+        BaseAbstractUnivariateIntegrator.defaultAbsoluteAccuracy,
     int minimalIterationCount =
-        BaseAbstractUnivariateIntegrator.DEFAULT_MIN_ITERATIONS_COUNT,
-    int maximalIterationCount = FILON_MAX_ITERATIONS_COUNT,
+        BaseAbstractUnivariateIntegrator.defaultMinIterationsCount,
+    int maximalIterationCount = filonMaxIterationsCount,
   }) {
-    if (maximalIterationCount > FILON_MAX_ITERATIONS_COUNT) {
+    if (maximalIterationCount > filonMaxIterationsCount) {
       throw 'Too many iterations for FilonIntegrator.';
     }
 

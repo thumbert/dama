@@ -43,10 +43,10 @@ abstract class UnivariateIntegrator {
 
 abstract class BaseAbstractUnivariateIntegrator
     implements UnivariateIntegrator {
-  static const double DEFAULT_ABSOLUTE_ACCURACY = 1.0e-15;
-  static const double DEFAULT_RELATIVE_ACCURACY = 1.0e-6;
-  static const int DEFAULT_MIN_ITERATIONS_COUNT = 3;
-  static const int DEFAULT_MAX_ITERATIONS_COUNT = 2147483647;
+  static const double defaultAbsoluteAccuracy = 1.0e-15;
+  static const double defaultRelativeAccuracy = 1.0e-6;
+  static const int defaultMinIterationsCount = 3;
+  static const int defaultMaxIterationsCount = 2147483647;
 
   late Incrementor iterations;
 
@@ -68,10 +68,10 @@ abstract class BaseAbstractUnivariateIntegrator
   late double _max;
 
   void initialize({
-    double relativeAccuracy = DEFAULT_RELATIVE_ACCURACY,
-    double absoluteAccuracy = DEFAULT_ABSOLUTE_ACCURACY,
-    int minimalIterationCount = DEFAULT_MIN_ITERATIONS_COUNT,
-    int maximalIterationCount = DEFAULT_MAX_ITERATIONS_COUNT,
+    double relativeAccuracy = defaultRelativeAccuracy,
+    double absoluteAccuracy = defaultAbsoluteAccuracy,
+    int minimalIterationCount = defaultMinIterationsCount,
+    int maximalIterationCount = defaultMaxIterationsCount,
   }) {
     this.minimalIterationCount = minimalIterationCount;
     _absoluteAccuracy = absoluteAccuracy;
