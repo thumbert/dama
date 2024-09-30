@@ -46,7 +46,7 @@ List<num?> binomialFilter(List<num> x, int order, {bool circular = false}) {
     throw ArgumentError('Input list has too few elements');
   }
 
-  var weights = _getBinomialWeights(order);
+  var weights = getBinomialWeights(order);
   var offset = order ~/ 2;
 
   var out = List<num?>.filled(x.length, null);
@@ -89,8 +89,11 @@ List<num?> binomialFilter(List<num> x, int order, {bool circular = false}) {
   return out;
 }
 
-/// For n=2, return [1,2,1]; for n=4, return [1,4,6,4,1], etc.
-List<double> _getBinomialWeights(int n) {
+/// For n=2, return [1,2,1] / 4; 
+/// For n=4, return [1,4,6,4,1] / 16, etc.
+/// 
+List<num> getBinomialWeights(int n) {
+  assert(n < 63);
   var denominator = pow(2, n);
   var out = List.filled(n + 1, 0.0);
   for (var k = 0; k < n; k++) {
