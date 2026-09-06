@@ -16,7 +16,7 @@ void tests() {
       var ms = MovingStatistics(leftWindow: 2, rightWindow: 0);
       var out = ms.movingMinMax(xs);
       expect(
-          out.map((e) => e.item2).toList(), [4, 8, 8, 8, 6, -1, -1, 3, 4, 5]);
+          out.map((e) => e.$2).toList(), [4, 8, 8, 8, 6, -1, -1, 3, 4, 5]);
     });
     test('moving mean', () {
       var xs = [4, 8, 6, -1, -2, -3, -1, 3, 4, 5];

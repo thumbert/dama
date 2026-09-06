@@ -3,7 +3,6 @@ library stat.descriptive.moving_statistic;
 import 'dart:math';
 
 import 'package:dama/stat/descriptive/summary.dart' as summary;
-import 'package:tuple/tuple.dart';
 
 /// How to deal with missing values at the end of the sample.
 /// Strategy [EndpointStrategy.padValue] adds [x.first] to the
@@ -79,10 +78,10 @@ class MovingStatistics {
     return xs.map((e) => (acc..add(e)).value).toList();
   }
 
-  List<Tuple2<num, num>> movingMinMax(List<num> xs) {
+  List<(num, num)> movingMinMax(List<num> xs) {
     final acc = Accumulator((List<num> ys) {
       var aux = summary.range(ys);
-      return Tuple2(aux[0], aux[1]);
+      return (aux[0], aux[1]);
     }, windowSize: leftWindow + rightWindow + 1);
     return xs.map((e) => (acc..add(e)).value).toList();
   }

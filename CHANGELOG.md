@@ -3,6 +3,9 @@
 ## To do:
 - 
 
+## Release 2026-09-06
+- Remove dependency on package tuple
+
 ## Release 2024-09-30
 - Clean some lints
 
