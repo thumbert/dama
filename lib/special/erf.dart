@@ -6,7 +6,7 @@ import 'dart:math';
 /// \Phi(\infty)=1
 /// Based on Marsaglia's 'Evaluating the Normal Distribution Function', 2004.
 /// http://www.jstatsoft.org/v11/a05/paper
-double Phi(num x) {
+double phi(num x) {
   if (x < -8.0) return 0.0;
   if (x > 8.0) return 1.0;
   var sum = 0.0;
@@ -20,7 +20,7 @@ double Phi(num x) {
 
 /// Calculate the error function: 2/\sqrt{\pi} \int_0^x dt e^{-t^2}.
 /// <p>erf(0) = 0;  erf(\infty) = 1
-double erf(num x) => 2 * Phi(x * sqrt(2)) - 1;
+double erf(num x) => 2 * phi(x * sqrt(2)) - 1;
 
 /// Calculate 1 - \Phi(x) = \int_{x}^\infty dt e^{-t^2/2}/\sqrt{2*\pi}.
 /// This is needed to achieve relative accuracy for large argument values [x].

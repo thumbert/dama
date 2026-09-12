@@ -57,7 +57,7 @@ class LogNormalDistribution {
   /// calculate the value of the distribution function at point [x]
   num probability(num x) {
     var z = (log(x) - mu) / sigma;
-    return Phi(z);
+    return phi(z);
   }
 
   /// Generate a sample value from this distribution

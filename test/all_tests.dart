@@ -22,6 +22,8 @@ import 'distribution/discrete_distribution_test.dart' as discrete_distribution;
 import 'distribution/lognormal_distribution_test.dart'
     as lognormal_distribution;
 import 'distribution/normal_distribution_test.dart' as normal_distribution;
+import 'distribution/multivariate_gaussian_distribution_test.dart'
+    as multivariate_gaussian_distribution;
 
 import 'linear/matrix_test.dart' as matrix;
 import 'linear/qrdecomposition_test.dart' as qr_decomposition;
@@ -53,6 +55,7 @@ void main() {
   discrete_distribution.main();
   lognormal_distribution.tests();
   normal_distribution.tests();
+  multivariate_gaussian_distribution.tests();
 
   // linear algebra
   matrix.main();

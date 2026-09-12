@@ -3,6 +3,10 @@
 ## To do:
 - 
 
+## Release 2026-09-12
+- Add a multivariate gaussian distribution implementation
+- A few small fixes
+
 ## Release 2026-09-06
 - Remove dependency on package tuple
 
