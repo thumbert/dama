@@ -6,9 +6,11 @@ class QuadraticInterpolator {
   List<num> x;
   List<num> y;
 
-  late Function _l0, _l1, _l2;
-  late num _x01, _x02, _x12;
+  late num Function(num) _l0, _l1, _l2;
 
+  /// 3 points (x0, y0), (x1, y1), (x2, y2) are required 
+  /// to completely specify a the quadratic interpolation.
+  /// 
   QuadraticInterpolator(this.x, this.y) {
     if (x.length != 3 || y.length != 3) {
       throw ArgumentError('Length of input lists is not 3.');
@@ -17,13 +19,13 @@ class QuadraticInterpolator {
       throw ArgumentError('xData input needs to be sorted');
     }
 
-    _x01 = x[0] - x[1];
-    _x02 = x[0] - x[2];
-    _x12 = x[1] - x[2];
+    var x01 = x[0] - x[1];
+    var x02 = x[0] - x[2];
+    var x12 = x[1] - x[2];
 
-    _l0 = (e) => (e - x[1]) * (e - x[2]) / (_x01 * _x02);
-    _l1 = (e) => -(e - x[0]) * (e - x[2]) / (_x01 * _x12);
-    _l2 = (e) => (e - x[0]) * (e - x[1]) / (_x02 * _x12);
+    _l0 = (e) => (e - x[1]) * (e - x[2]) / (x01 * x02);
+    _l1 = (e) => -(e - x[0]) * (e - x[2]) / (x01 * x12);
+    _l2 = (e) => (e - x[0]) * (e - x[1]) / (x02 * x12);
   }
 
   /// return the interpolated value.

@@ -21,10 +21,10 @@ class LinearInterpolator {
   }
 
   LinearInterpolator.fromSlope(
-      {required num slope, required ({num x0, num y0}) point}) {
+      {required num slope, required (num, num) point}) {
     _slope = slope;
-    _x = [point.x0, point.x0 + 1]; // arbitrary second point to define the line
-    _y = [point.y0, point.y0 + slope];
+    _x = [point.$1, point.$1 + 1]; // arbitrary second point to define the line
+    _y = [point.$2, point.$2 + slope];
     _fun = (v) => _slope * (v - _x[0]) + _y[0];
   }
 
