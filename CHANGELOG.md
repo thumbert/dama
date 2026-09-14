@@ -5,6 +5,7 @@
 
 ## Release 2026-09-13
 - Fix bug in lognormal_distribution MLE for sigma.  Wow. 
+- Add LinearInterpolator.fromSlope constructor. 
 
 ## Release 2026-09-12
 - Add a multivariate gaussian distribution implementation
