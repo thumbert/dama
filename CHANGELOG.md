@@ -3,6 +3,9 @@
 ## To do:
 - 
 
+## 2026-09-26
+- Add a quadraticSolution() function 
+
 ## Release 2026-09-06
 - Remove dependency on package tuple
 
