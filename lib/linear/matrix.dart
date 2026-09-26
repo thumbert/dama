@@ -12,7 +12,7 @@ abstract class Matrix {
   final int nrow;
   final int ncol;
 
-  static String MULTIPLICATION_METHOD = 'NAIVE';
+  static String multiplicationMethod = 'NAIVE';
 
   Matrix._empty(this.nrow, this.ncol);
 
@@ -121,8 +121,7 @@ abstract class Matrix {
   /// If [p=1] it is the maximum absolute column sum of the matrix
   /// If [p=INFINITY] it is the maximum absolute row sum of the matrix
   num norm({String p = '1'}) {
-    Function absSum =
-        (List<num> x) => x.fold(0.0, (num a, num b) => a + b.abs());
+    num absSum(List<num> x) => x.fold(0.0, (num a, num b) => a + b.abs());
     num res;
     if (p == '1') {
       var aux = columnApply(absSum).toList();
@@ -169,18 +168,21 @@ abstract class Matrix {
   }
 
   @override
-  bool operator ==(Object that) {
-    if (that is! Matrix) return false;
+  bool operator ==(Object other) {
+    if (other is! Matrix) return false;
 
-    if (that.nrow != nrow || that.ncol != ncol) return false;
+    if (other.nrow != nrow || other.ncol != ncol) return false;
 
     for (var i = 0; i < nrow; i++) {
       for (var j = 0; j < ncol; j++) {
-        if (element(i, j) != that.element(i, j)) return false;
+        if (element(i, j) != other.element(i, j)) return false;
       }
     }
     return true;
   }
+
+  @override
+  int get hashCode => Object.hash(nrow, ncol, Object.hashAll(toList()));
 
   /// Check if this matrix is a square matrix or not
   bool isSquare() => nrow == ncol ? true : false;

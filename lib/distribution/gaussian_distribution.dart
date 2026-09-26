@@ -45,7 +45,7 @@ class GaussianDistribution {
   /// calculate the value of the distribution function at point [x]
   num probability(num x) {
     var z = (x - mu) / sigma;
-    return Phi(z);
+    return phi(z);
   }
 
   /// Generate a value from a standard Gaussian distribution N(0,1)

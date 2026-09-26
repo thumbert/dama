@@ -1,7 +1,5 @@
 library analysis.interpolation.linear_interpolator;
 
-@Deprecated(
-    'Use MultiLinearInterpolator which is a generalization to an arbitrary number of points')
 class LinearInterpolator {
   late List<num> _x, _y;
   late Function _fun;
@@ -19,6 +17,14 @@ class LinearInterpolator {
     _x = x;
     _y = y;
     _slope = (_y[1] - _y[0]) / (_x[1] - _x[0]);
+    _fun = (v) => _slope * (v - _x[0]) + _y[0];
+  }
+
+  LinearInterpolator.fromSlope(
+      {required num slope, required (num, num) point}) {
+    _slope = slope;
+    _x = [point.$1, point.$1 + 1]; // arbitrary second point to define the line
+    _y = [point.$2, point.$2 + slope];
     _fun = (v) => _slope * (v - _x[0]) + _y[0];
   }
 

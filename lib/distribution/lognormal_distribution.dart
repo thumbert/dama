@@ -25,8 +25,8 @@ class LogNormalDistribution {
   /// The variance is bias corrected.
   LogNormalDistribution.fromMaximumLikelihood(List<num> xs) {
     mu = dama.mean(xs.map((e) => log(e)));
-    sigma = dama.sum(xs.map((e) => (log(e) - mu) * (log(e) - mu))) /
-        (xs.length - 1);
+    sigma = sqrt(dama.sum(xs.map((e) => (log(e) - mu) * (log(e) - mu))) /
+        (xs.length - 1));
     _sigma2 = 2 * sigma * sigma;
   }
 
@@ -57,7 +57,7 @@ class LogNormalDistribution {
   /// calculate the value of the distribution function at point [x]
   num probability(num x) {
     var z = (log(x) - mu) / sigma;
-    return Phi(z);
+    return phi(z);
   }
 
   /// Generate a sample value from this distribution
