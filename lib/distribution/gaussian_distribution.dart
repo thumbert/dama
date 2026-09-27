@@ -1,4 +1,4 @@
-library distibution.gaussian;
+library distribution.gaussian;
 
 import 'dart:math' show Random, sqrt, log, exp, pi;
 

@@ -5,6 +5,7 @@
 
 ## 2026-09-26
 - Add a quadraticSolution() function 
+- Start a GammaDistribution implementation.  Not finished. 
 
 ## Release 2026-09-13
 - Fix bug in lognormal_distribution MLE for sigma.  Wow. 

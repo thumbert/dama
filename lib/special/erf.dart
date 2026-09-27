@@ -2,6 +2,17 @@ library special.erf;
 
 import 'dart:math';
 
+/// A simple recursive implementation of the Gamma function.
+/// Works for positive integer arguments only.
+num gamma(num x) {
+  if (x <= 0) {
+    throw ArgumentError('Argument x needs to be > 0');
+  }
+  if (x == 1) return 1;
+  if (x == 2) return 1;
+  return (x - 1) * gamma(x - 1);
+}
+
 /// Calculate \Phi(x) = \int_{-\infty}^x dt e^{-t^2/2}/\sqrt{2*\pi}.
 /// \Phi(\infty)=1
 /// Based on Marsaglia's 'Evaluating the Normal Distribution Function', 2004.
