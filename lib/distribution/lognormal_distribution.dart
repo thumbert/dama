@@ -21,6 +21,13 @@ class LogNormalDistribution {
     _sigma2 = 2 * sigma * sigma;
   }
 
+  /// Create a log-normal distribution with a given mean and variance.
+  LogNormalDistribution.from({required num mean, required num variance}) {
+    mu = log(mean * mean / sqrt(variance + mean * mean));
+    sigma = sqrt(log(1 + variance / (mean * mean)));
+    _sigma2 = 2 * sigma * sigma;
+  }
+
   /// Get the distribution by estimating the maximum likelihood parameters.
   /// The variance is bias corrected.
   LogNormalDistribution.fromMaximumLikelihood(List<num> xs) {
@@ -39,7 +46,7 @@ class LogNormalDistribution {
 
     if (probability == 1) return double.infinity;
     if (probability == 0) return double.negativeInfinity;
-    // TODO: there should be algorithms to calculate this directly
+    // there should be algorithms to calculate this directly
     // not by using bisection.
 
     f(num x) => this.probability(x) - probability;
