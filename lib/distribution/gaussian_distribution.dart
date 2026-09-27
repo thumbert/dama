@@ -2,7 +2,6 @@ library distribution.gaussian;
 
 import 'dart:math' show Random, sqrt, log, exp, pi;
 
-import 'package:dama/analysis/solver/bisection_solver.dart';
 import 'package:dama/special/erf.dart';
 
 class GaussianDistribution {
@@ -28,12 +27,7 @@ class GaussianDistribution {
 
     if (probability == 1) return double.infinity;
     if (probability == 0) return double.negativeInfinity;
-    // TODO: there should be algorithms to calculate this directly
-    // not by using bisection.
-
-    f(num x) => this.probability(x) - probability;
-    var res = bisectionSolver(f, -1000, 1000);
-    return res;
+    return mu + sigma * inverseStandardNormal(probability);
   }
 
   /// calculate the value of the probability density function at point [x]

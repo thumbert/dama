@@ -3,6 +3,10 @@
 ## To do:
 - 
 
+## 2026-09-27
+- Improved the calculation of quantiles for the Gaussian and Lognormal 
+  distribution to use exact formula and not bisection.
+
 ## 2026-09-26
 - Add a quadraticSolution() function 
 - Start a GammaDistribution implementation.  Not finished. 

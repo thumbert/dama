@@ -23,6 +23,7 @@ void tests() {
           equalsWithPrecision(0.97724986805182, precision: 1E-14));
     });
     test('calculate quantile', () {
+      expect(g.quantile(0), equals(double.negativeInfinity));
       expect(g.quantile(0.5), equalsWithPrecision(1.0, precision: 1E-10));
       expect(g.quantile(0.75),
           equalsWithPrecision(2.3489795003922, precision: 1E-10));

@@ -24,6 +24,7 @@ void tests() {
           equalsWithPrecision(0.6197098945773291, precision: 1E-14));
     });
     test('calculate quantile', () {
+      expect(g.quantile(0), equals(0));
       expect(g.quantile(0.5),
           equalsWithPrecision(2.718281828459045, precision: 1E-10));
       expect(g.quantile(0.75),

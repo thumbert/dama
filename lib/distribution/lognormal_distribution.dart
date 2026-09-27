@@ -2,7 +2,6 @@ library distribution.lognormal;
 
 import 'dart:math';
 
-import 'package:dama/analysis/solver/bisection_solver.dart';
 import 'package:dama/dama.dart' as dama;
 import 'package:dama/distribution/gaussian_distribution.dart';
 import 'package:dama/special/erf.dart';
@@ -45,13 +44,10 @@ class LogNormalDistribution {
     }
 
     if (probability == 1) return double.infinity;
-    if (probability == 0) return double.negativeInfinity;
-    // there should be algorithms to calculate this directly
-    // not by using bisection.
+    if (probability == 0) return 0;
 
-    f(num x) => this.probability(x) - probability;
-    var res = bisectionSolver(f, 0, 1000);
-    return res;
+    final z = inverseStandardNormal(probability);
+    return exp(mu + sigma * z);
   }
 
   /// calculate the value of the probability density function at point [x]
