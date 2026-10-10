@@ -3,6 +3,9 @@
 ## To do:
 - 
 
+## 2026-10-10
+- Add a mean absolute deviation function. 
+
 ## 2026-09-27
 - Improved the calculation of quantiles for the Gaussian and Lognormal 
   distribution to use exact formula and not bisection.

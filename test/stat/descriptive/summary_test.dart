@@ -20,6 +20,17 @@ void main() {
       // naive mean is 500000000.60091573
       expect(mean(x), 500000000.6);
     });
+    test('mean absolute deviation', () {
+      var visited = 0;
+      final xs = Iterable<num>.generate(4, (i) {
+        visited++;
+        return i + 1;
+      });
+
+      expect(meanAbsoluteDeviation(xs), 1);
+      expect(visited, 4);
+      expect(() => meanAbsoluteDeviation([]), throwsStateError);
+    });
     test('trimmed mean', () {
       var xs = <num>[
         10,

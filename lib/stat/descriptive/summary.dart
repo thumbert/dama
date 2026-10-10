@@ -43,6 +43,20 @@ num mean(Iterable<num> xs) {
   return mu;
 }
 
+/// Calculate the mean absolute deviation from the arithmetic mean.
+///
+/// The input is traversed once and buffered because the deviation calculation
+/// requires the mean of all values.
+num meanAbsoluteDeviation(Iterable<num> xs) {
+  final values = xs.toList(growable: false);
+  final mu = mean(values);
+  var sumAbsDev = 0.0;
+  for (final x in values) {
+    sumAbsDev += (x - mu).abs();
+  }
+  return sumAbsDev / values.length;
+}
+
 /// Calculate the trimmed mean for a list of numbers.
 /// For example, to remove the lowest 10% and the highest 10% of the
 /// observations use [trimmedPercentage] = 0.1
@@ -68,6 +82,17 @@ num weightedMean(Iterable<num> x, Iterable<num> weights) {
     weightSum += iw.current;
   }
   return res / weightSum;
+}
+
+/// Calculate the weighted sum of an iterable.
+num weightedSum(Iterable<num> x, Iterable<num> weights) {
+  num res = 0;
+  Iterator ix = x.iterator;
+  Iterator iw = weights.iterator;
+  while (ix.moveNext() && iw.moveNext()) {
+    res += ix.current * iw.current;
+  }
+  return res;
 }
 
 /// Calculate the variance of an iterable.  Return [nan] if the iterable has

@@ -1,6 +1,6 @@
 library basic.num_iterable_extensions;
 
-import 'package:dama/stat/descriptive/summary.dart' as smary;
+import 'package:dama/stat/descriptive/summary.dart' as summary2;
 import 'cumsum.dart' as cs;
 
 extension NumIterableExtensions on Iterable<num> {
@@ -47,14 +47,16 @@ extension NumIterableExtensions on Iterable<num> {
   /// variability of a univariate sample.  The return value is not adjusted
   /// by the multiplier 1.4826.
   /// https://en.wikipedia.org/wiki/Median_absolute_deviation
-  num mad() => smary.mad(this);
+  num mad() => summary2.mad(this);
 
-  num max() => smary.max(this);
-  num min() => smary.min(this);
-  List<num> range() => smary.range(this);
-  num sum() => smary.sum(this);
-  num mean() => smary.mean(this);
+  num meanAbsoluteDeviation() => summary2.meanAbsoluteDeviation(this);
 
-  Map<String, num> summary() => smary.summary(this);
-  num variance() => smary.variance(this);
+  num max() => summary2.max(this);
+  num min() => summary2.min(this);
+  List<num> range() => summary2.range(this);
+  num sum() => summary2.sum(this);
+  num mean() => summary2.mean(this);
+
+  Map<String, num> summary() => summary2.summary(this);
+  num variance() => summary2.variance(this);
 }
